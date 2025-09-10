@@ -1,0 +1,6 @@
+job:
+  script:
+    - mkdir -p /var/www/classes/863.25/people/ClaireWang
+    - export GIT_WORK_TREE=/var/www/classes/863.25/people/ClaireWang/
+    - git checkout -f main
+    - git pull
