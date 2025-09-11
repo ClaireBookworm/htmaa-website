@@ -3,22 +3,41 @@
 <head>
     <title>claire's how to make almost anything</title>
     <style>
-        body {
+        html, body {
             margin: 0;
-            font-family: 'MS Sans Serif', monospace, sans-serif;
+            padding: 0;
+            font-family: 'MS Sans Serif', sans-serif;
             font-size: 11px;
-			background: #c0c0c0;
-			background: url('bg_image.jpg') center/cover;
+            background: url('https://i.redd.it/02dw11nuqf681.jpg') center/cover;
+            color: #000;
             height: 100vh;
-			overflow: hidden;
+            overflow: hidden;
         }
         
         .window {
             background: #c0c0c0;
             border: 2px outset #c0c0c0;
-            margin: 50px auto;
             width: 400px;
             box-shadow: 2px 2px 4px #808080;
+            position: absolute;
+            cursor: move;
+        }
+        
+        .window1 {
+            top: 50px;
+            left: 50px;
+        }
+        
+        .window2 {
+            top: 200px;
+            left: 300px;
+            width: 300px;
+        }
+
+        .window3 {
+            top: 300px;
+            left: 800px;
+            width: 300px;
         }
         
         .titlebar {
@@ -27,11 +46,20 @@
             padding: 2px 4px;
             font-weight: bold;
             border-bottom: 1px solid #000080;
+            cursor: grab;
+        }
+        
+        .titlebar:active {
+            cursor: grabbing;
         }
         
         .content {
             padding: 20px;
             text-align: center;
+        }
+        
+        .content.left {
+            text-align: left;
         }
         
         .button {
@@ -56,7 +84,7 @@
     </style>
 </head>
 <body>
-    <div class="window">
+    <div class="window window1" draggable="true">
         <div class="titlebar">claire's website</div>
         <div class="content">
             <h1>welcome to claire's<br>how to make almost anything<br>website</h1>
@@ -64,5 +92,62 @@
             <button class="button">cancel</button>
         </div>
     </div>
+    
+    <div class="window window2" draggable="true">
+        <div class="titlebar">todos.txt</div>
+        <div class="content left">
+            this is where i document my journey through making stuff for htmaa.<br><br>
+            current projects:<br>
+            - learning cad<br>
+            - doing some laser cut wood art<br>
+            - helping build a microscope<br><br>
+            status: [undefined, week 1?]
+        </div>
+    </div>
+
+        <div class="window window3" draggable="true">
+        <div class="titlebar">about.txt</div>
+        <div class="content left">
+            i am currently a junior at MIT studing eecs and neuroscience. <br><br>
+            i'm really interested in building interactive music art projects!! and music in general. send recs:)<br><br>
+            also have been doing some neurotech research and work, so hoping to learn to build smaller-scale BCI stuff.<br><br>
+            feel free to reach out! my website is <a href="https://clairebookworm.com">clairebookworm.com</a> to learn more.<br>
+        </div>
+    </div>
+
+    <script>
+        let draggedElement = null;
+        let offset = { x: 0, y: 0 };
+
+        document.addEventListener('dragstart', (e) => {
+            if (e.target.classList.contains('window')) {
+                draggedElement = e.target;
+                const rect = draggedElement.getBoundingClientRect();
+                offset.x = e.clientX - rect.left;
+                offset.y = e.clientY - rect.top;
+                e.dataTransfer.effectAllowed = 'move';
+            }
+        });
+
+        document.addEventListener('dragover', (e) => {
+            if (draggedElement) {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+            }
+        });
+
+        document.addEventListener('drop', (e) => {
+            if (draggedElement) {
+                e.preventDefault();
+                const x = e.clientX - offset.x;
+                const y = e.clientY - offset.y;
+                
+                draggedElement.style.left = Math.max(0, Math.min(x, window.innerWidth - draggedElement.offsetWidth)) + 'px';
+                draggedElement.style.top = Math.max(0, Math.min(y, window.innerHeight - draggedElement.offsetHeight)) + 'px';
+                
+                draggedElement = null;
+            }
+        });
+    </script>
 </body>
 </html>
