@@ -1,8 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="utf-8">
-<title>HTMAA 2025 Claire Wang</title>
+    <title>claire's how to make almost anything</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'MS Sans Serif', monospace, sans-serif;
+            font-size: 11px;
+			background: #c0c0c0;
+			background: url('bg_image.jpg') center/cover;
+            min-height: 100vh;
+        }
+        
+        .window {
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            margin: 50px auto;
+            width: 400px;
+            box-shadow: 2px 2px 4px #808080;
+        }
+        
+        .titlebar {
+            background: linear-gradient(90deg, #000080, #0000ff);
+            color: white;
+            padding: 2px 4px;
+            font-weight: bold;
+            border-bottom: 1px solid #000080;
+        }
+        
+        .content {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .button {
+            background: #c0c0c0;
+            border: 2px outset #c0c0c0;
+            padding: 4px 12px;
+            font-family: inherit;
+            font-size: inherit;
+            margin: 10px 5px;
+            cursor: pointer;
+        }
+        
+        .button:active {
+            border: 2px inset #c0c0c0;
+        }
+        
+        h1 {
+            font-size: 16px;
+            margin: 0 0 20px 0;
+            font-weight: normal;
+        }
+    </style>
 </head>
 <body>
-Claire Wang's Web site
+    <div class="window">
+        <div class="titlebar">claire's website</div>
+        <div class="content">
+            <h1>welcome to claire's<br>how to make almost anything<br>website</h1>
+            <button class="button">ok</button>
+            <button class="button">cancel</button>
+        </div>
+    </div>
+</body>
+</html>
