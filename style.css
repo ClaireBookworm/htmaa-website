@@ -1,0 +1,256 @@
+/* Retro Windows 95/98 Style CSS */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'MS Sans Serif', sans-serif;
+    font-size: 11px;
+    background: url('https://i.redd.it/02dw11nuqf681.jpg') center/cover;
+    color: #000;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.window {
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    width: 400px;
+    box-shadow: 2px 2px 4px #808080;
+    position: absolute;
+    cursor: move;
+    min-width: 200px;
+    min-height: 150px;
+}
+
+/* Resize handles */
+.resize-handle {
+    position: absolute;
+    background: transparent;
+}
+
+.resize-handle.se {
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    cursor: se-resize;
+}
+
+.resize-handle.s {
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+    height: 5px;
+    cursor: s-resize;
+}
+
+.resize-handle.e {
+    top: 10px;
+    right: 0;
+    bottom: 10px;
+    width: 5px;
+    cursor: e-resize;
+}
+
+.window1 {
+    top: 50px;
+    left: 50px;
+}
+
+.window2 {
+    top: 200px;
+    left: 300px;
+    width: 300px;
+}
+
+.window3 {
+    top: 300px;
+    left: 800px;
+    width: 300px;
+}
+
+.titlebar {
+    background: linear-gradient(90deg, #000080, #0000ff);
+    color: white;
+    padding: 2px 4px;
+    font-weight: bold;
+    border-bottom: 1px solid #000080;
+    cursor: grab;
+}
+
+.titlebar:active {
+    cursor: grabbing;
+}
+
+.content {
+    padding: 20px;
+    text-align: center;
+}
+
+.content.left {
+    text-align: left;
+}
+
+.button {
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    padding: 4px 12px;
+    font-family: inherit;
+    font-size: inherit;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+.button:active {
+    border: 2px inset #c0c0c0;
+}
+
+h1 {
+    font-size: 16px;
+    margin: 0 0 20px 0;
+    font-weight: normal;
+}
+
+/* Desktop Icons */
+.desktop-icon {
+    position: absolute;
+    width: 64px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.desktop-icon:nth-child(1) {
+    top: 20px;
+    right: 20px;
+}
+
+.desktop-icon:nth-child(2) {
+    top: 20px;
+    right: 100px;
+}
+
+.desktop-icon:nth-child(3) {
+    top: 20px;
+    right: 180px;
+}
+
+.desktop-icon:nth-child(4) {
+    top: 110px;
+    right: 20px;
+}
+
+.desktop-icon:nth-child(5) {
+    top: 110px;
+    right: 100px;
+}
+
+.desktop-icon:hover {
+    background-color: rgba(0, 0, 128, 0.3);
+    border: 1px dotted #000080;
+}
+
+.desktop-icon.selected {
+    background-color: rgba(0, 0, 128, 0.5);
+    border: 1px dotted #000080;
+}
+
+.app-icon {
+    width: 32px;
+    height: 32px;
+    background: #c0c0c0;
+    border: 2px outset #c0c0c0;
+    margin: 0 auto 4px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 1px 1px 2px #808080;
+}
+
+.desktop-icon:active .app-icon {
+    border: 2px inset #c0c0c0;
+}
+
+.icon-image {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.icon-label {
+    font-size: 11px;
+    color: white;
+    text-shadow: 1px 1px 1px #000;
+    word-wrap: break-word;
+    line-height: 1.2;
+}
+
+/* Modal Window Styles */
+.modal-window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: none; /* Allow clicks to pass through */
+}
+
+.modal-window .window {
+    pointer-events: all; /* Re-enable clicks on the actual window */
+}
+
+.titlebar {
+    background: linear-gradient(90deg, #000080, #0000ff);
+    color: white;
+    padding: 2px 4px;
+    font-weight: bold;
+    border-bottom: 1px solid #000080;
+    cursor: grab;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-button {
+    background: #c0c0c0;
+    border: 1px outset #c0c0c0;
+    width: 20px;
+    height: 18px;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+}
+
+.close-button:hover {
+    background: #ff0000;
+    color: white;
+}
+
+.close-button:active {
+    border: 1px inset #c0c0c0;
+}
+
+h2, h3 {
+    font-size: 14px;
+    margin: 15px 0 10px 0;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 12px;
+    margin: 10px 0 5px 0;
+}
+
+ul {
+    margin: 5px 0 10px 20px;
+    padding: 0;
+}
+
+li {
+    margin: 3px 0;
+}

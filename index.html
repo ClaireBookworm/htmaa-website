@@ -2,88 +2,59 @@
 <html>
 <head>
     <title>claire's how to make almost anything</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            font-family: 'MS Sans Serif', sans-serif;
-            font-size: 11px;
-            background: url('https://i.redd.it/02dw11nuqf681.jpg') center/cover;
-            color: #000;
-            height: 100vh;
-            overflow: hidden;
-        }
-        
-        .window {
-            background: #c0c0c0;
-            border: 2px outset #c0c0c0;
-            width: 400px;
-            box-shadow: 2px 2px 4px #808080;
-            position: absolute;
-            cursor: move;
-        }
-        
-        .window1 {
-            top: 50px;
-            left: 50px;
-        }
-        
-        .window2 {
-            top: 200px;
-            left: 300px;
-            width: 300px;
-        }
-
-        .window3 {
-            top: 300px;
-            left: 800px;
-            width: 300px;
-        }
-        
-        .titlebar {
-            background: linear-gradient(90deg, #000080, #0000ff);
-            color: white;
-            padding: 2px 4px;
-            font-weight: bold;
-            border-bottom: 1px solid #000080;
-            cursor: grab;
-        }
-        
-        .titlebar:active {
-            cursor: grabbing;
-        }
-        
-        .content {
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .content.left {
-            text-align: left;
-        }
-        
-        .button {
-            background: #c0c0c0;
-            border: 2px outset #c0c0c0;
-            padding: 4px 12px;
-            font-family: inherit;
-            font-size: inherit;
-            margin: 10px 5px;
-            cursor: pointer;
-        }
-        
-        .button:active {
-            border: 2px inset #c0c0c0;
-        }
-        
-        h1 {
-            font-size: 16px;
-            margin: 0 0 20px 0;
-            font-weight: normal;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="windows.js"></script>
 </head>
 <body>
+    <!-- Desktop Icons -->
+    <div class="desktop-icon" onclick="openWeek1Window()">
+        <div class="app-icon">
+            <div class="icon-image">📁</div>
+        </div>
+        <div class="icon-label">Week 1</div>
+    </div>
+
+    <div class="desktop-icon" onclick="openWeek2Window()">
+        <div class="app-icon">
+            <div class="icon-image">📁</div>
+        </div>
+        <div class="icon-label">Week 2</div>
+    </div>
+
+    <!-- Week 1 Modal Window -->
+    <div id="week1Window" class="modal-window" style="display: none;">
+        <div class="window" style="width: 600px; height: 400px; top: 100px; left: 150px;" draggable="true">
+            <div class="titlebar">
+                <span>Week 1 - How to Make Almost Anything</span>
+                <button class="close-button" onclick="closeWeek1Window()">×</button>
+            </div>
+            <div class="content left" style="height: 350px; overflow-y: auto;">
+                <div id="week1Content">Loading...</div>
+            </div>
+            <!-- Resize handles -->
+            <div class="resize-handle se"></div>
+            <div class="resize-handle s"></div>
+            <div class="resize-handle e"></div>
+        </div>
+    </div>
+
+        <!-- Week 2 Modal Window -->
+    <div id="week2Window" class="modal-window" style="display: none;">
+        <div class="window" style="width: 600px; height: 400px; top: 100px; left: 150px;" draggable="true">
+            <div class="titlebar">
+                <span>Week 2 - How to Make Almost Anything</span>
+                <button class="close-button" onclick="closeWeek2Window()">×</button>
+            </div>
+            <div class="content left" style="height: 350px; overflow-y: auto;">
+                <div id="week2Content">Loading...</div>
+            </div>
+            <!-- Resize handles -->
+            <div class="resize-handle se"></div>
+            <div class="resize-handle s"></div>
+            <div class="resize-handle e"></div>
+        </div>
+    </div>
+
     <div class="window window1" draggable="true">
         <div class="titlebar">claire's website</div>
         <div class="content">
@@ -115,39 +86,5 @@
         </div>
     </div>
 
-    <script>
-        let draggedElement = null;
-        let offset = { x: 0, y: 0 };
-
-        document.addEventListener('dragstart', (e) => {
-            if (e.target.classList.contains('window')) {
-                draggedElement = e.target;
-                const rect = draggedElement.getBoundingClientRect();
-                offset.x = e.clientX - rect.left;
-                offset.y = e.clientY - rect.top;
-                e.dataTransfer.effectAllowed = 'move';
-            }
-        });
-
-        document.addEventListener('dragover', (e) => {
-            if (draggedElement) {
-                e.preventDefault();
-                e.dataTransfer.dropEffect = 'move';
-            }
-        });
-
-        document.addEventListener('drop', (e) => {
-            if (draggedElement) {
-                e.preventDefault();
-                const x = e.clientX - offset.x;
-                const y = e.clientY - offset.y;
-                
-                draggedElement.style.left = Math.max(0, Math.min(x, window.innerWidth - draggedElement.offsetWidth)) + 'px';
-                draggedElement.style.top = Math.max(0, Math.min(y, window.innerHeight - draggedElement.offsetHeight)) + 'px';
-                
-                draggedElement = null;
-            }
-        });
-    </script>
 </body>
 </html>
