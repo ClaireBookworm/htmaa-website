@@ -9,14 +9,14 @@
     <!-- Desktop Icons -->
     <div class="desktop-icon" onclick="openWeek1Window()">
         <div class="app-icon">
-            <div class="icon-image">📁</div>
+            <div class="icon-image folder"></div>
         </div>
         <div class="icon-label">Week 1</div>
     </div>
 
     <div class="desktop-icon" onclick="openWeek2Window()">
         <div class="app-icon">
-            <div class="icon-image">📁</div>
+            <div class="icon-image folder"></div>
         </div>
         <div class="icon-label">Week 2</div>
     </div>
@@ -26,7 +26,7 @@
         <div class="window" style="width: 600px; height: 400px; top: 100px; left: 150px;" draggable="true">
             <div class="titlebar">
                 <span>Week 1 - How to Make Almost Anything</span>
-                <button class="close-button" onclick="closeWeek1Window()">×</button>
+                <button class="close-button" onclick="closeWeek1Window()"></button>
             </div>
             <div class="content left" style="height: 350px; overflow-y: auto;">
                 <div id="week1Content">Loading...</div>
@@ -43,7 +43,7 @@
         <div class="window" style="width: 600px; height: 400px; top: 100px; left: 150px;" draggable="true">
             <div class="titlebar">
                 <span>Week 2 - How to Make Almost Anything</span>
-                <button class="close-button" onclick="closeWeek2Window()">×</button>
+                <button class="close-button" onclick="closeWeek2Window()"></button>
             </div>
             <div class="content left" style="height: 350px; overflow-y: auto;">
                 <div id="week2Content">Loading...</div>
@@ -85,6 +85,29 @@
             feel free to reach out! my website is <a href="https://clairebookworm.com">clairebookworm.com</a> to learn more.<br>
         </div>
     </div>
+
+    <!-- Music Player Widget -->
+    <div class="music-player">
+        <div class="titlebar">
+            <span>Claire's Music Player</span>
+        </div>
+        <div class="controls">
+            <button class="music-button play" onclick="playMusic()"></button>
+            <button class="music-button pause" onclick="pauseMusic()"></button>
+            <button class="music-button stop" onclick="stopMusic()"></button>
+            <div class="track-info" id="trackInfo">No track loaded</div>
+            <div class="volume-control">
+                <span>Vol:</span>
+                <input type="range" class="volume-slider" min="0" max="100" value="50" onchange="setVolume(this.value)">
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden audio element -->
+    <audio id="audioPlayer" loop>
+        <source src="https://www.soundjay.com/misc/beep-07a.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
 </body>
 </html>

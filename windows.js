@@ -262,3 +262,48 @@ function loadWeek2Content() {
         console.error('Error loading week2 content:', error);
     }
 }
+
+// Music Player Functions
+const audioPlayer = document.getElementById('audioPlayer');
+const trackInfo = document.getElementById('trackInfo');
+
+function playMusic() {
+    if (audioPlayer) {
+        audioPlayer.play().then(() => {
+            trackInfo.textContent = "♪ Playing: Retro Beats ♪";
+        }).catch(error => {
+            trackInfo.textContent = "Error: Could not load track";
+            console.error('Audio play error:', error);
+        });
+    }
+}
+
+function pauseMusic() {
+    if (audioPlayer) {
+        audioPlayer.pause();
+        trackInfo.textContent = "⏸ Paused: Retro Beats";
+    }
+}
+
+function stopMusic() {
+    if (audioPlayer) {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        trackInfo.textContent = "⏹ Stopped";
+    }
+}
+
+function setVolume(value) {
+    if (audioPlayer) {
+        audioPlayer.volume = value / 100;
+    }
+}
+
+// Initialize audio player when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    if (audioPlayer) {
+        audioPlayer.volume = 0.5;
+        trackInfo.textContent = "Ready to play";
+    }
+});
