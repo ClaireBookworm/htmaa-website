@@ -264,13 +264,13 @@ function loadWeek2Content() {
 }
 
 // Music Player Functions
-const audioPlayer = document.getElementById('audioPlayer');
-const trackInfo = document.getElementById('trackInfo');
-
 function playMusic() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    const trackInfo = document.getElementById('trackInfo');
+    
     if (audioPlayer) {
         audioPlayer.play().then(() => {
-            trackInfo.textContent = "♪ Playing: Retro Beats ♪";
+            trackInfo.textContent = "♪ Playing: Bleachers ♪";
         }).catch(error => {
             trackInfo.textContent = "Error: Could not load track";
             console.error('Audio play error:', error);
@@ -279,13 +279,19 @@ function playMusic() {
 }
 
 function pauseMusic() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    const trackInfo = document.getElementById('trackInfo');
+    
     if (audioPlayer) {
         audioPlayer.pause();
-        trackInfo.textContent = "⏸ Paused: Retro Beats";
+        trackInfo.textContent = "⏸ Paused: Bleachers";
     }
 }
 
 function stopMusic() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    const trackInfo = document.getElementById('trackInfo');
+    
     if (audioPlayer) {
         audioPlayer.pause();
         audioPlayer.currentTime = 0;
@@ -294,6 +300,7 @@ function stopMusic() {
 }
 
 function setVolume(value) {
+    const audioPlayer = document.getElementById('audioPlayer');
     if (audioPlayer) {
         audioPlayer.volume = value / 100;
     }
@@ -302,7 +309,9 @@ function setVolume(value) {
 // Initialize audio player when page loads
 document.addEventListener('DOMContentLoaded', function() {
     const audioPlayer = document.getElementById('audioPlayer');
-    if (audioPlayer) {
+    const trackInfo = document.getElementById('trackInfo');
+    
+    if (audioPlayer && trackInfo) {
         audioPlayer.volume = 0.5;
         trackInfo.textContent = "Ready to play";
     }
