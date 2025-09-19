@@ -3,6 +3,7 @@
 let draggedElement = null;
 let draggedIcon = null;
 let offset = { x: 0, y: 0 };
+let topZIndex = 1000; // Track the highest z-index
 
 // Resize functionality
 let isResizing = false;
@@ -12,8 +13,41 @@ let startMousePos = { x: 0, y: 0 };
 let startWindowSize = { width: 0, height: 0 };
 let startWindowPos = { x: 0, y: 0 };
 
+// Function to bring window to front
+function bringToFront(windowElement) {
+    topZIndex++;
+    
+    // Check if this is a modal window (inside a modal container)
+    const modalContainer = windowElement.closest('.modal-window');
+    if (modalContainer) {
+        modalContainer.style.zIndex = topZIndex;
+    } else {
+        windowElement.style.zIndex = topZIndex;
+    }
+}
+
+// Function to calculate and set proper content height
+function adjustContentHeight(windowElement) {
+    const titlebar = windowElement.querySelector('.titlebar');
+    const content = windowElement.querySelector('.content');
+    
+    if (titlebar && content) {
+        const windowHeight = windowElement.offsetHeight;
+        const titlebarHeight = titlebar.offsetHeight;
+        const padding = 40; // Account for content padding
+        const newHeight = windowHeight - titlebarHeight - padding;
+        content.style.height = Math.max(newHeight, 100) + 'px';
+    }
+}
+
 // Desktop icon dragging
 document.addEventListener('mousedown', (e) => {
+    // Check if clicking on a window (bring to front)
+    const windowElement = e.target.closest('.window');
+    if (windowElement) {
+        bringToFront(windowElement);
+    }
+    
     if (e.target.closest('.desktop-icon') && !e.target.classList.contains('resize-handle')) {
         e.preventDefault();
         draggedIcon = e.target.closest('.desktop-icon');
@@ -136,7 +170,10 @@ document.addEventListener('mousedown', (e) => {
 
 // Modal window functions
 function openWeek1Window() {
-    document.getElementById('week1Window').style.display = 'block';
+    const modalElement = document.getElementById('week1Window');
+    const windowElement = modalElement.querySelector('.window');
+    modalElement.style.display = 'block';
+    bringToFront(windowElement);
     loadWeek1Content();
 }
 
@@ -145,12 +182,56 @@ function closeWeek1Window() {
 }
 
 function openWeek2Window() {
-    document.getElementById('week2Window').style.display = 'block';
+    const modalElement = document.getElementById('week2Window');
+    const windowElement = modalElement.querySelector('.window');
+    modalElement.style.display = 'block';
+    bringToFront(windowElement);
     loadWeek2Content();
 }
 
 function closeWeek2Window() {
     document.getElementById('week2Window').style.display = 'none';
+}
+
+function openWeek3Window() {
+    const modalElement = document.getElementById('week3Window');
+    const windowElement = modalElement.querySelector('.window');
+    modalElement.style.display = 'block';
+    bringToFront(windowElement);
+    loadWeek3Content();
+}
+
+function closeWeek3Window() {
+    document.getElementById('week3Window').style.display = 'none';
+}
+
+// Load Week 3 content from markdown file
+async function loadWeek3Content() {
+    console.log('Attempting to load week3.md...');
+    try {
+        const response = await fetch('week3.md');
+        console.log('Fetch response status:', response.status);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const markdown = await response.text();
+        console.log('Successfully loaded week3.md content:', markdown.substring(0, 100) + '...');
+        const html = parseMarkdown(markdown);
+        document.getElementById('week3Content').innerHTML = html;
+    } catch (error) {
+        console.error('Failed to load week3.md:', error);
+        console.log('Using fallback content instead');
+
+        // Fallback to embedded content if file can't be loaded
+        const fallbackContent = `# Week 3: Electronics Production (Fallback)
+
+⚠️ **Note**: This is fallback content. The actual week3.md file could not be loaded.`;
+
+        const html = parseMarkdown(fallbackContent);
+        document.getElementById('week3Content').innerHTML = html;
+    }
 }
 
 // Load Week 1 content from markdown file
@@ -212,8 +293,12 @@ async function loadWeek2Content() {
 }// Simple markdown parser
 function parseMarkdown(markdown) {
     return markdown
+        // Code blocks - must come before other formatting
+        .replace(/```([^`]*?)```/gs, '<pre><code>$1</code></pre>')
+        // Inline code
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
         // Images - must come before links
-        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto; margin: 10px 0;">')
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: calc(100% - 20px); height: auto; margin: 10px 0;">')
         // Links
         .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
         // Headers
@@ -233,7 +318,7 @@ function parseMarkdown(markdown) {
         // Line breaks
         .replace(/\n\n/g, '</p><p>')
         .replace(/^(.*)$/gim, function(match) {
-            if (match.startsWith('<h') || match.startsWith('<ul') || match.startsWith('</ul') || match.startsWith('<li') || match.startsWith('<img') || match.trim() === '') {
+            if (match.startsWith('<h') || match.startsWith('<ul') || match.startsWith('</ul') || match.startsWith('<li') || match.startsWith('<img') || match.startsWith('<pre') || match.startsWith('<code') || match.trim() === '') {
                 return match;
             }
             return '<p>' + match + '</p>';
@@ -244,6 +329,8 @@ function parseMarkdown(markdown) {
         .replace(/(<\/h[1-6]>)<\/p>/g, '$1')
         .replace(/<p>(<ul>)/g, '$1')
         .replace(/(<\/ul>)<\/p>/g, '$1')
+        .replace(/<p>(<pre>)/g, '$1')
+        .replace(/(<\/pre>)<\/p>/g, '$1')
         .replace(/<p>(<img)/g, '$1')
         .replace(/(<\/img>)<\/p>/g, '$1');
 }
