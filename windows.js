@@ -89,9 +89,9 @@ document.addEventListener('mousemove', (e) => {
         resizeElement.style.height = newHeight + 'px';
         
         // Update content area height
-        const content = resizeElement.querySelector('.content');
+        const content = resizeElement.querySelector('.window-body');
         if (content) {
-            const titlebarHeight = resizeElement.querySelector('.titlebar').offsetHeight;
+            const titlebarHeight = resizeElement.querySelector('.title-bar').offsetHeight;
             const padding = 40; // Account for padding
             content.style.height = (newHeight - titlebarHeight - padding) + 'px';
         }

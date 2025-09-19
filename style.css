@@ -110,12 +110,6 @@ html, body {
     border: 2px inset #c0c0c0;
 }
 
-h1 {
-    font-size: 16px;
-    margin: 0 0 20px 0;
-    font-weight: normal;
-}
-
 /* Desktop Icons */
 .desktop-icon {
     position: absolute;
@@ -421,7 +415,19 @@ h1 {
     border: 1px inset #c0c0c0;
 }
 
-h2, h3 {
+h1 {
+    font-size: 18px;
+    margin: 0 0 20px 0;
+    font-weight: normal;
+}
+
+h2 {
+    font-size: 16px;
+    margin: 15px 0 10px 0;
+    font-weight: bold;
+}
+
+h3 {
     font-size: 14px;
     margin: 15px 0 10px 0;
     font-weight: bold;

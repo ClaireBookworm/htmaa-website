@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>claire's how to make almost anything</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <link rel="stylesheet" href="style-new.css">
     <script src="windows.js"></script>
 </head>
 <body>
@@ -24,11 +25,13 @@
     <!-- Week 1 Modal Window -->
     <div id="week1Window" class="modal-window" style="display: none;">
         <div class="window" style="width: 600px; height: 400px; top: 100px; left: 150px;" draggable="true">
-            <div class="titlebar">
-                <span>Week 1 - How to Make Almost Anything</span>
-                <button class="close-button" onclick="closeWeek1Window()"></button>
+            <div class="title-bar">
+                <div class="title-bar-text">Week 1 - How to Make Almost Anything</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Close" onclick="closeWeek1Window()"></button>
+                </div>
             </div>
-            <div class="content left" style="height: 350px; overflow-y: auto;">
+            <div class="window-body" style="height: 350px; overflow-y: auto;">
                 <div id="week1Content">Loading...</div>
             </div>
             <!-- Resize handles -->
@@ -41,11 +44,13 @@
         <!-- Week 2 Modal Window -->
     <div id="week2Window" class="modal-window" style="display: none;">
         <div class="window" style="width: 600px; height: 400px; top: 100px; left: 150px;" draggable="true">
-            <div class="titlebar">
-                <span>Week 2 - How to Make Almost Anything</span>
-                <button class="close-button" onclick="closeWeek2Window()"></button>
+            <div class="title-bar">
+                <div class="title-bar-text">Week 2 - How to Make Almost Anything</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Close" onclick="closeWeek2Window()"></button>
+                </div>
             </div>
-            <div class="content left" style="height: 350px; overflow-y: auto;">
+            <div class="window-body" style="height: 350px; overflow-y: auto;">
                 <div id="week2Content">Loading...</div>
             </div>
             <!-- Resize handles -->
@@ -66,11 +71,13 @@
     <!-- Week 3 Modal Window -->
     <div id="week3Window" class="modal-window" style="display: none;">
         <div class="window" style="width: 600px; height: 400px; top: 100px; left: 150px;" draggable="true">
-            <div class="titlebar">
-                <span>Week 3 - How to Make Almost Anything</span>
-                <button class="close-button" onclick="closeWeek3Window()"></button>
+            <div class="title-bar">
+                <div class="title-bar-text">Week 3 - How to Make Almost Anything</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Close" onclick="closeWeek3Window()"></button>
+                </div>
             </div>
-            <div class="content left" style="height: 350px; overflow-y: auto;">
+            <div class="window-body" style="height: 350px; overflow-y: auto;">
                 <div id="week3Content">Loading...</div>
             </div>
             <!-- Resize handles -->
@@ -81,17 +88,21 @@
     </div>
 
     <div class="window window1" draggable="true">
-        <div class="titlebar">claire's website</div>
-        <div class="content">
+        <div class="title-bar">
+            <div class="title-bar-text">claire's website</div>
+        </div>
+        <div class="window-body">
             <h1>welcome to claire's<br>how to make almost anything<br>website</h1>
-            <button class="button">ok</button>
-            <button class="button">cancel</button>
+            <button>ok</button>
+            <button>cancel</button>
         </div>
     </div>
     
     <div class="window window2" draggable="true">
-        <div class="titlebar">todos.txt</div>
-        <div class="content left">
+        <div class="title-bar">
+            <div class="title-bar-text">todos.txt</div>
+        </div>
+        <div class="window-body">
             this is where i document my journey through making stuff for htmaa.<br><br>
             current projects:<br>
             - learning cad<br>
@@ -102,8 +113,10 @@
     </div>
 
         <div class="window window3" draggable="true">
-        <div class="titlebar">about.txt</div>
-        <div class="content left">
+        <div class="title-bar">
+            <div class="title-bar-text">about.txt</div>
+        </div>
+        <div class="window-body">
             i am currently a junior at MIT studing eecs and neuroscience. <br><br>
             i'm really interested in building interactive music art projects!! and music in general. send recs:)<br><br>
             also have been doing some neurotech research and work, so hoping to learn to build smaller-scale BCI stuff.<br><br>
@@ -113,17 +126,21 @@
 
     <!-- Music Player Widget -->
     <div class="window music-player" draggable="true">
-        <div class="titlebar">
-            <span>claire's music player</span>
+        <div class="title-bar">
+            <div class="title-bar-text">claire's music player</div>
         </div>
-        <div class="controls">
-            <button class="music-button play" onclick="playMusic()"></button>
-            <button class="music-button pause" onclick="pauseMusic()"></button>
-            <button class="music-button stop" onclick="stopMusic()"></button>
-            <div class="track-info" id="trackInfo">No track loaded</div>
-            <div class="volume-control">
-                <span>Vol:</span>
-                <input type="range" class="volume-slider" min="0" max="100" value="50" onchange="setVolume(this.value)">
+        <div class="window-body">
+            <div class="controls">
+                <button onclick="playMusic()">▶</button>
+                <button onclick="pauseMusic()">⏸</button>
+                <button onclick="stopMusic()">⏹</button>
+                <div class="status-bar">
+                    <div class="status-bar-field" id="trackInfo">No track loaded</div>
+                </div>
+                <div class="field-row">
+                    <label for="volume">Vol:</label>
+                    <input type="range" id="volume" min="0" max="100" value="50" onchange="setVolume(this.value)">
+                </div>
             </div>
         </div>
     </div>

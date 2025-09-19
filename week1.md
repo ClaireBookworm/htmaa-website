@@ -2,9 +2,7 @@
 
 This week I'm getting started with the "How to Make Almost Anything" course!
 
-Things I did:
-- Set up my website
-- Reviewed the syllabus and student agreement
+Things I did: Set up my website, Reviewed the syllabus and student agreement
 
 ## Website
 
