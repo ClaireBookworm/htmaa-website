@@ -176,14 +176,15 @@ h1 {
     line-height: 1;
     width: 16px;
     height: 16px;
-    background: #008080;
+    background: #ffff00;
     border: 1px solid #000;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #000;
     font-weight: bold;
     font-size: 10px;
+    position: relative;
 }
 
 .icon-image.folder {
@@ -192,15 +193,27 @@ h1 {
 }
 
 .icon-image.folder::before {
-    content: "📁";
-    font-size: 12px;
+    content: "";
+    width: 12px;
+    height: 10px;
+    background: #ffff00;
+    border: 1px solid #000;
+    border-bottom: 2px solid #000;
+    position: absolute;
+    top: 2px;
+    left: 2px;
 }
 
-/* Fallback for browsers that don't support emoji */
-@supports not (content: "📁") {
-    .icon-image.folder::before {
-        content: "F";
-    }
+.icon-image.folder::after {
+    content: "";
+    width: 4px;
+    height: 2px;
+    background: #ffff00;
+    border: 1px solid #000;
+    border-bottom: none;
+    position: absolute;
+    top: 0px;
+    left: 2px;
 }
 
 .close-button {
@@ -216,18 +229,25 @@ h1 {
     align-items: center;
     justify-content: center;
     color: #000;
+    position: relative;
 }
 
 .close-button::before {
-    content: "×";
+    content: "";
+    width: 8px;
+    height: 1px;
+    background: #000;
+    position: absolute;
+    transform: rotate(45deg);
 }
 
-/* Fallback for browsers that don't support the × character */
-@supports not (content: "×") {
-    .close-button::before {
-        content: "X";
-        font-size: 10px;
-    }
+.close-button::after {
+    content: "";
+    width: 8px;
+    height: 1px;
+    background: #000;
+    position: absolute;
+    transform: rotate(-45deg);
 }
 
 /* Music Player Widget */
@@ -274,6 +294,7 @@ h1 {
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    position: relative;
 }
 
 .music-button:active {
@@ -281,28 +302,37 @@ h1 {
 }
 
 .music-button.play::before {
-    content: "▶";
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 8px solid #000;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
 }
 
 .music-button.pause::before {
-    content: "⏸";
+    content: "";
+    width: 2px;
+    height: 10px;
+    background: #000;
+    position: absolute;
+    left: 9px;
+}
+
+.music-button.pause::after {
+    content: "";
+    width: 2px;
+    height: 10px;
+    background: #000;
+    position: absolute;
+    right: 9px;
 }
 
 .music-button.stop::before {
-    content: "⏹";
-}
-
-/* Fallback for music buttons */
-@supports not (content: "▶") {
-    .music-button.play::before {
-        content: ">";
-    }
-    .music-button.pause::before {
-        content: "||";
-    }
-    .music-button.stop::before {
-        content: "[]";
-    }
+    content: "";
+    width: 8px;
+    height: 8px;
+    background: #000;
 }
 
 .track-info {
@@ -403,4 +433,80 @@ ul {
 
 li {
     margin: 3px 0;
+}
+
+/* Enhanced Markdown Content Styling */
+.content.left {
+    text-align: left;
+    line-height: 1.4;
+}
+
+.content.left h1 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 15px 0;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #808080;
+    color: #000080;
+}
+
+.content.left h2 {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+    color: #000080;
+    padding-left: 0;
+    text-indent: 0;
+}
+
+.content.left h3 {
+    font-size: 12px;
+    font-weight: bold;
+    margin: 15px 0 8px 0;
+    color: #000080;
+    padding-left: 0;
+    text-indent: 0;
+}
+
+.content.left p {
+    margin: 8px 0;
+    padding: 0;
+    text-indent: 0;
+}
+
+.content.left ul {
+    margin: 8px 0 12px 20px;
+    padding: 0;
+}
+
+.content.left li {
+    margin: 4px 0;
+    padding: 0;
+}
+
+.content.left img {
+    max-width: 100%;
+    height: auto;
+    margin: 10px 0;
+    border: 1px solid #808080;
+    box-shadow: 1px 1px 2px #808080;
+}
+
+.content.left a {
+    color: #000080;
+    text-decoration: underline;
+}
+
+.content.left a:hover {
+    color: #ff0000;
+}
+
+.content.left strong {
+    font-weight: bold;
+    color: #000;
+}
+
+.content.left em {
+    font-style: italic;
+    color: #000;
 }

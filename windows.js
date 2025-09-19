@@ -153,64 +153,69 @@ function closeWeek2Window() {
     document.getElementById('week2Window').style.display = 'none';
 }
 
-// Week 1 content (embedded to avoid CORS issues)
-const week1Markdown = `# Week 1: Introduction & Planning
+// Load Week 1 content from markdown file
+async function loadWeek1Content() {
+    console.log('Attempting to load week1.md...');
+    try {
+        const response = await fetch('week1.md');
+        console.log('Fetch response status:', response.status);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const markdown = await response.text();
+        console.log('Successfully loaded week1.md content:', markdown.substring(0, 100) + '...');
+        const html = parseMarkdown(markdown);
+        document.getElementById('week1Content').innerHTML = html;
+    } catch (error) {
+        console.error('Failed to load week1.md:', error);
+        console.log('Using fallback content instead');
+        
+        // Fallback to embedded content if file can't be loaded
+        const fallbackContent = `# Week 1: Introduction & Planning (Fallback)
 
-This week I'm getting started with the "How to Make Almost Anything" course!
+⚠️ **Note**: This is fallback content. The actual week1.md file could not be loaded.`;
+        
+        const html = parseMarkdown(fallbackContent);
+        document.getElementById('week1Content').innerHTML = html;
+    }
+}
 
-## Goals for this week:
+// Load Week 2 content from markdown file
+async function loadWeek2Content() {
+    console.log('Attempting to load week2.md...');
+    try {
+        const response = await fetch('week2.md');
+        console.log('Fetch response status:', response.status);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const markdown = await response.text();
+        console.log('Successfully loaded week2.md content:', markdown.substring(0, 100) + '...');
+        const html = parseMarkdown(markdown);
+        document.getElementById('week2Content').innerHTML = html;
+    } catch (error) {
+        console.error('Failed to load week2.md:', error);
+        console.log('Using fallback content instead');
+        
+        // Fallback to embedded content if file can't be loaded
+        const fallbackContent = `# Week 2: Computer-Aided Design (Fallback)
 
-- Set up my workspace and tools
-- Learn basic CAD software
-- Plan my first project
-- Document everything on this website
-
-## What I learned:
-
-- Getting familiar with the fab lab equipment
-- Understanding the course structure
-- Meeting other students in the program
-
-## Next steps:
-
-Moving into Week 2, I'll start working on my first actual project using the laser cutter for some wood art pieces.
-
-*Last updated: September 11, 2025*`;
-
-// Week 2 content
-const week2Markdown = `# Week 2: Computer-Aided Design
-
-This week I'm diving into CAD software and learning how to design things digitally!
-
-## Goals for this week:
-
-- Master basic CAD operations
-- Design my first 3D model
-- Learn about parametric design
-- Prepare files for 3D printing
-
-## What I learned:
-
-- Getting comfortable with Fusion 360
-- Understanding constraints and sketching
-- Learning about design for manufacturing
-- Basic 3D modeling techniques
-
-## Projects:
-
-- Designed a simple phone stand
-- Created parametric bracket design
-- Experimented with organic shapes
-
-## Next steps:
-
-Week 3 will focus on computer-controlled cutting - taking my designs to the laser cutter!
-
-*Last updated: September 11, 2025*`;
-
-// Simple markdown parser
+⚠️ **Note**: This is fallback content. The actual week2.md file could not be loaded.`;
+        
+        const html = parseMarkdown(fallbackContent);
+        document.getElementById('week2Content').innerHTML = html;
+    }
+}// Simple markdown parser
 function parseMarkdown(markdown) {
     return markdown
+        // Images - must come before links
+        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: 100%; height: auto; margin: 10px 0;">')
+        // Links
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
         // Headers
         .replace(/^### (.*$)/gim, '<h3>$1</h3>')
         .replace(/^## (.*$)/gim, '<h2>$1</h2>')
@@ -228,7 +233,7 @@ function parseMarkdown(markdown) {
         // Line breaks
         .replace(/\n\n/g, '</p><p>')
         .replace(/^(.*)$/gim, function(match) {
-            if (match.startsWith('<h') || match.startsWith('<ul') || match.startsWith('</ul') || match.startsWith('<li') || match.trim() === '') {
+            if (match.startsWith('<h') || match.startsWith('<ul') || match.startsWith('</ul') || match.startsWith('<li') || match.startsWith('<img') || match.trim() === '') {
                 return match;
             }
             return '<p>' + match + '</p>';
@@ -238,29 +243,9 @@ function parseMarkdown(markdown) {
         .replace(/<p>(<h[1-6]>)/g, '$1')
         .replace(/(<\/h[1-6]>)<\/p>/g, '$1')
         .replace(/<p>(<ul>)/g, '$1')
-        .replace(/(<\/ul>)<\/p>/g, '$1');
-}
-
-// Load Week 1 content
-function loadWeek1Content() {
-    try {
-        const html = parseMarkdown(week1Markdown);
-        document.getElementById('week1Content').innerHTML = html;
-    } catch (error) {
-        document.getElementById('week1Content').innerHTML = '<p>Error loading content. Please try again.</p>';
-        console.error('Error loading week1 content:', error);
-    }
-}
-
-// Load Week 2 content
-function loadWeek2Content() {
-    try {
-        const html = parseMarkdown(week2Markdown);
-        document.getElementById('week2Content').innerHTML = html;
-    } catch (error) {
-        document.getElementById('week2Content').innerHTML = '<p>Error loading content. Please try again.</p>';
-        console.error('Error loading week2 content:', error);
-    }
+        .replace(/(<\/ul>)<\/p>/g, '$1')
+        .replace(/<p>(<img)/g, '$1')
+        .replace(/(<\/img>)<\/p>/g, '$1');
 }
 
 // Music Player Functions
