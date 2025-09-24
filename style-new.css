@@ -58,6 +58,24 @@ html, body {
     border: 1px dotted #000080;
 }
 
+/* Fix for Final Project icon hover/selection */
+.desktop-icon.final-project-icon {
+    width: 64px !important;
+    height: 80px !important;
+}
+
+.desktop-icon.final-project-icon:hover {
+    background-color: rgba(0, 0, 128, 0.3);
+    border: 1px dotted #000080;
+    border-radius: 3px;
+}
+
+.desktop-icon.final-project-icon.selected {
+    background-color: rgba(0, 0, 128, 0.5);
+    border: 1px dotted #000080;
+    border-radius: 3px;
+}
+
 .app-icon {
     width: 32px;
     height: 32px;
@@ -138,7 +156,7 @@ html, body {
     position: fixed;
     bottom: 10px;
     left: 10px;
-    width: 400px;
+    width: 600px;
     z-index: 1001;
 }
 
@@ -150,12 +168,12 @@ html, body {
 }
 
 .music-player .controls button {
-    min-width: 30px;
+    min-width: 20px;
 }
 
 .music-player .status-bar {
     flex: 1;
-    margin: 4px 0;
+    margin: 5px 0;
 }
 
 .music-player .field-row {
@@ -221,6 +239,11 @@ html, body {
     position: absolute;
 }
 
+.window.maximized {
+    box-shadow: none;
+    z-index: 1002;
+}
+
 /* Title bar controls styling */
 .title-bar-controls {
     display: flex;
@@ -240,51 +263,73 @@ html, body {
 
 /* Better text styling for markdown content */
 .window-body h1 {
-    color: #000080;
-    border-bottom: 1px solid #808080;
-    font-size: 16px;
-    font-weight: bold;
-    margin: 10px 0;
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 20px 0 16px 0;
+    padding-bottom: 8px;
 }
 
 .window-body h2 {
-    color: #000080;
-    font-size: 14px;
-    font-weight: bold;
-    margin: 8px 0;
+    color: #34495e;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 18px 0 12px 0;
 }
 
 .window-body h3 {
-    color: #000080;
-    font-size: 12px;
-    font-weight: bold;
-    margin: 6px 0;
+    color: #34495e;
+    font-size: 18px;
+    font-weight: 600;
+    margin: 16px 0 10px 0;
 }
 
 .window-body h4 {
-    color: #000080;
-    font-size: 11px;
-    font-weight: bold;
-    margin: 4px 0;
+    color: #34495e;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 14px 0 8px 0;
 }
 
 .window-body p {
-    font-family: 'MS Sans Serif', sans-serif;
-    font-size: 11px;
-    line-height: 1.4;
-    margin: 4px 0;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 16px 0;
+    color: #2c3e50;
 }
 
 .window-body {
-    font-family: 'MS Sans Serif', sans-serif;
-    font-size: 11px;
-    line-height: 1.4;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #2c3e50;
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Apply Host Grotesk after it loads */
+.fonts-loaded .window-body {
+    font-family: 'Host Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .window-body img {
-    max-width: calc(100% - 20px);
-    border: 1px solid #808080;
-    box-shadow: 1px 1px 2px #808080;
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin: 16px 0;
+    display: block;
+}
+
+.window-body img[width] {
+    max-width: min(100%, attr(width) * 1px);
 }
 
 .window-body pre {
@@ -320,16 +365,111 @@ html, body {
 }
 
 .window-body ul, .window-body ol {
-    font-family: 'MS Sans Serif', sans-serif;
-    font-size: 11px;
-    margin: 4px 0 4px 20px;
+    font-family: inherit;
+    font-size: 14px;
+    margin: 12px 0 12px 24px;
+    line-height: 1.6;
 }
 
 .window-body li {
-    margin: 2px 0;
+    margin: 6px 0;
+    color: #333;
+}
+
+.window-body ul li {
+    list-style-type: disc;
+}
+
+.window-body ol li {
+    list-style-type: decimal;
 }
 
 .window-body pre, .window-body code {
     text-shadow: none !important;
     font-weight: 400;
+}
+
+/* Modern link styling */
+.window-body a {
+    color: #3498db;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.window-body a:hover {
+    color: #2980b9;
+    border-bottom-color: #2980b9;
+}
+
+/* Better blockquote styling */
+.window-body blockquote {
+    border-left: 4px solid #3498db;
+    margin: 16px 0;
+    padding: 8px 16px;
+    background: #f8f9fa;
+    font-style: italic;
+    color: #555;
+}
+
+/* Enhanced code blocks */
+.window-body pre {
+    background: #2d3748;
+    color: #e2e8f0;
+    border-radius: 6px;
+    padding: 16px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.5;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.window-body code {
+    background: #f1f3f4;
+    color: #d63384;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 13px;
+    border: none;
+}
+
+/* Better table styling */
+.window-body table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 16px 0;
+}
+
+.window-body th, .window-body td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: left;
+}
+
+.window-body th {
+    background: #f8f9fa;
+    font-weight: 600;
+}
+
+/* Responsive padding for wide windows - exclude static windows */
+@media (min-width: 1200px) {
+    .window-body:not(.static-window) {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (min-width: 1600px) {
+    .window-body:not(.static-window) {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
+}
+
+@media (min-width: 2000px) {
+    .window-body:not(.static-window) {
+        padding-left: 60px;
+        padding-right: 60px;
+    }
 }

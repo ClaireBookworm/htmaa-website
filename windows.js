@@ -5,6 +5,7 @@ let draggedIcon = null;
 let offset = { x: 0, y: 0 };
 let topZIndex = 1000; // Track the highest z-index
 let allowWindowDrag = false; // Only allow dragging when starting on title bar
+let windowMaximized = {}; // Track maximized state and previous geometry
 
 // Window zoom levels - track zoom for each window
 let windowZoomLevels = {};
@@ -195,7 +196,7 @@ function zoomWindow(windowId, direction) {
     
     // Find the window element
     let windowElement;
-    if (windowId.includes('week')) {
+    if (windowId.includes('week') || windowId === 'finalProjectWindow') {
         windowElement = document.getElementById(windowId).querySelector('.window-body');
     } else {
         windowElement = document.querySelector(`.${windowId} .window-body`);
@@ -249,6 +250,91 @@ function zoomWindow(windowId, direction) {
     }
 }
 
+// Toggle maximize within viewport while keeping title bar visible
+function toggleMaxWindow(windowId) {
+    let windowElement;
+    if (windowId.includes('week')) {
+        const modal = document.getElementById(windowId);
+        if (!modal) return;
+        windowElement = modal.querySelector('.window');
+    } else {
+        windowElement = document.querySelector(`.${windowId}`);
+    }
+    if (!windowElement) return;
+
+    const key = windowId;
+    const isMax = !!windowMaximized[key];
+    if (!isMax) {
+        // Save previous geometry
+        windowMaximized[key] = {
+            top: windowElement.style.top,
+            left: windowElement.style.left,
+            width: windowElement.style.width,
+            height: windowElement.style.height,
+            draggable: windowElement.getAttribute('draggable')
+        };
+        // Apply maximized geometry (small margin)
+        const margin = 10;
+        windowElement.style.top = margin + 'px';
+        windowElement.style.left = margin + 'px';
+        windowElement.style.width = (window.innerWidth - margin * 2) + 'px';
+        windowElement.style.height = (window.innerHeight - margin * 2) + 'px';
+        windowElement.setAttribute('draggable', 'false');
+        windowElement.classList.add('maximized');
+        
+        // Update content area height to fill the window
+        const content = windowElement.querySelector('.window-body');
+        if (content) {
+            const titlebarHeight = windowElement.querySelector('.title-bar').offsetHeight;
+            const padding = 40; // Account for padding
+            content.style.height = (window.innerHeight - margin * 2 - titlebarHeight - padding) + 'px';
+        }
+    } else {
+        const prev = windowMaximized[key];
+        delete windowMaximized[key];
+        windowElement.style.top = prev.top;
+        windowElement.style.left = prev.left;
+        windowElement.style.width = prev.width;
+        windowElement.style.height = prev.height;
+        if (prev.draggable != null) windowElement.setAttribute('draggable', prev.draggable);
+        windowElement.classList.remove('maximized');
+        
+        // Reset content area height to original
+        const content = windowElement.querySelector('.window-body');
+        if (content) {
+            content.style.height = '';
+        }
+    }
+}
+
+// Keep maximized windows sized on viewport resize
+window.addEventListener('resize', () => {
+    const margin = 10;
+    Object.keys(windowMaximized).forEach(key => {
+        let windowElement;
+        if (key.includes('week')) {
+            const modal = document.getElementById(key);
+            if (!modal) return;
+            windowElement = modal.querySelector('.window');
+        } else {
+            windowElement = document.querySelector(`.${key}`);
+        }
+        if (!windowElement) return;
+        windowElement.style.top = margin + 'px';
+        windowElement.style.left = margin + 'px';
+        windowElement.style.width = (window.innerWidth - margin * 2) + 'px';
+        windowElement.style.height = (window.innerHeight - margin * 2) + 'px';
+        
+        // Update content area height to fill the window
+        const content = windowElement.querySelector('.window-body');
+        if (content) {
+            const titlebarHeight = windowElement.querySelector('.title-bar').offsetHeight;
+            const padding = 40; // Account for padding
+            content.style.height = (window.innerHeight - margin * 2 - titlebarHeight - padding) + 'px';
+        }
+    });
+});
+
 // Modal window functions
 // Generic modal window functions for weeks
 function openWeekWindow(weekNumber) {
@@ -277,7 +363,6 @@ async function loadWeekContent(weekNumber) {
         const markdown = await response.text();
         const html = parseMarkdown(markdown);
         container.innerHTML = html;
-        addImageLoadingStates(contentId);
         // Highlight code blocks after content is loaded
         if (typeof Prism !== 'undefined') {
             Prism.highlightAllUnder(container);
@@ -288,12 +373,58 @@ async function loadWeekContent(weekNumber) {
     }
 }
 
+// Final Project window functions
+function openFinalProjectWindow() {
+    const modalElement = document.getElementById('finalProjectWindow');
+    if (!modalElement) return;
+    const windowElement = modalElement.querySelector('.window');
+    modalElement.style.display = 'block';
+    bringToFront(windowElement);
+    loadFinalProjectContent();
+}
+
+function closeFinalProjectWindow() {
+    const modalElement = document.getElementById('finalProjectWindow');
+    if (modalElement) modalElement.style.display = 'none';
+}
+
+async function loadFinalProjectContent() {
+    const contentId = 'finalProjectContent';
+    const container = document.getElementById(contentId);
+    if (!container) return;
+    container.innerHTML = '<p>Loading final project...</p>';
+    
+    try {
+        const response = await fetch('finalproject.md', { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const markdown = await response.text();
+        const html = parseMarkdown(markdown);
+        container.innerHTML = html;
+        // Highlight code blocks after content is loaded
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAllUnder(container);
+        }
+    } catch (error) {
+        console.error('Failed to load finalproject.md:', error);
+        const fallback = '# Final Project (Fallback)\n\nContent unavailable.';
+        container.innerHTML = parseMarkdown(fallback);
+    }
+}
+
 // Markdown parser using Marked
 function parseMarkdown(markdown) {
     if (typeof marked !== 'undefined') {
         marked.setOptions({ breaks: true, gfm: true, headerIds: true, mangle: false });
         let html = marked.parse(markdown);
-        html = html.replace(/<img([^>]*?)>/g, '<img$1 style="max-width: calc(100% - 20px); height: auto; margin: 10px 0;" loading="lazy">');
+        html = html.replace(/<img([^>]*?)>/g, (match, attrs) => {
+            // Check if width attribute exists
+            const widthMatch = attrs.match(/width="?(\d+)"?/);
+            if (widthMatch) {
+                const width = widthMatch[1];
+                return `<img${attrs} style="max-width: min(100%, ${width}px); height: auto; margin: 16px 0; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: block;" loading="lazy">`;
+            }
+            return `<img${attrs} style="max-width: 100%; height: auto; margin: 16px 0; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: block;" loading="lazy">`;
+        });
         return html;
     }
     // Minimal fallback
@@ -312,61 +443,6 @@ function parseMarkdown(markdown) {
     return paragraphs;
 }
 
-// Add loading states for images to improve perceived performance
-function addImageLoadingStates(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    
-    const images = container.querySelectorAll('img');
-    
-    images.forEach(img => {
-        // Skip if image already has loading handling
-        if (img.dataset.loadingHandled) return;
-        img.dataset.loadingHandled = 'true';
-        
-        // Create loading placeholder
-        const placeholder = document.createElement('div');
-        placeholder.style.cssText = `
-            width: ${img.getAttribute('width') || '300'}px;
-            height: 200px;
-            background: #c0c0c0;
-            border: 1px solid #808080;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            color: #000;
-            margin: 10px 0;
-            border-radius: 2px;
-        `;
-        placeholder.textContent = 'Loading image...';
-        
-        // Insert placeholder before image
-        img.parentNode.insertBefore(placeholder, img);
-        img.style.display = 'none';
-        
-        img.onload = function() {
-            placeholder.remove();
-            img.style.display = 'block';
-            console.log('Image loaded:', img.src.substring(0, 50) + '...');
-        };
-        
-        img.onerror = function() {
-            placeholder.textContent = '❌ Failed to load image';
-            placeholder.style.backgroundColor = '#ffcccc';
-            placeholder.style.color = '#cc0000';
-            console.error('Failed to load image:', img.src);
-        };
-        
-        // Add timeout to show error after 10 seconds
-        setTimeout(() => {
-            if (img.style.display === 'none' && placeholder.parentNode) {
-                placeholder.textContent = 'Image loading slowly...';
-                placeholder.style.backgroundColor = '#ffffcc';
-            }
-        }, 10000);
-    });
-}
 
 // Music Player Functions
 function playMusic() {
@@ -375,7 +451,7 @@ function playMusic() {
     
     if (audioPlayer) {
         audioPlayer.play().then(() => {
-            trackInfo.textContent = "♪ Playing: Bleachers ♪";
+            trackInfo.textContent = "Playing: Chinatown by Bleachers";
         }).catch(error => {
             trackInfo.textContent = "Error: Could not load track";
             console.error('Audio play error:', error);
@@ -389,20 +465,20 @@ function pauseMusic() {
     
     if (audioPlayer) {
         audioPlayer.pause();
-        trackInfo.textContent = "⏸ Paused: Bleachers";
+        trackInfo.textContent = "Paused: Chinatown by Bleachers";
     }
 }
 
-function stopMusic() {
-    const audioPlayer = document.getElementById('audioPlayer');
-    const trackInfo = document.getElementById('trackInfo');
+// function stopMusic() {
+//     const audioPlayer = document.getElementById('audioPlayer');
+//     const trackInfo = document.getElementById('trackInfo');
     
-    if (audioPlayer) {
-        audioPlayer.pause();
-        audioPlayer.currentTime = 0;
-        trackInfo.textContent = "⏹ Stopped";
-    }
-}
+//     if (audioPlayer) {
+//         audioPlayer.pause();``
+//         audioPlayer.currentTime = 0;
+//         trackInfo.textContent = "⏹ Stopped";
+//     }
+// }
 
 function setVolume(value) {
     const audioPlayer = document.getElementById('audioPlayer');
@@ -418,7 +494,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (audioPlayer && trackInfo) {
         audioPlayer.volume = 0.5;
-        trackInfo.textContent = "Ready to play";
+        trackInfo.textContent = "Ready to play...";
     }
     
     // Ensure zoomWindow is available globally
@@ -426,14 +502,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('Windows.js loaded successfully');
     // Ensure background image loads from local file
-    const bgImg = new Image();
-    bgImg.onload = function() {
-        document.body.style.backgroundImage = "url('https://i.redd.it/02dw11nuqf681.jpg')";
-    };
-    bgImg.src = 'https://i.redd.it/02dw11nuqf681.jpg';
+        const bgImg = new Image();
+        bgImg.onload = function() {
+            document.body.style.backgroundImage = "url('https://i.redd.it/02dw11nuqf681.jpg')";
+        };
+        bgImg.src = 'https://i.redd.it/02dw11nuqf681.jpg';
     
     // Build week icons and windows dynamically
     initializeWeeks();
+    
+    // Create static windows from configuration
+    createStaticWindows();
+    
+    // Handle font loading to prevent glitchy text
+    handleFontLoading();
 });
 
 async function initializeWeeks() {
@@ -444,6 +526,8 @@ async function initializeWeeks() {
             const weeks = await manifestRes.json();
             if (Array.isArray(weeks)) {
                 weeks.forEach(n => createWeekIconAndModal(Number(n)));
+                // Check for final project after weeks
+                checkAndCreateFinalProject();
                 return;
             }
         }
@@ -461,41 +545,163 @@ async function initializeWeeks() {
             break;
         }
     }
+    
+    // Check for final project
+    checkAndCreateFinalProject();
+}
+
+// Generic function to create desktop icon
+function createDesktopIcon(config) {
+    const { id, label, iconClass, onClick, position } = config;
+    
+    const icon = document.createElement('div');
+    icon.className = 'desktop-icon';
+    if (position) {
+        icon.style.top = position.top || '20px';
+        icon.style.right = position.right || 'auto';
+        icon.style.left = position.left || 'auto';
+    }
+    icon.onclick = onClick;
+    
+    icon.innerHTML = `
+        <div class="app-icon">
+            <div class="icon-image ${iconClass}"></div>
+        </div>
+        <div class="icon-label">${label}</div>
+    `;
+    
+    document.body.appendChild(icon);
+    return icon;
+}
+
+// Generic function to create window modal
+function createWindowModal(config) {
+    const { 
+        id, 
+        title, 
+        contentId, 
+        width = '600px', 
+        height = '400px', 
+        top = '100px', 
+        left = '150px',
+        showMaximize = true,
+        showZoom = true,
+        showClose = true,
+        onClose = null,
+        content = 'Loading...'
+    } = config;
+    
+    const modal = document.createElement('div');
+    modal.id = id;
+    modal.className = 'modal-window';
+    modal.style.display = 'none';
+    
+    const controls = [];
+    if (showMaximize) {
+        controls.push(`<button aria-label="Maximize" onclick="toggleMaxWindow('${id}')">^</button>`);
+    }
+    if (showZoom) {
+        controls.push(`<button aria-label="Zoom Out" onclick="zoomWindow('${id}', -1)">-</button>`);
+        controls.push(`<button aria-label="Zoom In" onclick="zoomWindow('${id}', 1)">+</button>`);
+    }
+    if (showClose && onClose) {
+        controls.push(`<button aria-label="Close" onclick="${onClose}"></button>`);
+    }
+    
+    modal.innerHTML = `
+        <div class="window" style="width: ${width}; height: ${height}; top: ${top}; left: ${left};" draggable="true">
+            <div class="title-bar">
+                <div class="title-bar-text">${title}</div>
+                <div class="title-bar-controls">
+                    ${controls.join('')}
+                </div>
+            </div>
+            <div class="window-body" style="height: calc(${height} - 50px); overflow-y: auto;">
+                <div id="${contentId}">${content}</div>
+            </div>
+            <div class="resize-handle se"></div>
+            <div class="resize-handle s"></div>
+            <div class="resize-handle e"></div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    return modal;
 }
 
 function createWeekIconAndModal(weekNumber) {
-    const icon = document.createElement('div');
-    icon.className = 'desktop-icon';
-    icon.onclick = () => openWeekWindow(weekNumber);
-    // initial placement on the top-right to avoid overlap
     const spacing = 80;
-    icon.style.top = '20px';
-    icon.style.right = `${20 + (weekNumber - 1) * spacing}px`;
+    const rightPosition = 20 + (weekNumber - 1) * spacing;
+    
+    // Create desktop icon
+    createDesktopIcon({
+        id: `week${weekNumber}Icon`,
+        label: `Week ${weekNumber}`,
+        iconClass: 'folder',
+        onClick: () => openWeekWindow(weekNumber),
+        position: { top: '20px', right: `${rightPosition}px`, left: 'auto' }
+    });
+    
+    // Create window modal
+    createWindowModal({
+        id: `week${weekNumber}Window`,
+        title: `Week ${weekNumber} - How to Make Almost Anything`,
+        contentId: `week${weekNumber}Content`,
+        onClose: `closeWeekWindow(${weekNumber})`
+    });
+}
+
+// Check for final project and create icon/modal if it exists
+async function checkAndCreateFinalProject() {
+    try {
+        const res = await fetch('finalproject.md', { cache: 'no-store' });
+        if (res.ok) {
+            const text = await res.text();
+            if (text && text.trim()) {
+                createFinalProjectIconAndModal();
+            }
+        }
+    } catch (_) {
+        // Final project doesn't exist, that's okay
+    }
+}
+
+// Create Final Project desktop icon and modal window
+function createFinalProjectIconAndModal() {
+    const icon = document.createElement('div');
+    icon.className = 'desktop-icon final-project-icon';
+    icon.onclick = () => openFinalProjectWindow();
+    // Place it at the bottom right with fixed dimensions
+    icon.style.bottom = '20px';
+    icon.style.right = '20px';
     icon.style.left = 'auto';
+    icon.style.top = 'auto';
+    icon.style.width = '64px'; // Ensure consistent width
+    icon.style.height = '80px'; // Fixed height to prevent stretching
     icon.innerHTML = `
         <div class="app-icon">
-            <div class="icon-image folder"></div>
+            <div class="icon-image folder" style="background: linear-gradient(45deg, #ff6b6b, #4ecdc4); border: 2px solid #333;"></div>
         </div>
-        <div class="icon-label">Week ${weekNumber}</div>
+        <div class="icon-label">Final Project</div>
     `;
     document.body.appendChild(icon);
 
     const modal = document.createElement('div');
-    modal.id = `week${weekNumber}Window`;
+    modal.id = 'finalProjectWindow';
     modal.className = 'modal-window';
     modal.style.display = 'none';
     modal.innerHTML = `
-        <div class="window" style="width: 600px; height: 400px; top: 100px; left: 150px;" draggable="true">
+        <div class="window" style="width: 700px; height: 500px; top: 50px; left: 100px;" draggable="true">
             <div class="title-bar">
-                <div class="title-bar-text">Week ${weekNumber} - How to Make Almost Anything</div>
+                <div class="title-bar-text">Final Project - Viral Sound Propagation Machine</div>
                 <div class="title-bar-controls">
-                    <button aria-label="Zoom Out" onclick="zoomWindow('week${weekNumber}Window', -1)">-</button>
-                    <button aria-label="Zoom In" onclick="zoomWindow('week${weekNumber}Window', 1)">+</button>
-                    <button aria-label="Close" onclick="closeWeekWindow(${weekNumber})"></button>
+                    <button aria-label="Zoom Out" onclick="zoomWindow('finalProjectWindow', -1)">-</button>
+                    <button aria-label="Zoom In" onclick="zoomWindow('finalProjectWindow', 1)">+</button>
+                    <button aria-label="Close" onclick="closeFinalProjectWindow()"></button>
                 </div>
             </div>
-            <div class="window-body" style="height: 350px; overflow-y: auto;">
-                <div id="week${weekNumber}Content">Loading...</div>
+            <div class="window-body" style="height: 420px; overflow-y: auto;">
+                <div id="finalProjectContent">Loading...</div>
             </div>
             <div class="resize-handle se"></div>
             <div class="resize-handle s"></div>
@@ -503,4 +709,83 @@ function createWeekIconAndModal(weekNumber) {
         </div>
     `;
     document.body.appendChild(modal);
+}
+
+// Configuration for static windows
+const staticWindowsConfig = [
+    {
+        id: 'window1',
+        title: "claire's website",
+        content: `<h1>welcome to claire's<br>how to make almost anything<br>website</h1>
+                  <button>ok</button>
+                  <button>cancel</button>`,
+        position: { top: '50px', left: '50px' },
+        size: { width: 'auto', height: 'auto' }
+    },
+    {
+        id: 'window2',
+        title: 'todos.txt',
+        content: `this is where i document my journey through making stuff for htmaa.<br><br>
+                  current projects:<br>
+                  - learning cad<br>
+                  - doing some laser cut wood art<br>
+                  - helping build a microscope<br><br>
+                  status: [undefined, week 1?]`,
+        position: { top: '300px', left: '300px' },
+        size: { width: '300px', height: 'auto' }
+    },
+    {
+        id: 'window3',
+        title: 'about.txt',
+        content: `i am currently a junior at MIT studing eecs and neuroscience. <br><br>
+                  i'm really interested in building interactive music art projects!! and music in general. send recs:)<br><br>
+                  also have been doing some neurotech research and work, so hoping to learn to build smaller-scale BCI stuff.<br><br>
+                  feel free to reach out! my website is <a href="https://clairebookworm.com">clairebookworm.com</a> to learn more.<br>`,
+        position: { top: '300px', left: '800px' },
+        size: { width: '500px', height: 'auto' }
+    }
+];
+
+// Create static windows from configuration
+function createStaticWindows() {
+    staticWindowsConfig.forEach(config => {
+        const window = document.createElement('div');
+        window.className = `window ${config.id}`;
+        window.draggable = 'true';
+        window.style.top = config.position.top;
+        window.style.left = config.position.left;
+        if (config.size.width !== 'auto') window.style.width = config.size.width;
+        if (config.size.height !== 'auto') window.style.height = config.size.height;
+        
+        window.innerHTML = `
+            <div class="title-bar">
+                <div class="title-bar-text">${config.title}</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Maximize" onclick="toggleMaxWindow('${config.id}')">^</button>
+                    <button aria-label="Zoom Out" onclick="zoomWindow('${config.id}', -1)">-</button>
+                    <button aria-label="Zoom In" onclick="zoomWindow('${config.id}', 1)">+</button>
+                </div>
+            </div>
+            <div class="window-body static-window">
+                ${config.content}
+            </div>
+        `;
+        
+        document.body.appendChild(window);
+    });
+}
+
+// Handle font loading to prevent glitchy text rendering
+function handleFontLoading() {
+    // Check if fonts are already loaded
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+            document.body.classList.add('fonts-loaded');
+        });
+    } else {
+        // Fallback for older browsers
+        setTimeout(() => {
+            document.body.classList.add('fonts-loaded');
+        }, 1000);
+    }
 }

@@ -3,6 +3,9 @@
 <head>
     <title>claire's how to make almost anything</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E🗂️%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@300;400;500;600;700&display=block" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/98.css">
     <link rel="stylesheet" href="style-new.css">
     <!-- Prism.js for syntax highlighting -->
@@ -11,54 +14,7 @@
 <body>
     <!-- Week icons and modals will be generated dynamically by windows.js -->
 
-    <div class="window window1" draggable="true">
-        <div class="title-bar">
-            <div class="title-bar-text">claire's website</div>
-            <div class="title-bar-controls">
-                <button aria-label="Zoom Out" onclick="zoomWindow('window1', -1)">-</button>
-                <button aria-label="Zoom In" onclick="zoomWindow('window1', 1)">+</button>
-            </div>
-        </div>
-        <div class="window-body">
-            <h1>welcome to claire's<br>how to make almost anything<br>website</h1>
-            <button>ok</button>
-            <button>cancel</button>
-        </div>
-    </div>
-    
-    <div class="window window2" draggable="true">
-        <div class="title-bar">
-            <div class="title-bar-text">todos.txt</div>
-            <div class="title-bar-controls">
-                <button aria-label="Zoom Out" onclick="zoomWindow('window2', -1)">-</button>
-                <button aria-label="Zoom In" onclick="zoomWindow('window2', 1)">+</button>
-            </div>
-        </div>
-        <div class="window-body">
-            this is where i document my journey through making stuff for htmaa.<br><br>
-            current projects:<br>
-            - learning cad<br>
-            - doing some laser cut wood art<br>
-            - helping build a microscope<br><br>
-            status: [undefined, week 1?]
-        </div>
-    </div>
-
-        <div class="window window3" draggable="true">
-        <div class="title-bar">
-            <div class="title-bar-text">about.txt</div>
-            <div class="title-bar-controls">
-                <button aria-label="Zoom Out" onclick="zoomWindow('window3', -1)">-</button>
-                <button aria-label="Zoom In" onclick="zoomWindow('window3', 1)">+</button>
-            </div>
-        </div>
-        <div class="window-body">
-            i am currently a junior at MIT studing eecs and neuroscience. <br><br>
-            i'm really interested in building interactive music art projects!! and music in general. send recs:)<br><br>
-            also have been doing some neurotech research and work, so hoping to learn to build smaller-scale BCI stuff.<br><br>
-            feel free to reach out! my website is <a href="https://clairebookworm.com">clairebookworm.com</a> to learn more.<br>
-        </div>
-    </div>
+    <!-- Static windows will be generated dynamically by windows.js -->
 
     <!-- Music Player Widget -->
     <div class="window music-player" draggable="true">
@@ -67,9 +23,9 @@
         </div>
         <div class="window-body">
             <div class="controls">
-                <button onclick="playMusic()">▶</button>
-                <button onclick="pauseMusic()">⏸</button>
-                <button onclick="stopMusic()">⏹</button>
+                <button onclick="playMusic()">Play</button>
+                <button onclick="pauseMusic()">Pause</button>
+                <!-- <button onclick="stopMusic()">Stop</button> -->
                 <div class="status-bar">
                     <div class="status-bar-field" id="trackInfo">No track loaded</div>
                 </div>
