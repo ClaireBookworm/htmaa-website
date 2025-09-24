@@ -35,6 +35,3 @@ I also tried to make a CAD of my ring, but it is not very perfect, so maybe I'll
 Todos:
 - [x] Vinyl cutting
 - [ ] Builder kit w/ Laser Cutting!
-
-Files:
-- <a href="files/week2/circular_ring.stl" download>Download circular_ring.stl</a>
