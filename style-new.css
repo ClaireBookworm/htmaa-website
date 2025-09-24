@@ -4,7 +4,11 @@
 html, body {
     margin: 0;
     padding: 0;
-    background: url('https://i.redd.it/02dw11nuqf681.jpg') center/cover;
+    /* Use a gradient background for faster loading, with fallback image */
+    background: linear-gradient(135deg, #008080 0%, #20b2aa 25%, #4682b4 50%, #6495ed 75%, #87ceeb 100%);
+    /* Optional: Keep the image as a backup but load it after the page */
+    /* background-image: url('https://i.redd.it/02dw11nuqf681.jpg'); */
+    background-size: cover;
     height: 100vh;
     overflow: hidden;
 }
@@ -217,6 +221,23 @@ html, body {
     position: absolute;
 }
 
+/* Title bar controls styling */
+.title-bar-controls {
+    display: flex;
+    gap: 2px;
+}
+
+.title-bar-controls button {
+    min-width: 16px;
+    height: 14px;
+    padding: 0;
+    font-size: 11px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* Better text styling for markdown content */
 .window-body h1 {
     color: #000080;
@@ -272,6 +293,22 @@ html, body {
     padding: 8px;
     font-family: 'Courier New', monospace;
     font-size: 10px;
+    overflow-x: auto;
+}
+
+/* Prism.js syntax highlighting overrides for retro theme */
+.window-body pre[class*="language-"] {
+    background: #2d2d2d !important;
+    color: #f8f8f2 !important;
+    border: 1px inset #c0c0c0;
+    text-decoration: none;
+}
+
+.window-body code[class*="language-"] {
+    background: transparent !important;
+    color: inherit !important;
+    border: none;
+    padding: 0;
 }
 
 .window-body code {
@@ -290,4 +327,9 @@ html, body {
 
 .window-body li {
     margin: 2px 0;
+}
+
+.window-body pre, .window-body code {
+    text-shadow: none !important;
+    font-weight: 400;
 }

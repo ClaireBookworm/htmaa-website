@@ -2,94 +2,22 @@
 <html>
 <head>
     <title>claire's how to make almost anything</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E🗂️%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="https://unpkg.com/98.css">
     <link rel="stylesheet" href="style-new.css">
-    <script src="windows.js"></script>
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Desktop Icons -->
-    <div class="desktop-icon" onclick="openWeek1Window()">
-        <div class="app-icon">
-            <div class="icon-image folder"></div>
-        </div>
-        <div class="icon-label">Week 1</div>
-    </div>
-
-    <div class="desktop-icon" onclick="openWeek2Window()">
-        <div class="app-icon">
-            <div class="icon-image folder"></div>
-        </div>
-        <div class="icon-label">Week 2</div>
-    </div>
-
-    <!-- Week 1 Modal Window -->
-    <div id="week1Window" class="modal-window" style="display: none;">
-        <div class="window" style="width: 600px; height: 400px; top: 100px; left: 150px;" draggable="true">
-            <div class="title-bar">
-                <div class="title-bar-text">Week 1 - How to Make Almost Anything</div>
-                <div class="title-bar-controls">
-                    <button aria-label="Close" onclick="closeWeek1Window()"></button>
-                </div>
-            </div>
-            <div class="window-body" style="height: 350px; overflow-y: auto;">
-                <div id="week1Content">Loading...</div>
-            </div>
-            <!-- Resize handles -->
-            <div class="resize-handle se"></div>
-            <div class="resize-handle s"></div>
-            <div class="resize-handle e"></div>
-        </div>
-    </div>
-
-        <!-- Week 2 Modal Window -->
-    <div id="week2Window" class="modal-window" style="display: none;">
-        <div class="window" style="width: 600px; height: 400px; top: 100px; left: 150px;" draggable="true">
-            <div class="title-bar">
-                <div class="title-bar-text">Week 2 - How to Make Almost Anything</div>
-                <div class="title-bar-controls">
-                    <button aria-label="Close" onclick="closeWeek2Window()"></button>
-                </div>
-            </div>
-            <div class="window-body" style="height: 350px; overflow-y: auto;">
-                <div id="week2Content">Loading...</div>
-            </div>
-            <!-- Resize handles -->
-            <div class="resize-handle se"></div>
-            <div class="resize-handle s"></div>
-            <div class="resize-handle e"></div>
-        </div>
-    </div>
-
-    <!-- Desktop Icon for Week 3 -->
-    <div class="desktop-icon" onclick="openWeek3Window()">
-        <div class="app-icon">
-            <div class="icon-image folder"></div>
-        </div>
-        <div class="icon-label">Week 3</div>
-    </div>
-
-    <!-- Week 3 Modal Window -->
-    <div id="week3Window" class="modal-window" style="display: none;">
-        <div class="window" style="width: 600px; height: 400px; top: 100px; left: 150px;" draggable="true">
-            <div class="title-bar">
-                <div class="title-bar-text">Week 3 - How to Make Almost Anything</div>
-                <div class="title-bar-controls">
-                    <button aria-label="Close" onclick="closeWeek3Window()"></button>
-                </div>
-            </div>
-            <div class="window-body" style="height: 350px; overflow-y: auto;">
-                <div id="week3Content">Loading...</div>
-            </div>
-            <!-- Resize handles -->
-            <div class="resize-handle se"></div>
-            <div class="resize-handle s"></div>
-            <div class="resize-handle e"></div>
-        </div>
-    </div>
+    <!-- Week icons and modals will be generated dynamically by windows.js -->
 
     <div class="window window1" draggable="true">
         <div class="title-bar">
             <div class="title-bar-text">claire's website</div>
+            <div class="title-bar-controls">
+                <button aria-label="Zoom Out" onclick="zoomWindow('window1', -1)">-</button>
+                <button aria-label="Zoom In" onclick="zoomWindow('window1', 1)">+</button>
+            </div>
         </div>
         <div class="window-body">
             <h1>welcome to claire's<br>how to make almost anything<br>website</h1>
@@ -101,6 +29,10 @@
     <div class="window window2" draggable="true">
         <div class="title-bar">
             <div class="title-bar-text">todos.txt</div>
+            <div class="title-bar-controls">
+                <button aria-label="Zoom Out" onclick="zoomWindow('window2', -1)">-</button>
+                <button aria-label="Zoom In" onclick="zoomWindow('window2', 1)">+</button>
+            </div>
         </div>
         <div class="window-body">
             this is where i document my journey through making stuff for htmaa.<br><br>
@@ -115,6 +47,10 @@
         <div class="window window3" draggable="true">
         <div class="title-bar">
             <div class="title-bar-text">about.txt</div>
+            <div class="title-bar-controls">
+                <button aria-label="Zoom Out" onclick="zoomWindow('window3', -1)">-</button>
+                <button aria-label="Zoom In" onclick="zoomWindow('window3', 1)">+</button>
+            </div>
         </div>
         <div class="window-body">
             i am currently a junior at MIT studing eecs and neuroscience. <br><br>
@@ -150,6 +86,12 @@
         <source src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/e2f2e39e4d033a564b4fdbf03df6ff51d40a3803_chinatown_live_newhaven_audio.mp4" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
+
+    <!-- Scripts at the end for proper loading -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="windows.js"></script>
 
 </body>
 </html>

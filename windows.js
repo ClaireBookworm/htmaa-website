@@ -4,6 +4,10 @@ let draggedElement = null;
 let draggedIcon = null;
 let offset = { x: 0, y: 0 };
 let topZIndex = 1000; // Track the highest z-index
+let allowWindowDrag = false; // Only allow dragging when starting on title bar
+
+// Window zoom levels - track zoom for each window
+let windowZoomLevels = {};
 
 // Resize functionality
 let isResizing = false;
@@ -57,6 +61,8 @@ document.addEventListener('mousedown', (e) => {
         draggedIcon.classList.add('selected');
         document.body.style.userSelect = 'none';
     }
+    // Allow window drag only if mousedown is on a title bar
+    allowWindowDrag = !!e.target.closest('.title-bar');
 });
 
 document.addEventListener('mousemove', (e) => {
@@ -112,10 +118,15 @@ document.addEventListener('mouseup', (e) => {
         document.body.style.cursor = '';
         document.body.style.userSelect = '';
     }
+    allowWindowDrag = false;
 });
 
 document.addEventListener('dragstart', (e) => {
     if (e.target.classList.contains('window')) {
+        if (!allowWindowDrag) {
+            e.preventDefault();
+            return;
+        }
         draggedElement = e.target;
         const rect = draggedElement.getBoundingClientRect();
         offset.x = e.clientX - rect.left;
@@ -168,171 +179,193 @@ document.addEventListener('mousedown', (e) => {
     }
 });
 
-// Modal window functions
-function openWeek1Window() {
-    const modalElement = document.getElementById('week1Window');
-    const windowElement = modalElement.querySelector('.window');
-    modalElement.style.display = 'block';
-    bringToFront(windowElement);
-    loadWeek1Content();
-}
-
-function closeWeek1Window() {
-    document.getElementById('week1Window').style.display = 'none';
-}
-
-function openWeek2Window() {
-    const modalElement = document.getElementById('week2Window');
-    const windowElement = modalElement.querySelector('.window');
-    modalElement.style.display = 'block';
-    bringToFront(windowElement);
-    loadWeek2Content();
-}
-
-function closeWeek2Window() {
-    document.getElementById('week2Window').style.display = 'none';
-}
-
-function openWeek3Window() {
-    const modalElement = document.getElementById('week3Window');
-    const windowElement = modalElement.querySelector('.window');
-    modalElement.style.display = 'block';
-    bringToFront(windowElement);
-    loadWeek3Content();
-}
-
-function closeWeek3Window() {
-    document.getElementById('week3Window').style.display = 'none';
-}
-
-// Load Week 3 content from markdown file
-async function loadWeek3Content() {
-    console.log('Attempting to load week3.md...');
-    try {
-        const response = await fetch('week3.md');
-        console.log('Fetch response status:', response.status);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const markdown = await response.text();
-        console.log('Successfully loaded week3.md content:', markdown.substring(0, 100) + '...');
-        const html = parseMarkdown(markdown);
-        document.getElementById('week3Content').innerHTML = html;
-    } catch (error) {
-        console.error('Failed to load week3.md:', error);
-        console.log('Using fallback content instead');
-
-        // Fallback to embedded content if file can't be loaded
-        const fallbackContent = `# Week 3: Electronics Production (Fallback)
-
-⚠️ **Note**: This is fallback content. The actual week3.md file could not be loaded.`;
-
-        const html = parseMarkdown(fallbackContent);
-        document.getElementById('week3Content').innerHTML = html;
+// Zoom functionality for windows
+function zoomWindow(windowId, direction) {
+    // Initialize zoom level for this window if it doesn't exist
+    if (!windowZoomLevels[windowId]) {
+        windowZoomLevels[windowId] = 0; // 0 = 100% (default)
     }
-}
-
-// Load Week 1 content from markdown file
-async function loadWeek1Content() {
-    console.log('Attempting to load week1.md...');
-    try {
-        const response = await fetch('week1.md');
-        console.log('Fetch response status:', response.status);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const markdown = await response.text();
-        console.log('Successfully loaded week1.md content:', markdown.substring(0, 100) + '...');
-        const html = parseMarkdown(markdown);
-        document.getElementById('week1Content').innerHTML = html;
-    } catch (error) {
-        console.error('Failed to load week1.md:', error);
-        console.log('Using fallback content instead');
-        
-        // Fallback to embedded content if file can't be loaded
-        const fallbackContent = `# Week 1: Introduction & Planning (Fallback)
-
-⚠️ **Note**: This is fallback content. The actual week1.md file could not be loaded.`;
-        
-        const html = parseMarkdown(fallbackContent);
-        document.getElementById('week1Content').innerHTML = html;
+    
+    // Update zoom level (-3 to +5 range, where 0 is default)
+    windowZoomLevels[windowId] += direction;
+    windowZoomLevels[windowId] = Math.max(-3, Math.min(5, windowZoomLevels[windowId]));
+    
+    // Calculate zoom factor (80% to 180%)
+    const zoomFactor = 1 + (windowZoomLevels[windowId] * 0.2);
+    
+    // Find the window element
+    let windowElement;
+    if (windowId.includes('week')) {
+        windowElement = document.getElementById(windowId).querySelector('.window-body');
+    } else {
+        windowElement = document.querySelector(`.${windowId} .window-body`);
     }
-}
-
-// Load Week 2 content from markdown file
-async function loadWeek2Content() {
-    console.log('Attempting to load week2.md...');
-    try {
-        const response = await fetch('week2.md');
-        console.log('Fetch response status:', response.status);
+    
+    if (windowElement) {
+        // Apply zoom by scaling font size for the entire window
+        const baseFontSize = 11; // Base font size from CSS
+        const newFontSize = Math.round(baseFontSize * zoomFactor);
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        // Set base font size for the entire window
+        windowElement.style.fontSize = newFontSize + 'px';
         
-        const markdown = await response.text();
-        console.log('Successfully loaded week2.md content:', markdown.substring(0, 100) + '...');
-        const html = parseMarkdown(markdown);
-        document.getElementById('week2Content').innerHTML = html;
-    } catch (error) {
-        console.error('Failed to load week2.md:', error);
-        console.log('Using fallback content instead');
+        // Scale all paragraphs and text elements
+        const textElements = windowElement.querySelectorAll('p, div, span, li, td, th, a, strong, em');
+        textElements.forEach(element => {
+            element.style.fontSize = newFontSize + 'px';
+        });
         
-        // Fallback to embedded content if file can't be loaded
-        const fallbackContent = `# Week 2: Computer-Aided Design (Fallback)
-
-⚠️ **Note**: This is fallback content. The actual week2.md file could not be loaded.`;
-        
-        const html = parseMarkdown(fallbackContent);
-        document.getElementById('week2Content').innerHTML = html;
-    }
-}// Simple markdown parser
-function parseMarkdown(markdown) {
-    return markdown
-        // Code blocks - must come before other formatting
-        .replace(/```([^`]*?)```/gs, '<pre><code>$1</code></pre>')
-        // Inline code
-        .replace(/`([^`]+)`/g, '<code>$1</code>')
-        // Images - must come before links
-        .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width: calc(100% - 20px); height: auto; margin: 10px 0;">')
-        // Links
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
-        // Headers
-        .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-        .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-        .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-        // Bold
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        // Italic
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        // Lists
-        .replace(/^\- (.*$)/gim, '<li>$1</li>')
-        // Wrap consecutive <li> elements in <ul>
-        .replace(/(<li>.*<\/li>)/gs, function(match) {
-            return '<ul>' + match + '</ul>';
-        })
-        // Line breaks
-        .replace(/\n\n/g, '</p><p>')
-        .replace(/^(.*)$/gim, function(match) {
-            if (match.startsWith('<h') || match.startsWith('<ul') || match.startsWith('</ul') || match.startsWith('<li') || match.startsWith('<img') || match.startsWith('<pre') || match.startsWith('<code') || match.trim() === '') {
-                return match;
+        // Scale headings proportionally (larger than base text)
+        const headings = windowElement.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        headings.forEach(heading => {
+            const tagName = heading.tagName.toLowerCase();
+            let baseSize;
+            switch(tagName) {
+                case 'h1': baseSize = 18; break;
+                case 'h2': baseSize = 16; break;
+                case 'h3': baseSize = 14; break;
+                case 'h4': baseSize = 13; break;
+                case 'h5': baseSize = 12; break;
+                case 'h6': baseSize = 11; break;
+                default: baseSize = 11; break;
             }
-            return '<p>' + match + '</p>';
-        })
-        // Clean up empty paragraphs
-        .replace(/<p><\/p>/g, '')
-        .replace(/<p>(<h[1-6]>)/g, '$1')
-        .replace(/(<\/h[1-6]>)<\/p>/g, '$1')
-        .replace(/<p>(<ul>)/g, '$1')
-        .replace(/(<\/ul>)<\/p>/g, '$1')
-        .replace(/<p>(<pre>)/g, '$1')
-        .replace(/(<\/pre>)<\/p>/g, '$1')
-        .replace(/<p>(<img)/g, '$1')
-        .replace(/(<\/img>)<\/p>/g, '$1');
+            heading.style.fontSize = Math.round(baseSize * zoomFactor) + 'px';
+        });
+        
+        // Scale code elements
+        const codeElements = windowElement.querySelectorAll('code, pre');
+        codeElements.forEach(code => {
+            const baseCodeSize = 10; // Slightly smaller than regular text
+            code.style.fontSize = Math.round(baseCodeSize * zoomFactor) + 'px';
+        });
+        
+        // Scale button text
+        const buttons = windowElement.querySelectorAll('button');
+        buttons.forEach(button => {
+            button.style.fontSize = newFontSize + 'px';
+        });
+        
+        console.log(`Zoomed ${windowId} to ${Math.round(zoomFactor * 100)}%`);
+    }
+}
+
+// Modal window functions
+// Generic modal window functions for weeks
+function openWeekWindow(weekNumber) {
+    const modalElement = document.getElementById(`week${weekNumber}Window`);
+    if (!modalElement) return;
+    const windowElement = modalElement.querySelector('.window');
+    modalElement.style.display = 'block';
+    bringToFront(windowElement);
+    loadWeekContent(weekNumber);
+}
+
+function closeWeekWindow(weekNumber) {
+    const modalElement = document.getElementById(`week${weekNumber}Window`);
+    if (modalElement) modalElement.style.display = 'none';
+}
+
+async function loadWeekContent(weekNumber) {
+    const contentId = `week${weekNumber}Content`;
+    const container = document.getElementById(contentId);
+    if (!container) return;
+    container.innerHTML = '<p>Loading content...</p>';
+    const fileName = `week${weekNumber}.md`;
+    try {
+        const response = await fetch(fileName, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const markdown = await response.text();
+        const html = parseMarkdown(markdown);
+        container.innerHTML = html;
+        addImageLoadingStates(contentId);
+        // Highlight code blocks after content is loaded
+        if (typeof Prism !== 'undefined') {
+            Prism.highlightAllUnder(container);
+        }
+    } catch (error) {
+        const fallback = `# Week ${weekNumber} (Fallback)\n\nContent unavailable.`;
+        container.innerHTML = parseMarkdown(fallback);
+    }
+}
+
+// Markdown parser using Marked
+function parseMarkdown(markdown) {
+    if (typeof marked !== 'undefined') {
+        marked.setOptions({ breaks: true, gfm: true, headerIds: true, mangle: false });
+        let html = marked.parse(markdown);
+        html = html.replace(/<img([^>]*?)>/g, '<img$1 style="max-width: calc(100% - 20px); height: auto; margin: 10px 0;" loading="lazy">');
+        return html;
+    }
+    // Minimal fallback
+    let html = markdown
+        .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+        .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+        .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+    const paragraphs = html.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean).map(p => {
+        if (p.match(/^<[h1-6]|^<div|^<img|^<ul|^<ol|^<li|^<pre|^<code/)) return p;
+        return `<p>${p.replace(/\n/g, '<br>')}</p>`;
+    }).join('\n\n');
+    return paragraphs;
+}
+
+// Add loading states for images to improve perceived performance
+function addImageLoadingStates(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    const images = container.querySelectorAll('img');
+    
+    images.forEach(img => {
+        // Skip if image already has loading handling
+        if (img.dataset.loadingHandled) return;
+        img.dataset.loadingHandled = 'true';
+        
+        // Create loading placeholder
+        const placeholder = document.createElement('div');
+        placeholder.style.cssText = `
+            width: ${img.getAttribute('width') || '300'}px;
+            height: 200px;
+            background: #c0c0c0;
+            border: 1px solid #808080;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #000;
+            margin: 10px 0;
+            border-radius: 2px;
+        `;
+        placeholder.textContent = 'Loading image...';
+        
+        // Insert placeholder before image
+        img.parentNode.insertBefore(placeholder, img);
+        img.style.display = 'none';
+        
+        img.onload = function() {
+            placeholder.remove();
+            img.style.display = 'block';
+            console.log('Image loaded:', img.src.substring(0, 50) + '...');
+        };
+        
+        img.onerror = function() {
+            placeholder.textContent = '❌ Failed to load image';
+            placeholder.style.backgroundColor = '#ffcccc';
+            placeholder.style.color = '#cc0000';
+            console.error('Failed to load image:', img.src);
+        };
+        
+        // Add timeout to show error after 10 seconds
+        setTimeout(() => {
+            if (img.style.display === 'none' && placeholder.parentNode) {
+                placeholder.textContent = 'Image loading slowly...';
+                placeholder.style.backgroundColor = '#ffffcc';
+            }
+        }, 10000);
+    });
 }
 
 // Music Player Functions
@@ -387,4 +420,87 @@ document.addEventListener('DOMContentLoaded', function() {
         audioPlayer.volume = 0.5;
         trackInfo.textContent = "Ready to play";
     }
+    
+    // Ensure zoomWindow is available globally
+    window.zoomWindow = zoomWindow;
+    
+    console.log('Windows.js loaded successfully');
+    // Ensure background image loads from local file
+    const bgImg = new Image();
+    bgImg.onload = function() {
+        document.body.style.backgroundImage = "url('https://i.redd.it/02dw11nuqf681.jpg')";
+    };
+    bgImg.src = 'https://i.redd.it/02dw11nuqf681.jpg';
+    
+    // Build week icons and windows dynamically
+    initializeWeeks();
 });
+
+async function initializeWeeks() {
+    // Prefer manifest if available
+    try {
+        const manifestRes = await fetch('weeks.json', { cache: 'no-store' });
+        if (manifestRes.ok) {
+            const weeks = await manifestRes.json();
+            if (Array.isArray(weeks)) {
+                weeks.forEach(n => createWeekIconAndModal(Number(n)));
+                return;
+            }
+        }
+    } catch (_) {}
+
+    // Fallback: only probe week1..week4 to avoid 404 spam
+    for (let i = 1; i <= 4; i++) {
+        try {
+            const res = await fetch(`week${i}.md`, { cache: 'no-store' });
+            if (!res.ok) break;
+            const text = await res.text();
+            if (!text || !text.trim()) break;
+            createWeekIconAndModal(i);
+        } catch (_) {
+            break;
+        }
+    }
+}
+
+function createWeekIconAndModal(weekNumber) {
+    const icon = document.createElement('div');
+    icon.className = 'desktop-icon';
+    icon.onclick = () => openWeekWindow(weekNumber);
+    // initial placement on the top-right to avoid overlap
+    const spacing = 80;
+    icon.style.top = '20px';
+    icon.style.right = `${20 + (weekNumber - 1) * spacing}px`;
+    icon.style.left = 'auto';
+    icon.innerHTML = `
+        <div class="app-icon">
+            <div class="icon-image folder"></div>
+        </div>
+        <div class="icon-label">Week ${weekNumber}</div>
+    `;
+    document.body.appendChild(icon);
+
+    const modal = document.createElement('div');
+    modal.id = `week${weekNumber}Window`;
+    modal.className = 'modal-window';
+    modal.style.display = 'none';
+    modal.innerHTML = `
+        <div class="window" style="width: 600px; height: 400px; top: 100px; left: 150px;" draggable="true">
+            <div class="title-bar">
+                <div class="title-bar-text">Week ${weekNumber} - How to Make Almost Anything</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Zoom Out" onclick="zoomWindow('week${weekNumber}Window', -1)">-</button>
+                    <button aria-label="Zoom In" onclick="zoomWindow('week${weekNumber}Window', 1)">+</button>
+                    <button aria-label="Close" onclick="closeWeekWindow(${weekNumber})"></button>
+                </div>
+            </div>
+            <div class="window-body" style="height: 350px; overflow-y: auto;">
+                <div id="week${weekNumber}Content">Loading...</div>
+            </div>
+            <div class="resize-handle se"></div>
+            <div class="resize-handle s"></div>
+            <div class="resize-handle e"></div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
