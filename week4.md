@@ -24,3 +24,33 @@ Types of 3d printing and support materials
 - **pc** = polycarbonate, bulletproof glass material. It’s incredibly tough, heat resistant to ~140C, but needs ~300C nozzle temps
 - **petg** = like pla's stronger cousin. easier to print than abs, stronger than pla, clear variants available. good middle ground
 - **pla** = prints easy, biodegradable, but melts in a hot car.
+
+
+*Notes*:
+j55 prime 3d print  - inkjet prints droplets of colored material
+
+hangprinter - anchor in the room and it hands down to print things 
+
+file formats:
+- STL - list of triangles, has no units
+- PLY - a bit better
+- AMF / 3MF - color format that prints can learn to use
+- voxel printing -
+- g-codes - “horrible”
+
+blender - texture mapping
+
+meshlab  - you can view meshes / clean meshes
+
+slicing - use various software depending on the printer
+
+firmware - embedded software for the printer
+
+model-viewer - allow you to embed 3d objects onto your page
+
+photo-grammetry - takes lots of pictures, runs on your phone 
+
+speckle - random dot pattern and looks at how the dots move on the surface of the object 
+
+ferret pro - stereo vision 
+

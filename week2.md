@@ -14,9 +14,54 @@ I'm going to try to make this design I made in Figma (for my favorite band) on t
 
 <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/a2ec427cd76fd1f30cdba3bf698c05cac4bc3fde_bleachersticker.png" alt="bleachers sticker" style="height: 150px; width: auto;">
 
+Here's a photo of the modproject interface when I put in a doodle of a pikachu batman: 
+
+![ModProject](https://hc-cdn.hel1.your-objectstorage.com/s/v3/209523302a2ae9b5b1fa74ac1af0a0960c0492a0_img_4014.jpg). 
+
+This is inspired by my consistent profile photo:
+
+<img src="files/batemon.png" alt="Batemon" style="height: 150px; width: auto;">
+
+Final product (ignore the background, I stuck it on my notebook that had a photo of snoopy in a batsuit): 
+
+<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/716a45097d64ea670aa0b33ed08ddbc4c8583df8_img_4015.jpg" alt="Batemon Sticker" style="height: 150px; width: auto;">
+
 ## Laser Cutting 
 
 Things that we figured out about the Laser Cutter in the EECS makerspace is that the kerf is about 0.0049 inches, and the clearance is about -0.0045 inches, meaning that we should design for an interference fit.
+
+**hardware setup:**
+
+- 75w co2 laser (large machine)
+    - generates infrared light that gets focused to a tiny point. when this concentrated energy hits material, it instantly heads and vaporizes it along the programmed path.
+    - what “kerf” means (which is 0.0049’’ average) is the width of material that gets completely removed by the beam
+- 60w co2 laser (small machine)
+- universal laser systems hardware
+- universal control software for parameter control
+- inkscape for vector design and job sending
+
+**design process**
+
+1. design vectors → red lines w/ 0.001’’ weight is full cuts and blue lines (0.001’’ weight) is engraving/scoring
+2. focus the bean using the focusing stick until it just touches material surface
+3. set parameters: 100% power, 30% speed baseline, 500 ppi
+4. ctrl+p to send job to universal control software
+5. turn on air compressor, hit green button
+
+Things to remember!
+
+- focus accuracy determines cut quality—we use the white part of focusing stick
+- kerf compensation is needed in design (if very precise)
+- material thickness affects join clearance (-0.0045’’ interference fit on cardboard)
+- the bed moves during focusing, laser tracks the material plane
+
+Here's the final produce of the various building blocks I made:
+
+![Combination](https://hc-cdn.hel1.your-objectstorage.com/s/v3/4cdcb069f4acd0bdffbc4b053af7f67fb23a911c_img_4024.jpg)
+
+I also made an engraving cut of an album I love, called Gone Now by Bleachers. It came out relatively okay on cardboard, even though some teaching with the strength of hte cuts and using a different material will probably make it come out better: 
+
+![Gone Now](https://hc-cdn.hel1.your-objectstorage.com/s/v3/29d4bdd5b4f7b3180b5c5160642421e627ebe57c_img_4020.jpg)
 
 ## CAD
 
