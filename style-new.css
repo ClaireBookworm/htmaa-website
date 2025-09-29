@@ -187,7 +187,38 @@ html, body {
     width: 60px;
 }
 
-/* Modal Window Styles */
+/* Modal windows - limit text content width dynamically based on actual window width */
+.modal-window .window-body p {
+    max-width: 100%; /* Default full width */
+}
+
+/* Large windows (600px+) get limited text width for better readability */
+.modal-window .window.large-window .window-body p {
+    max-width: 75%;
+}
+
+/* Medium and small windows keep full width text */
+.modal-window .window.medium-window .window-body p,
+.modal-window .window.small-window .window-body p {
+    max-width: 100%;
+}
+
+/* All other elements should use full width always */
+.modal-window .window-body h1,
+.modal-window .window-body h2,
+.modal-window .window-body h3,
+.modal-window .window-body h4,
+.modal-window .window-body h5,
+.modal-window .window-body h6,
+.modal-window .window-body img,
+.modal-window .window-body video,
+.modal-window .window-body div,
+.modal-window .window-body ul,
+.modal-window .window-body ol,
+.modal-window .window-body pre,
+.modal-window .window-body code {
+    max-width: 100%;
+}
 .modal-window {
     position: fixed;
     top: 0;

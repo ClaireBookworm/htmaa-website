@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2 - Claire's How to Make Almost Anything</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E🗂️%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500;600;700&display=block" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <link rel="stylesheet" href="blog-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="window-container">
+        <!-- Navigation -->
+        <nav class="blog-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="week1.html">Week 1</a></li>
+                <li><a href="week2.html" class="active">Week 2</a></li>
+                <li><a href="week3.html">Week 3</a></li>
+                <li><a href="week4.html">Week 4</a></li>
+                <li><a href="finalproject.html">Final Project</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main window -->
+        <div class="blog-window">
+            <div class="blog-title-bar">
+                <div class="blog-title-text">Week 2 - Parametric Design and Vinyl Cutting</div>
+                <div class="blog-title-controls">
+                    <button onclick="window.close()" title="Close">×</button>
+                </div>
+            </div>
+            
+            <div class="blog-content">
+                <div class="blog-layout">
+                    <h1>Week 2: Making parametric design and vinyl cutting</h1>
+                    
+                    <h2 id="vinyl-cutting">Vinyl Cutting</h2>
+                    
+                    <p>I learned to do vinyl cutting using the <a href="https://modsproject.org/" target="_blank">open source tool</a> developed by Neil and the Media Lab on the Roland Vinyl Cutter.</p>
+                    
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/cd1806172372d2d020e1605aecf1d91ed36edfcc_img_3901.jpg" alt="MIT Vinyl Sticker" data-size="medium">
+                    
+                    <p>I've also been playing around a lot on Fusion360. I initially tried using FreeCAD but after struggling around with it for ~3+ hours, I decided to stick with Fusion, since I've used it before and I find the sketch to 3d workflow much more intuitive.</p>
+                    
+                    <p>I'm going to try to make this design I made in Figma (for my favorite band) on the Vinyl cutter:</p>
+                    
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/a2ec427cd76fd1f30cdba3bf698c05cac4bc3fde_bleachersticker.png" alt="bleachers sticker" data-size="large">
+                    
+                    <p>Here's a photo of the modproject interface when I put in a doodle of a pikachu batman:</p>
+                    
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/209523302a2ae9b5b1fa74ac1af0a0960c0492a0_img_4014.jpg" alt="ModProject" data-size="medium">
+                    
+                    <p>This is inspired by my consistent profile photo:</p>
+                    
+                    <img src="files/batemon.jpg" alt="Batemon" data-size="small">
+                    
+                    <p>Final product (ignore the background, I stuck it on my notebook that had a photo of snoopy in a batsuit):</p>
+                    
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/716a45097d64ea670aa0b33ed08ddbc4c8583df8_img_4015.jpg" alt="Batemon Sticker" data-size="large">
+                    
+                    <h2 id="laser-cutting">Laser Cutting</h2>
+                    
+                    <p>Things that we figured out about the Laser Cutter in the EECS makerspace is that the kerf is about 0.0049 inches, and the clearance is about -0.0045 inches, meaning that we should design for an interference fit.</p>
+                    
+                    <h3>Hardware setup:</h3>
+                    <ul>
+                        <li><strong>75w co2 laser (large machine)</strong>
+                            <ul>
+                                <li>generates infrared light that gets focused to a tiny point. when this concentrated energy hits material, it instantly heads and vaporizes it along the programmed path.</li>
+                                <li>what "kerf" means (which is 0.0049'' average) is the width of material that gets completely removed by the beam</li>
+                            </ul>
+                        </li>
+                        <li><strong>60w co2 laser (small machine)</strong></li>
+                        <li><strong>universal laser systems hardware</strong></li>
+                        <li><strong>universal control software for parameter control</strong></li>
+                        <li><strong>inkscape for vector design and job sending</strong></li>
+                    </ul>
+                    
+                    <h3>Design process</h3>
+                    <ol>
+                        <li>design vectors → red lines w/ 0.001'' weight is full cuts and blue lines (0.001'' weight) is engraving/scoring</li>
+                        <li>focus the bean using the focusing stick until it just touches material surface</li>
+                        <li>set parameters: 100% power, 30% speed baseline, 500 ppi</li>
+                        <li>ctrl+p to send job to universal control software</li>
+                        <li>turn on air compressor, hit green button</li>
+                    </ol>
+                    
+                    <p><strong>Things to remember!</strong></p>
+                    <ul>
+                        <li>focus accuracy determines cut quality—we use the white part of focusing stick</li>
+                        <li>kerf compensation is needed in design (if very precise)</li>
+                        <li>material thickness affects join clearance (-0.0045'' interference fit on cardboard)</li>
+                        <li>the bed moves during focusing, laser tracks the material plane</li>
+                    </ul>
+                    
+                    <p>Here's the final produce of the various building blocks I made:</p>
+                    
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/4cdcb069f4acd0bdffbc4b053af7f67fb23a911c_img_4024.jpg" alt="Laser Cut Blocks" data-size="large">
+                    
+                    <p>I also made an engraving cut of an album I love, called Gone Now by Bleachers. It came out relatively okay on cardboard, even though some teaching with the strength of hte cuts and using a different material will probably make it come out better:</p>
+                    
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/29d4bdd5b4f7b3180b5c5160642421e627ebe57c_img_4020.jpg" alt="Gone Now Closeup" data-size="large">
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/29d4bdd5b4f7b3180b5c5160642421e627ebe57c_img_4020.jpg" alt="Jack Antonoff" data-size="small">
+                    
+                    <h2 id="cad">CAD</h2>
+                    
+                    <p>I watched this <a href="https://www.youtube.com/watch?v=r5kpEqka7Og" target="_blank">video</a> on making a wheel and made this:</p>
+                    
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/df0f68e8120ca2d5a0c639310a41256c95fc96c6_screenshot_2025-09-18_at_9.59.18___pm.png" alt="Wheel" data-size="medium">
+                    
+                    <p>I also tried to make a CAD of my ring, but it is not very perfect, so maybe I'll try to learn how to do this more professionally:</p>
+                    
+                    <div class="image-gallery">
+                        <img src="files/week2/fusion_ring.png" alt="Ring" data-size="small">
+                        <img src="files/week2/fusion_cup.png" alt="Cup" data-size="small">
+                        <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9a026eeb0f26a974b3f4828775dd4229a3ad9927_screenshot_2025-09-19_at_9.33.56___pm.png" alt="Fusion Design" data-size="small">
+                    </div>
+                    
+                    <h3>Todos:</h3>
+                    <ul>
+                        <li>✅ Vinyl cutting</li>
+                        <li>⏳ Builder kit w/ Laser Cutting!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="blog-utils.js"></script>
+</body>
+</html>

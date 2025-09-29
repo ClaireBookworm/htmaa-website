@@ -95,6 +95,9 @@ document.addEventListener('mousemove', (e) => {
         resizeElement.style.width = newWidth + 'px';
         resizeElement.style.height = newHeight + 'px';
         
+        // Update window width class for text formatting
+        updateWindowSizeClass(resizeElement);
+        
         // Update content area height
         const content = resizeElement.querySelector('.window-body');
         if (content) {
@@ -250,6 +253,29 @@ function zoomWindow(windowId, direction) {
     }
 }
 
+// Function to update window size classes for responsive text formatting
+function updateWindowSizeClass(windowElement) {
+    const width = windowElement.offsetWidth;
+    
+    // Remove existing size classes
+    windowElement.classList.remove('small-window', 'medium-window', 'large-window');
+    
+    // Add appropriate class based on width
+    if (width >= 600) {
+        windowElement.classList.add('large-window');
+    } else if (width >= 400) {
+        windowElement.classList.add('medium-window');
+    } else {
+        windowElement.classList.add('small-window');
+    }
+}
+
+// Update window size classes when windows are opened
+function updateAllWindowSizes() {
+    const allWindows = document.querySelectorAll('.modal-window .window, .window:not(.modal-window .window)');
+    allWindows.forEach(updateWindowSizeClass);
+}
+
 // Toggle maximize within viewport while keeping title bar visible
 function toggleMaxWindow(windowId) {
     let windowElement;
@@ -343,6 +369,7 @@ function openWeekWindow(weekNumber) {
     const windowElement = modalElement.querySelector('.window');
     modalElement.style.display = 'block';
     bringToFront(windowElement);
+    updateWindowSizeClass(windowElement); // Update size class when opening
     loadWeekContent(weekNumber);
 }
 
@@ -380,6 +407,7 @@ function openFinalProjectWindow() {
     const windowElement = modalElement.querySelector('.window');
     modalElement.style.display = 'block';
     bringToFront(windowElement);
+    updateWindowSizeClass(windowElement); // Update size class when opening
     loadFinalProjectContent();
 }
 
@@ -633,22 +661,16 @@ function createWeekIconAndModal(weekNumber) {
     const spacing = 80;
     const rightPosition = 20 + (weekNumber - 1) * spacing;
     
-    // Create desktop icon
+    // Create desktop icon that links to blog page
     createDesktopIcon({
         id: `week${weekNumber}Icon`,
         label: `Week ${weekNumber}`,
         iconClass: 'folder',
-        onClick: () => openWeekWindow(weekNumber),
+        onClick: () => window.location.href = `week${weekNumber}.html`,
         position: { top: '20px', right: `${rightPosition}px`, left: 'auto' }
     });
     
-    // Create window modal
-    createWindowModal({
-        id: `week${weekNumber}Window`,
-        title: `Week ${weekNumber} - How to Make Almost Anything`,
-        contentId: `week${weekNumber}Content`,
-        onClose: `closeWeekWindow(${weekNumber})`
-    });
+    // No longer create window modal - we're using blog pages instead
 }
 
 // Check for final project and create icon/modal if it exists
@@ -666,11 +688,11 @@ async function checkAndCreateFinalProject() {
     }
 }
 
-// Create Final Project desktop icon and modal window
+// Create Final Project desktop icon that links to blog page
 function createFinalProjectIconAndModal() {
     const icon = document.createElement('div');
     icon.className = 'desktop-icon final-project-icon';
-    icon.onclick = () => openFinalProjectWindow();
+    icon.onclick = () => window.location.href = 'finalproject.html';
     // Place it at the bottom right with fixed dimensions
     icon.style.bottom = '20px';
     icon.style.right = '20px';
@@ -686,29 +708,7 @@ function createFinalProjectIconAndModal() {
     `;
     document.body.appendChild(icon);
 
-    const modal = document.createElement('div');
-    modal.id = 'finalProjectWindow';
-    modal.className = 'modal-window';
-    modal.style.display = 'none';
-    modal.innerHTML = `
-        <div class="window" style="width: 700px; height: 500px; top: 50px; left: 100px;" draggable="true">
-            <div class="title-bar">
-                <div class="title-bar-text">Final Project - Viral Sound Propagation Machine</div>
-                <div class="title-bar-controls">
-                    <button aria-label="Zoom Out" onclick="zoomWindow('finalProjectWindow', -1)">-</button>
-                    <button aria-label="Zoom In" onclick="zoomWindow('finalProjectWindow', 1)">+</button>
-                    <button aria-label="Close" onclick="closeFinalProjectWindow()"></button>
-                </div>
-            </div>
-            <div class="window-body" style="height: 420px; overflow-y: auto;">
-                <div id="finalProjectContent">Loading...</div>
-            </div>
-            <div class="resize-handle se"></div>
-            <div class="resize-handle s"></div>
-            <div class="resize-handle e"></div>
-        </div>
-    `;
-    document.body.appendChild(modal);
+    // No longer create modal - we're using blog page instead
 }
 
 // Configuration for static windows

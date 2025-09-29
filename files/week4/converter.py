@@ -140,12 +140,10 @@ class Audio3DConverter:
             return self._volumetric_blocks_mapping(spectrogram)
         elif method == "chunky_extrusion":
             return self._chunky_extrusion_mapping(spectrogram)
-        elif method == "chunky_cylindrical":
-            return self._chunky_cylindrical_mapping(spectrogram)
-        elif method == "chunky_topographical":
-            return self._chunky_topographical_mapping(spectrogram)
-        elif method == "chunky_tree":
-            return self._chunky_tree_mapping(spectrogram)
+        elif method == "audio_beads":
+            return self._audio_beads_mapping(spectrogram)
+        elif method == "structural_blocks":
+            return self._structural_blocks_mapping(spectrogram)
         
     def _rectangular_heightfield(self, spec):
         """Basic rectangular heightfield approach"""
@@ -220,131 +218,36 @@ class Audio3DConverter:
         faces = self._triangulate_grid(vertices, time_frames, freq_bins)
         return vertices, faces
     
-    def _helical_mapping(self, spec):
-        """3D Helical wrapping - DNA strands made of sound with proper volume"""
-        freq_bins, time_frames = spec.shape
-        vertices = []
-        faces = []
+    # def _helical_mapping(self, spec):
+    #     """3D Helical wrapping - DNA strands made of sound"""
+    #     freq_bins, time_frames = spec.shape
+    #     vertices = []
         
-        # Helix parameters for 3D printable structure
-        base_radius = 15  # mm - center of helix
-        pitch = 8         # mm vertical distance per revolution
-        min_thickness = 2 # mm - minimum printable thickness
-        max_thickness = 8 # mm - maximum thickness
+    #     # Parameters
+    #     base_radius = 15  # mm
+    #     radius_scale = 25  # mm
+    #     height_scale = 8   # mm
         
-        # Create 3D helical structure with volume
-        for t_idx in range(time_frames):
-            # Time wraps around helix
-            t = t_idx / time_frames * 4 * np.pi  # 2 full rotations
+    #     for t_idx in range(time_frames):
+    #         # Time becomes angular position
+    #         angle = (t_idx / time_frames) * 2 * np.pi
             
-            # Get average amplitude for this time step
-            avg_amplitude = np.mean(spec[:, t_idx])
-            
-            # Helix thickness varies with amplitude (minimum 2mm for printability)
-            helix_thickness = max(min_thickness, min_thickness + avg_amplitude * (max_thickness - min_thickness))
-            
-            # Create cross-section of helix at this time step
-            cross_section_vertices = self._create_helix_cross_section(
-                t, base_radius, helix_thickness, spec[:, t_idx]
-            )
-            
-            # Add vertices to main list
-            start_idx = len(vertices)
-            vertices.extend(cross_section_vertices)
-            
-            # Create faces connecting to previous cross-section
-            if t_idx > 0:
-                prev_start_idx = start_idx - len(cross_section_vertices)
-                helix_faces = self._create_helix_faces(
-                    prev_start_idx, start_idx, len(cross_section_vertices)
-                )
-                faces.extend(helix_faces)
+    #         for f_idx in range(freq_bins):
+    #             # Frequency becomes radius
+    #             r = base_radius + (f_idx / freq_bins) * radius_scale
+                
+    #             # Amplitude becomes z-height
+    #             z = spec[f_idx, t_idx] * height_scale
+                
+    #             # Convert to cartesian
+    #             x = r * np.cos(angle)
+    #             y = r * np.sin(angle)
+                
+    #             vertices.append([x, y, z])
         
-        return np.array(vertices), np.array(faces)
-    
-    def _helical_mapping(self, spec):
-        """3D Helical wrapping - DNA strands made of sound with proper volume"""
-        freq_bins, time_frames = spec.shape
-        vertices = []
-        faces = []
-        
-        # Helix parameters for 3D printable structure
-        base_radius = 15  # mm - center of helix
-        pitch = 8         # mm vertical distance per revolution
-        min_thickness = 2 # mm - minimum printable thickness
-        max_thickness = 8 # mm - maximum thickness
-        
-        # Create 3D helical structure with volume
-        for t_idx in range(time_frames):
-            # Time wraps around helix
-            t = t_idx / time_frames * 4 * np.pi  # 2 full rotations
-            
-            # Get average amplitude for this time step
-            avg_amplitude = np.mean(spec[:, t_idx])
-            
-            # Helix thickness varies with amplitude (minimum 2mm for printability)
-            helix_thickness = max(min_thickness, min_thickness + avg_amplitude * (max_thickness - min_thickness))
-            
-            # Create cross-section of helix at this time step
-            cross_section_vertices = self._create_helix_cross_section(
-                t, base_radius, helix_thickness, spec[:, t_idx]
-            )
-            
-            # Add vertices to main list
-            start_idx = len(vertices)
-            vertices.extend(cross_section_vertices)
-            
-            # Create faces connecting to previous cross-section
-            if t_idx > 0:
-                prev_start_idx = start_idx - len(cross_section_vertices)
-                helix_faces = self._create_helix_faces(
-                    prev_start_idx, start_idx, len(cross_section_vertices)
-                )
-                faces.extend(helix_faces)
-        
-        return np.array(vertices), np.array(faces)
-    
-    def _helical_mapping(self, spec):
-        """3D Helical wrapping - DNA strands made of sound with proper volume"""
-        freq_bins, time_frames = spec.shape
-        vertices = []
-        faces = []
-        
-        # Helix parameters for 3D printable structure
-        base_radius = 15  # mm - center of helix
-        pitch = 8         # mm vertical distance per revolution
-        min_thickness = 2 # mm - minimum printable thickness
-        max_thickness = 8 # mm - maximum thickness
-        
-        # Create 3D helical structure with volume
-        for t_idx in range(time_frames):
-            # Time wraps around helix
-            t = t_idx / time_frames * 4 * np.pi  # 2 full rotations
-            
-            # Get average amplitude for this time step
-            avg_amplitude = np.mean(spec[:, t_idx])
-            
-            # Helix thickness varies with amplitude (minimum 2mm for printability)
-            helix_thickness = max(min_thickness, min_thickness + avg_amplitude * (max_thickness - min_thickness))
-            
-            # Create cross-section of helix at this time step
-            cross_section_vertices = self._create_helix_cross_section(
-                t, base_radius, helix_thickness, spec[:, t_idx]
-            )
-            
-            # Add vertices to main list
-            start_idx = len(vertices)
-            vertices.extend(cross_section_vertices)
-            
-            # Create faces connecting to previous cross-section
-            if t_idx > 0:
-                prev_start_idx = start_idx - len(cross_section_vertices)
-                helix_faces = self._create_helix_faces(
-                    prev_start_idx, start_idx, len(cross_section_vertices)
-                )
-                faces.extend(helix_faces)
-        
-        return np.array(vertices), np.array(faces)
+    #     vertices = np.array(vertices)
+    #     faces = self._triangulate_grid(vertices, time_frames, freq_bins)
+    #     return vertices, faces
     
     def _helical_mapping(self, spec):
         """3D Helical wrapping - DNA strands made of sound with proper volume"""
@@ -721,6 +624,87 @@ class Audio3DConverter:
         
         return np.array(vertices), np.array(faces)
     
+    def _audio_beads_mapping(self, spec):
+        """Audio beads mapping - chain of measurable beads"""
+        # Load raw audio for chunk processing
+        y, sr = librosa.load(self.audio_file, sr=self.sample_rate, duration=20)
+        chunks = self.process_audio_chunky(y, chunk_size_seconds=0.4)
+        
+        vertices = []
+        faces = []
+        
+        for i, chunk in enumerate(chunks):
+            # Bead position
+            position = [i * 12, 0, 0]  # 12mm spacing
+            
+            # Bead size encodes energy (diameter 4-12mm for printability)
+            diameter = max(4, 4 + chunk['energy'] * 8)
+            
+            # Bead shape encodes spectral content
+            if chunk['brightness'] > 0.6:
+                # Bright = sphere
+                bead_vertices, bead_faces = self._create_sphere(
+                    position, diameter/2, resolution=8
+                )
+            else:
+                # Dark = ellipsoid (stretched)
+                bead_vertices, bead_faces = self._create_ellipsoid(
+                    position, diameter/2, diameter/3, diameter/2, resolution=8
+                )
+            
+            # Connection to previous bead
+            if i > 0:
+                connector_width = max(1, 1 + chunk['attack'] * 2)
+                connector_vertices, connector_faces = self._create_connector(
+                    [position[0] - 6, 0, 0], [position[0] + 6, 0, 0], connector_width
+                )
+                bead_vertices.extend(connector_vertices)
+                bead_faces.extend(connector_faces)
+            
+            # Offset faces for current vertices
+            start_idx = len(vertices)
+            vertices.extend(bead_vertices)
+            for face in bead_faces:
+                faces.append([f + start_idx for f in face])
+        
+        return np.array(vertices), np.array(faces)
+    
+    def _structural_blocks_mapping(self, spec):
+        """Structural blocks mapping - architectural elements instead of terrain"""
+        # Load raw audio for chunk processing
+        y, sr = librosa.load(self.audio_file, sr=self.sample_rate, duration=20)
+        chunks = self.process_audio_chunky(y, chunk_size_seconds=0.5)
+        
+        vertices = []
+        faces = []
+        
+        for i, chunk in enumerate(chunks):
+            base_position = [i * 15, 0, 0]  # 15mm spacing
+            
+            # Bass = foundation width (minimum 8mm)
+            foundation_size = max(8, 8 + chunk['bass'] * 12)
+            
+            # Mids = pillar height (minimum 5mm)
+            pillar_height = max(5, 5 + chunk['mids'] * 15)
+            
+            # Treble = roof complexity
+            if chunk['treble'] > 0.5:
+                roof_type = 'pyramid'    # 4 faces
+            else:
+                roof_type = 'wedge'      # 2 faces
+            
+            # Create building block
+            block_vertices, block_faces = self._create_building_block(
+                base_position, foundation_size, pillar_height, roof_type
+            )
+            
+            # Offset faces for current vertices
+            start_idx = len(vertices)
+            vertices.extend(block_vertices)
+            for face in block_faces:
+                faces.append([f + start_idx for f in face])
+        
+        return np.array(vertices), np.array(faces)
     
     def _create_chunky_box(self, position, width, height, length, index):
         """Create a chunky box with measurable dimensions"""
@@ -770,278 +754,203 @@ class Audio3DConverter:
         
         return vertices, faces
     
-    def _chunky_cylindrical_mapping(self, spec):
-        """Cylindrical but with measurable ring segments instead of fine surface detail"""
-        freq_bins, time_frames = spec.shape
+    def _create_sphere(self, center, radius, resolution=8):
+        """Create a low-resolution sphere for printability"""
         vertices = []
         faces = []
         
-        # Create ~30-50 discrete rings instead of thousands of points
-        num_rings = min(50, time_frames // 10)  # chunk every 10 time frames
+        x, y, z = center
         
-        for ring_idx in range(num_rings):
-            # Each ring represents a time chunk
-            start_t = ring_idx * time_frames // num_rings
-            end_t = (ring_idx + 1) * time_frames // num_rings
-            
-            # Analyze this time chunk
-            chunk = spec[:, start_t:end_t]
-            
-            # Extract measurable features from chunk
-            bass = np.mean(chunk[:freq_bins//4])     # inner radius
-            mids = np.mean(chunk[freq_bins//4:3*freq_bins//4])  # ring thickness  
-            treble = np.mean(chunk[3*freq_bins//4:])  # height variation
-            
-            # Create ring with measurable dimensions
-            inner_radius = 10 + bass * 20        # 10-30mm
-            ring_thickness = 3 + mids * 5        # 3-8mm  
-            ring_height = 2 + treble * 6         # 2-8mm
-            
-            # Position ring
-            angle = ring_idx / num_rings * 2 * np.pi
-            
-            ring_verts, ring_faces = self._create_measurable_ring(
-                angle, inner_radius, ring_thickness, ring_height
-            )
-            
-            start_idx = len(vertices)
-            vertices.extend(ring_verts)
-            faces.extend([[f + start_idx for f in face] for face in ring_faces])
-        
-        return np.array(vertices), np.array(faces)
-    
-    def _chunky_topographical_mapping(self, spec):
-        """Topographical with measurable plateaus instead of micro-ridges"""
-        freq_bins, time_frames = spec.shape
-        vertices = []
-        faces = []
-        
-        # Create grid of 8x8 chunks instead of fine heightfield
-        chunk_rows = 8
-        chunk_cols = 8
-        
-        for row in range(chunk_rows):
-            for col in range(chunk_cols):
-                # Define chunk boundaries in spectrogram
-                freq_start = row * freq_bins // chunk_rows
-                freq_end = (row + 1) * freq_bins // chunk_rows
-                time_start = col * time_frames // chunk_cols
-                time_end = (col + 1) * time_frames // chunk_cols
+        # Create vertices for sphere
+        for i in range(resolution + 1):
+            for j in range(resolution + 1):
+                phi = i * np.pi / resolution
+                theta = j * 2 * np.pi / resolution
                 
-                # Analyze this spectrogram chunk
-                chunk_data = spec[freq_start:freq_end, time_start:time_end]
-                avg_energy = np.mean(chunk_data)
-                peak_energy = np.max(chunk_data)
+                vx = x + radius * np.sin(phi) * np.cos(theta)
+                vy = y + radius * np.sin(phi) * np.sin(theta)
+                vz = z + radius * np.cos(phi)
                 
-                # Create plateau with measurable height and size
-                plateau_height = max(2, avg_energy * 15)    # 2-15mm height
-                plateau_size = 8 + (peak_energy - avg_energy) * 4  # 8-12mm base size
-                
-                position = [col * 12, row * 12, 0]  # 12mm spacing
-                
-                plateau_verts, plateau_faces = self._create_plateau(
-                    position, plateau_size, plateau_height
-                )
-                
-                start_idx = len(vertices)
-                vertices.extend(plateau_verts)
-                faces.extend([[f + start_idx for f in face] for face in plateau_faces])
-        
-        return np.array(vertices), np.array(faces)
-    
-    def _chunky_tree_mapping(self, spec):
-        """Tree with measurable branch segments instead of fractal complexity"""
-        freq_bins, time_frames = spec.shape
-        vertices = []
-        faces = []
-        
-        # Limit to ~20 growth segments total
-        num_segments = min(20, time_frames // 50)
-        
-        # Start with trunk
-        trunk_base = [0, 0, 0]
-        trunk_top = [0, 0, 8]
-        trunk_thickness = 4
-        
-        # Create trunk
-        trunk_verts, trunk_faces = self._create_cylindrical_branch(
-            trunk_base, trunk_top, trunk_thickness
-        )
-        vertices.extend(trunk_verts)
-        faces.extend(trunk_faces)
-        
-        current_endpoints = [(trunk_base, trunk_top, trunk_thickness)]
-        
-        for seg_idx in range(num_segments):
-            # Analyze time chunk for this growth segment
-            time_start = seg_idx * time_frames // num_segments
-            time_end = (seg_idx + 1) * time_frames // num_segments
-            chunk = spec[:, time_start:time_end]
-            
-            # Extract growth parameters
-            energy = np.mean(chunk)
-            bass_dominance = np.mean(chunk[:freq_bins//3])
-            treble_activity = np.mean(chunk[2*freq_bins//3:])
-            
-            new_endpoints = []
-            
-            for start, end, thickness in current_endpoints:
-                # Decide branch count (1-2 branches max per segment)
-                num_branches = 1 if energy < 0.5 else 2
-                
-                for branch in range(num_branches):
-                    # Measurable branch parameters
-                    branch_length = 4 + energy * 8      # 4-12mm length
-                    branch_thickness = max(1, thickness * 0.7)   # taper down, min 1mm
-                    branch_angle = (branch / num_branches) * np.pi/2 + bass_dominance * np.pi/4
-                    
-                    # Calculate end position
-                    branch_end = [
-                        end[0] + branch_length * np.cos(branch_angle),
-                        end[1] + branch_length * np.sin(branch_angle),
-                        end[2] + branch_length * 0.3  # slight upward growth
-                    ]
-                    
-                    # Create branch geometry
-                    branch_verts, branch_faces = self._create_cylindrical_branch(
-                        end, branch_end, branch_thickness
-                    )
-                    
-                    start_idx = len(vertices)
-                    vertices.extend(branch_verts)
-                    faces.extend([[f + start_idx for f in face] for face in branch_faces])
-                    
-                    new_endpoints.append((end, branch_end, branch_thickness))
-            
-            # Only keep 2-3 endpoints to prevent exponential growth
-            current_endpoints = new_endpoints[:3]
-        
-        return np.array(vertices), np.array(faces)
-    
-    def _create_measurable_ring(self, angle, inner_radius, thickness, height):
-        """Create a measurable ring segment"""
-        vertices = []
-        faces = []
-        
-        # Create ring cross-section (8-sided for printability)
-        num_sides = 8
-        outer_radius = inner_radius + thickness
-        
-        # Create vertices for ring
-        for i in range(num_sides):
-            angle_offset = i * 2 * np.pi / num_sides
-            
-            # Inner circle
-            x_inner = inner_radius * np.cos(angle + angle_offset)
-            y_inner = inner_radius * np.sin(angle + angle_offset)
-            vertices.append([x_inner, y_inner, 0])
-            vertices.append([x_inner, y_inner, height])
-            
-            # Outer circle
-            x_outer = outer_radius * np.cos(angle + angle_offset)
-            y_outer = outer_radius * np.sin(angle + angle_offset)
-            vertices.append([x_outer, y_outer, 0])
-            vertices.append([x_outer, y_outer, height])
+                vertices.append([vx, vy, vz])
         
         # Create faces
-        for i in range(num_sides):
-            next_i = (i + 1) % num_sides
-            
-            # Current ring segment indices
-            inner_curr_bottom = i * 4
-            inner_curr_top = i * 4 + 1
-            outer_curr_bottom = i * 4 + 2
-            outer_curr_top = i * 4 + 3
-            
-            # Next ring segment indices
-            inner_next_bottom = next_i * 4
-            inner_next_top = next_i * 4 + 1
-            outer_next_bottom = next_i * 4 + 2
-            outer_next_top = next_i * 4 + 3
-            
-            # Inner face
-            faces.append([inner_curr_bottom, inner_next_bottom, inner_curr_top])
-            faces.append([inner_next_bottom, inner_next_top, inner_curr_top])
-            
-            # Outer face
-            faces.append([outer_curr_bottom, outer_curr_top, outer_next_bottom])
-            faces.append([outer_next_bottom, outer_curr_top, outer_next_top])
-            
-            # Top face
-            faces.append([inner_curr_top, inner_next_top, outer_curr_top])
-            faces.append([inner_next_top, outer_next_top, outer_curr_top])
-            
-            # Bottom face
-            faces.append([inner_curr_bottom, outer_curr_bottom, inner_next_bottom])
-            faces.append([outer_curr_bottom, outer_next_bottom, inner_next_bottom])
+        for i in range(resolution):
+            for j in range(resolution):
+                idx = i * (resolution + 1) + j
+                
+                # Two triangles per quad
+                faces.append([idx, idx + resolution + 1, idx + 1])
+                faces.append([idx + 1, idx + resolution + 1, idx + resolution + 2])
         
         return vertices, faces
     
-    def _create_plateau(self, position, size, height):
-        """Create a measurable plateau"""
-        x, y, z = position
-        vertices = [
-            [x, y, z],                    # 0: bottom-left-back
-            [x + size, y, z],            # 1: bottom-right-back
-            [x + size, y + size, z],     # 2: bottom-right-front
-            [x, y + size, z],            # 3: bottom-left-front
-            [x, y, z + height],          # 4: top-left-back
-            [x + size, y, z + height],   # 5: top-right-back
-            [x + size, y + size, z + height], # 6: top-right-front
-            [x, y + size, z + height]   # 7: top-left-front
-        ]
-        
-        faces = self._create_box_faces(0)
-        return vertices, faces
-    
-    def _create_cylindrical_branch(self, start, end, thickness):
-        """Create a cylindrical branch between two points"""
+    def _create_ellipsoid(self, center, rx, ry, rz, resolution=8):
+        """Create a low-resolution ellipsoid"""
         vertices = []
         faces = []
         
-        # Calculate branch direction and length
-        direction = np.array(end) - np.array(start)
-        length = np.linalg.norm(direction)
+        x, y, z = center
         
-        if length < 0.1:  # Skip very short branches
-            return vertices, faces
+        # Create vertices for ellipsoid
+        for i in range(resolution + 1):
+            for j in range(resolution + 1):
+                phi = i * np.pi / resolution
+                theta = j * 2 * np.pi / resolution
+                
+                vx = x + rx * np.sin(phi) * np.cos(theta)
+                vy = y + ry * np.sin(phi) * np.sin(theta)
+                vz = z + rz * np.cos(phi)
+                
+                vertices.append([vx, vy, vz])
         
-        # Normalize direction
-        direction = direction / length
+        # Create faces (same as sphere)
+        for i in range(resolution):
+            for j in range(resolution):
+                idx = i * (resolution + 1) + j
+                faces.append([idx, idx + resolution + 1, idx + 1])
+                faces.append([idx + 1, idx + resolution + 1, idx + resolution + 2])
         
-        # Create perpendicular vectors for cross-section
-        if abs(direction[2]) < 0.9:
-            perp1 = np.array([0, 0, 1])
-        else:
-            perp1 = np.array([1, 0, 0])
+        return vertices, faces
+    
+    def _create_connector(self, start, end, width):
+        """Create a cylindrical connector between two points"""
+        vertices = []
+        faces = []
         
-        perp1 = perp1 - np.dot(perp1, direction) * direction
-        perp1 = perp1 / np.linalg.norm(perp1)
-        perp2 = np.cross(direction, perp1)
+        # Simple cylinder with 6 sides
+        resolution = 6
+        length = np.sqrt(sum((end[i] - start[i])**2 for i in range(3)))
         
-        # Create cross-sections at start and end
-        num_sides = 6  # Hexagonal cross-section
-        start_vertices = []
-        end_vertices = []
-        
-        for i in range(num_sides):
-            angle = i * 2 * np.pi / num_sides
-            offset = thickness * (np.cos(angle) * perp1 + np.sin(angle) * perp2)
+        # Create vertices for cylinder
+        for i in range(resolution):
+            angle = i * 2 * np.pi / resolution
+            x = start[0] + width * np.cos(angle)
+            y = start[1] + width * np.sin(angle)
             
-            start_vertices.append((np.array(start) + offset).tolist())
-            end_vertices.append((np.array(end) + offset).tolist())
-        
-        # Add vertices
-        vertices.extend(start_vertices)
-        vertices.extend(end_vertices)
+            vertices.append([x, y, start[2]])      # Start circle
+            vertices.append([x, y, end[2]])        # End circle
         
         # Create faces
-        for i in range(num_sides):
-            next_i = (i + 1) % num_sides
+        for i in range(resolution):
+            next_i = (i + 1) % resolution
             
             # Side faces
-            faces.append([i, i + num_sides, next_i])
-            faces.append([next_i, i + num_sides, next_i + num_sides])
+            start_curr = i * 2
+            start_next = next_i * 2
+            end_curr = i * 2 + 1
+            end_next = next_i * 2 + 1
+            
+            faces.append([start_curr, start_next, end_curr])
+            faces.append([start_next, end_next, end_curr])
+        
+        return vertices, faces
+    
+    def _create_building_block(self, position, foundation_size, pillar_height, roof_type):
+        """Create architectural building block"""
+        vertices = []
+        faces = []
+        
+        x, y, z = position
+        
+        # Foundation (base)
+        foundation_vertices = [
+            [x, y, z],
+            [x + foundation_size, y, z],
+            [x + foundation_size, y + foundation_size, z],
+            [x, y + foundation_size, z],
+            [x, y, z + 3],  # 3mm foundation height
+            [x + foundation_size, y, z + 3],
+            [x + foundation_size, y + foundation_size, z + 3],
+            [x, y + foundation_size, z + 3]
+        ]
+        
+        vertices.extend(foundation_vertices)
+        foundation_faces = self._create_box_faces(0)
+        faces.extend(foundation_faces)
+        
+        # Pillar (center)
+        pillar_size = foundation_size * 0.6
+        pillar_offset = (foundation_size - pillar_size) / 2
+        
+        pillar_vertices = [
+            [x + pillar_offset, y + pillar_offset, z + 3],
+            [x + pillar_offset + pillar_size, y + pillar_offset, z + 3],
+            [x + pillar_offset + pillar_size, y + pillar_offset + pillar_size, z + 3],
+            [x + pillar_offset, y + pillar_offset + pillar_size, z + 3],
+            [x + pillar_offset, y + pillar_offset, z + 3 + pillar_height],
+            [x + pillar_offset + pillar_size, y + pillar_offset, z + 3 + pillar_height],
+            [x + pillar_offset + pillar_size, y + pillar_offset + pillar_size, z + 3 + pillar_height],
+            [x + pillar_offset, y + pillar_offset + pillar_size, z + 3 + pillar_height]
+        ]
+        
+        start_idx = len(vertices)
+        vertices.extend(pillar_vertices)
+        pillar_faces = self._create_box_faces(start_idx)
+        faces.extend(pillar_faces)
+        
+        # Roof
+        if roof_type == 'pyramid':
+            roof_vertices, roof_faces = self._create_pyramid_roof(
+                [x + foundation_size/2, y + foundation_size/2, z + 3 + pillar_height],
+                foundation_size * 0.8, 5
+            )
+        else:  # wedge
+            roof_vertices, roof_faces = self._create_wedge_roof(
+                [x + foundation_size/2, y + foundation_size/2, z + 3 + pillar_height],
+                foundation_size * 0.8, 5
+            )
+        
+        start_idx = len(vertices)
+        vertices.extend(roof_vertices)
+        for face in roof_faces:
+            faces.append([f + start_idx for f in face])
+        
+        return vertices, faces
+    
+    def _create_pyramid_roof(self, center, base_size, height):
+        """Create pyramid roof"""
+        x, y, z = center
+        half_size = base_size / 2
+        
+        vertices = [
+            [x - half_size, y - half_size, z],  # Base corners
+            [x + half_size, y - half_size, z],
+            [x + half_size, y + half_size, z],
+            [x - half_size, y + half_size, z],
+            [x, y, z + height]  # Apex
+        ]
+        
+        faces = [
+            [0, 1, 4],  # Front face
+            [1, 2, 4],  # Right face
+            [2, 3, 4],  # Back face
+            [3, 0, 4]   # Left face
+        ]
+        
+        return vertices, faces
+    
+    def _create_wedge_roof(self, center, base_size, height):
+        """Create wedge roof"""
+        x, y, z = center
+        half_size = base_size / 2
+        
+        vertices = [
+            [x - half_size, y - half_size, z],  # Base corners
+            [x + half_size, y - half_size, z],
+            [x + half_size, y + half_size, z],
+            [x - half_size, y + half_size, z],
+            [x, y - half_size, z + height],  # Ridge line
+            [x, y + half_size, z + height]
+        ]
+        
+        faces = [
+            [0, 1, 4],  # Front face
+            [1, 2, 5],  # Right face
+            [2, 3, 5],  # Back face
+            [3, 0, 4],  # Left face
+            [0, 4, 5],  # Bottom face
+            [0, 5, 3]   # Bottom face
+        ]
         
         return vertices, faces
     
@@ -1115,16 +1024,14 @@ class Audio3DConverter:
         # export to STL
         stl_file = self.save_stl(vertices, faces)
         
-        return stl_file, spectrogram #, image_file
+        return stl_file, spectrogram
 
 # usage example
 if __name__ == "__main__":
     converter = Audio3DConverter("your_song.wav", "my_song_sculpture")
     
     # try different methods
-    # stl_file, spec, image_file = converter.generate_sculpture(method="cylindrical", duration=30)
     stl_file, spec = converter.generate_sculpture(method="cylindrical", duration=30)
     
     print(f"3D model ready: {stl_file}")
-    # print(f"Spectrogram image saved: {image_file}")
     print(f"Spectrogram shape: {spec.shape}")

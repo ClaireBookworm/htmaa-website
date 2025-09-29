@@ -6,25 +6,25 @@ Making parametric design and vinyl cutting
 
 I learned to do vinyl cutting using the [open source tool](https://modsproject.org/) developed by Neil and the Media Lab on the Roland Vinyl Cutter.
 
-<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/cd1806172372d2d020e1605aecf1d91ed36edfcc_img_3901.jpg" alt="MIT Vinyl Sticker" style="height: 150px; width: auto;">
+<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/cd1806172372d2d020e1605aecf1d91ed36edfcc_img_3901.jpg" alt="MIT Vinyl Sticker" style="height: 300px; width: auto;">
 
 I've also been playing around a lot on Fusion360. I initially tried using FreeCAD but after struggling around with it for ~3+ hours, I decided to stick with Fusion, since I've used it before and I find the sketch to 3d workflow much more intuitive. 
 
 I'm going to try to make this design I made in Figma (for my favorite band) on the Vinyl cutter: 
 
-<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/a2ec427cd76fd1f30cdba3bf698c05cac4bc3fde_bleachersticker.png" alt="bleachers sticker" style="height: 150px; width: auto;">
+<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/a2ec427cd76fd1f30cdba3bf698c05cac4bc3fde_bleachersticker.png" alt="bleachers sticker" style="height: 500px; width: auto;">
 
 Here's a photo of the modproject interface when I put in a doodle of a pikachu batman: 
 
-![ModProject](https://hc-cdn.hel1.your-objectstorage.com/s/v3/209523302a2ae9b5b1fa74ac1af0a0960c0492a0_img_4014.jpg). 
+<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/209523302a2ae9b5b1fa74ac1af0a0960c0492a0_img_4014.jpg" alt="ModProject" style="height: 300px; width: auto;">
 
 This is inspired by my consistent profile photo:
 
-<img src="files/batemon.png" alt="Batemon" style="height: 150px; width: auto;">
+<img src="files/batemon.jpg" alt="Batemon" style="height: 200px; width: auto;">
 
 Final product (ignore the background, I stuck it on my notebook that had a photo of snoopy in a batsuit): 
 
-<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/716a45097d64ea670aa0b33ed08ddbc4c8583df8_img_4015.jpg" alt="Batemon Sticker" style="height: 150px; width: auto;">
+<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/716a45097d64ea670aa0b33ed08ddbc4c8583df8_img_4015.jpg" alt="Batemon Sticker" style="height: 500px; width: auto;">
 
 ## Laser Cutting 
 
@@ -57,11 +57,11 @@ Things to remember!
 
 Here's the final produce of the various building blocks I made:
 
-![Combination](https://hc-cdn.hel1.your-objectstorage.com/s/v3/4cdcb069f4acd0bdffbc4b053af7f67fb23a911c_img_4024.jpg)
+<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/4cdcb069f4acd0bdffbc4b053af7f67fb23a911c_img_4024.jpg" alt="Laser Cut Blocks" style="height: 500px; width: auto;">
 
 I also made an engraving cut of an album I love, called Gone Now by Bleachers. It came out relatively okay on cardboard, even though some teaching with the strength of hte cuts and using a different material will probably make it come out better: 
 
-![Gone Now](https://hc-cdn.hel1.your-objectstorage.com/s/v3/29d4bdd5b4f7b3180b5c5160642421e627ebe57c_img_4020.jpg)
+<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/29d4bdd5b4f7b3180b5c5160642421e627ebe57c_img_4020.jpg" alt="Gone Now Closeup" style="height: 500px; width: auto;">
 
 ## CAD
 
