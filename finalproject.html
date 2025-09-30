@@ -37,11 +37,46 @@
             
             <div class="blog-content">
                 <div class="blog-layout">
-                    <h1>Final Project: Viral Sound Propagation Machine</h1>
+                    <h1>Final Project</h1>
+                    <p>Honestly, I have too many different ideas for this project, so here's some of them and how far I've thought about the design.</p>
+
+                    <img src="files/finalproject/brainstorm_notebook.png" alt="Concept Sketch" data-size="medium">
+
+                    <h2>Physical DAW/Synth</h2>
+
+                    <p>I've been learning production and composition with a variety of DAWs, including Logic Pro and Ableton (and started with Garage Band). Apple DAW apps have loops, where you can import these looping sound samples that you layer on top of each other to create a track. In addition, synth design is a huge field in production. Most producers aren't making synths from scartch, they're using existing synth engines (like serum or vital) and tweaking presets or programming new patches. </p>
+
+                    <img src="https://help.apple.com/assets/674E320B0F925B1B7F0F0F3F/674E320F1010EB954D087457/en_US/0df8e33f51ee07f6183073d088bdd4b1.png" alt="Garage Band Live Loops" data-size="medium">
+
+                    <p>Synths are very interesting. In software, they're made using C++ and using frameworks like JUCE / reaktor. You decide what oscillators (sine, saw, square, wavetable), what filters (low-pass, high-pass, how many poles), what modulation sources (LFOs, envelopes, etc.), and how they route together. </p>
+
+                    <div class="video-container">
+                        <iframe 
+                            src="https://www.youtube.com/embed/c3udLCvoCC0" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <p>Hardware synths are done with circuit design and voltage controlled copmonents or microcontrollers running DSP (digital signal processing) algorithms. Synths are differentiated by oscillator type, filter character, modulation routing, and effects chain. In actual songs, producers layer multiple synths, so a synth in pop is 3-7 different synth layers with different octaves, timbres, stereo positions, and so on.</p>
+
+                    <img src="https://d29rinwu2hi5i3.cloudfront.net/article_media/28bce547-b4d1-4738-a2ef-8309c3b263bb/image_18.jpg" alt="Reaktor Synth" data-size="medium">
+
+                    <p>The project idea is a sort of physical version of this. I want to stack blocks on top of each other to make a synth and also put blocks in a grid to make a track? I'd scan them using some form of 3d scanner OR circuit completion method to detect what blocks are being placed where.</p>
+
+                    <h2>Anthropomorphize Everything!</h2>
+
+                    <p>This was very inspired by the googly eyes I put on my water bottle the other day... I want to put googly eyes (which have cameras, mic, and speaker either attached or connected) and be able to "talk" to them. The eyes will be connected to some online-running voice model (i.e., with SI or 11Labs) that have a sort of custom-generated personality based on what the object is, and you can talk to it. Voice models are quite powerful today, being able to sound like a human, support interruptions in conversation, and so on.</p>
+
+                    <p>This was also inspired by a project a <a href="ariellelok.com">friend of mine</a> spearheaded at <a href="https://lu.ma/beans">Friendly Beans</a> (a weekly coworking session I run in Boston) where she ran a series of "protests" to put <a href="https://www.nytimes.com/2024/06/30/us/boston-t-train-googly-eyes.html">googly eyes on the MBTA</a> trains!</p>
+
+                    <img src="https://external-preview.redd.it/mbta-adds-googly-eyes-to-some-trolleys-and-locomotives-v0-HeM0ZSGOcf7kycQn_KghQjjCbOWGMrBtPm_8H3kcXVk.jpg?auto=webp&s=5642a45f43c77cec98eef82f9b35859147c70655" alt="Googly Eyes on MBTA Trains" data-size="medium">
+
+                    <h2>Viral Sound Propagation</h2>
                     
-                    <p>Build a network of sound nodes that "infect" each other with musical patterns. Each node is a physical device with speakers/mics that listens to neighbors and mutates what it hears before retransmitting. Patterns evolve and die out like biological systems.</p>
-                    
-                    <h2>Technical Implementation</h2>
+                    <p>Build a network of sound nodes that "infect" each other with musical patterns. Each node is a physical device with speakers/mics that listens to neighbors and mutates what it hears before retransmitting. Patterns evolve and die out like biological systems. It would be interesting to also be equipped with the ability to take in the conversations people are having near each node, take some snippets, and sent it along to the other nodes (but slightly distorted). Makes a space feel a bit smaller without full eavesdropping.</p>
                     
                     <ul>
                         <li><strong>Mesh networking protocols</strong> - Nodes communicate wirelessly to form a distributed network</li>
@@ -50,13 +85,9 @@
                         <li><strong>Custom PCB design</strong> - Each node will be a custom-designed circuit board</li>
                     </ul>
                     
-                    <h2>Concept Inspiration</h2>
-                    
                     <p>The project draws inspiration from Conway's Game of Life and biological systems where patterns can propagate, mutate, and evolve based on local interactions. Each sound node acts like a cell that can "infect" its neighbors with musical DNA.</p>
                     
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS275q4H8EQ7nMBBrn559OhJBtUM6cR5EUufw&s" alt="Conway's Game of Life" data-size="medium">
-                    
-                    <h2>Project Goals</h2>
                     
                     <ul>
                         <li>Create a self-organizing musical ecosystem</li>

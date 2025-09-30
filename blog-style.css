@@ -745,6 +745,27 @@ html, body {
     display: none;
 }
 
+/* YouTube video container */
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    margin: 2rem 0;
+    border: 2px outset #c0c0c0;
+    background: #c0c0c0;
+    box-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
 /* Print styles */
 @media print {
     .window-container {
