@@ -734,8 +734,8 @@ const staticWindowsConfig = [
         id: 'window3',
         title: 'about.txt',
         content: `i am currently a junior at MIT studing eecs and neuroscience. <br><br>
-                  i'm really interested in building interactive music art projects!! and music in general. send recs:)<br><br>
-                  also have been doing some neurotech research and work, so hoping to learn to build smaller-scale BCI stuff.<br><br>
+                  i'm really interested in building interactive music art projects and music in general. I occasionally produce music and have a weekly radio show in Boston with MIT's WMBR. Please send any music recs:)<br><br>
+                  I've also been doing some neurotech research and work, so hoping to learn to build smaller-scale BCI stuff. In the past, I've worked on whole brain emulation research at MIT, helping construct and build microscopes, do some wet lab experimentation, and training embodied intelligence models to simulate C. elegans movements. Recently, I just took a gap semester to work at <a href="https://e11.bio">e11.bio</a> as an ML engineer, processing our petabytes of brain slicing imaging and segmenting them in order to trace axons across brain slices.<br><br>
                   feel free to reach out! my website is <a href="https://clairebookworm.com">clairebookworm.com</a> to learn more.<br>`,
         position: { top: '300px', left: '800px' },
         size: { width: '500px', height: 'auto' }
