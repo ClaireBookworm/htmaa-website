@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 5 - Claire's How to Make Almost Anything</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E🗂️%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500;600;700&display=block" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <link rel="stylesheet" href="blog-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+
+    <style>
+        .sublist_indent {
+            margin: 0 auto;
+            padding: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="window-container">
+        <!-- Navigation -->
+        <nav class="blog-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="week1.html">Week 1</a></li>
+                <li><a href="week2.html">Week 2</a></li>
+                <li><a href="week3.html">Week 3</a></li>
+                <li><a href="week4.html">Week 4</a></li>
+                <li><a href="week5.html" class="active">Week 5</a></li>
+                <li><a href="finalproject.html">Final Project</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main window -->
+        <div class="blog-window">
+            <div class="blog-title-bar">
+                <div class="blog-title-text">Week 5 - Electronics Design</div>
+                <div class="blog-title-controls">
+                    <button onclick="window.close()" title="Close">×</button>
+                </div>
+            </div>
+            
+            <div class="blog-content">
+                <div class="blog-layout">
+                    <h1>Week 5: Electronics Design</h1>
+                    
+                    <p>This week's assignment is about electronics design. This is one of the main things I want to get good at in this class because I have absolutely no experience in this! Because I have very little experience with PCB design, I’m going to start from the top and learn from online tutorials, like this <a href="https://www.instructables.com/Intro-to-Circuit-Design-Learn-How-to-Make-Your-Fir/">instructables link</a>.</p>
+
+                                        
+                    <h2>Getting Started</h2>
+                    
+                    <p>Fusion and Kicad are all great EDA editors, and while I have more familiarity with Fusion, I think I found a lot more online guides and content about Kicad, so I decided to go with that. To begin, I followed this video on designing and working with the schematic. I started blindly to get what I know works on breadboard on Kicad: </p>
+
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/7dc1245799c6028a14892779e317c37088cb6cea_screenshot_2025-10-07_at_11.21.54___pm.png" alt="Kicad Schematic" data-size="large">
+
+                    <p>Unfortunately, there's a few issues here I didn't quite know how to resolve. First, it didn't recognize the power symbols I was using (GND and 5V). To resolve this, I needed to add the power flag to the components. In addition, to convert this into PCB, you first need to design the footprints. That's when I decided to watch a few tutorials on this.</p>
+
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/vLnu21fS22s?si=WIIUYX0ji5hk8Dp0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+                    <p>This video led to this schematic, which uses the Arduino Nano RP2040 Connect as the main microcontroller.</p>
+
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/c3c3a87621beab191e25992885e0ea8721a37308_screenshot_2025-10-08_at_2.07.23___am.png" alt="Kicad Schematic with Arduino" data-size="large">
+
+                    <p>
+                    A few notes: the pins that don't have a connection require you to set as "no connect". To set the footprints, you need to have an idea of what type of component it is. Footprints are the physical copper pad patterns that components solder to, and you assign them before moving from schematic to PCB. Use <strong>Tools → Assign Footprints</strong> (or the icon that looks like an IC with a footprint) to open the footprint assignment tool. We can use the given HTMAA inventory to design the footprints here. The left side shows your schematic components, and the right side is the footprint library browser.
+                    <br />
+                    For quick assignment: for each component, double-click it in the left pane, then assign as follows:
+                        <ul>
+                            <li>Resistors→ <code>Resistor_SMD:R_0805_2012Metric</code> (or <code>Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</code> for through-hole)</li>
+                            <li>Capacitors → <code>Capacitor_SMD:C_0805_2012Metric</code> or <code>Capacitor_THT:C_Disc_D3.0mm_W1.6mm_P2.50mm</code></li>
+                            <li>LEDs → <code>LED_SMD:LED_0805_2012Metric</code> or <code>LED_THT:LED_D5.0mm</code></li>
+                            <li>Switches → depends on type; tactile button is usually <code>Button_Switch_THT:SW_PUSH_6mm</code> or similar</li>
+                        </ul>
+                    <br />
+                    <p>The naming convention is: <code>LibraryName:FootprintName_SizeInfo</code></p>
+                    </p>
+
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/e96846f3f29c277fea211969c110bd1069206c0b_screenshot_2025-10-08_at_11.51.58___am.png" alt="Kicad Footprints" data-size="large">
+                    <p>
+                        Footprints are the physical implementation of a component—pad shapes, sizes, positions, and silkscreen—completely separate from the schematic symbol.<br>
+                        KiCad has a three-layer component system:
+                        <ul>
+                            <li><strong>Symbol (schematic):</strong> Electrical representation, pins and names</li>
+                            <li><strong>Footprint (PCB):</strong> Actual copper pads, soldermask, silkscreen outline</li>
+                            <li><strong>3D model (optional):</strong> Visual representation for rendering</li>
+                        </ul>
+                        <p>These layers are decoupled. One symbol can map to multiple footprints (e.g., a resistor symbol works for 0402, 0603, 0805, through-hole, etc.).
+                        <br>
+                        <strong>Footprint anatomy:</strong></p>
+                        <ul>
+                            <li><strong>Pads:</strong> Copper circles/rectangles for soldering, numbered to match symbol pins</li>
+                            <li><strong>Silkscreen (F.Silkscreen layer):</strong> White lines showing component outline</li>
+                            <li><strong>Fab layer (F.Fab):</strong> Reference info for assembly, usually hidden</li>
+                            <li><strong>Courtyard:</strong> Keeps other components away, used by DRC</li>
+                        </ul>
+                    </p>
+
+                    <p>Then, you can run the ERC checker to ensure there's no other issues, and the convert it to PCB layout.</p>
+
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/960541de6277c3d6e55a90cf658216594bb567ea_screenshot_2025-10-08_at_11.51.51___am.png" alt="Kicad PCB Layout" data-size="large">
+
+                    <p>
+                        PCB layout is about translating electrical connections into manufacturable copper patterns while respecting physical constraints. Here's some things to keep in mind:<br /><br />
+                        <strong>Layer structure:</strong> A 2-layer PCB has front copper (F.Cu, red) and back copper (B.Cu, blue) laminated with fiberglass. Through-hole pads automatically connect both layers. Vias are plated holes that let traces jump between layers. Most hobby boards are 2-layer; more layers cost more.<br /><br />
+                        <strong>Core layers you design:</strong> Copper layers (F.Cu/B.Cu) are where current flows - you draw traces and pour planes. Soldermask is the green/purple coating that covers everything except pads. Silkscreen is white text and component outlines. Edge.Cuts defines board shape. Drill files specify hole locations and sizes.<br /><br />
+                        <strong>Design rules (File → Board Setup):</strong> Track width sets minimum trace width, usually 0.15-0.25mm for cheap manufacturers. Clearance is minimum spacing between copper features. Via size defines drill diameter and annular ring. The DRC (Design Rules Checker) verifies you haven't violated manufacturing limits.<br /><br />
+                        <strong>Copper pours/zones:</strong> Right-click → Add Filled Zone creates large copper areas, typically for ground planes. Way more efficient than routing individual ground traces. Fills all empty space with copper connected to your chosen net.<br /><br />
+                        <strong>Layout workflow:</strong> Move components to minimize ratsnest crossing and group related parts. Route power and critical signals first. Add ground pour on back layer. Run DRC to catch errors. Add mounting holes if needed. Draw board outline on Edge.Cuts layer.<br /><br />
+                        <strong>Manufacturing output:</strong> File → Fabrication Outputs → Gerbers generates the RS-274X files that PCB manufacturers need - one file per layer plus drill files.<br /><br />
+                        <strong>Practical constraints:</strong> Traces carrying &gt;1A need width calculators to avoid burning up. Keep decoupling caps physically close to IC power pins. High-frequency signals should be short and direct. 45° bends look cleaner than 90° but both work fine.
+                    </p>
+
+
+                    <img src="files/week5/mini-falstad-sim.png" alt="Mini Falstad Simulation" data-size="medium">
+
+                    <h2>Next Steps</h2>
+
+                    <p>This week I didn't have too much time to actually play around and design things I was interested in. I want to make various synthesizer elements in circuits, because that's actually how they're made! Through using a different combination of capacitors, diodes, and resistors, you can do digital signal processing and alter waveforms easily. Since my final project is going to work with wave forms in some way (likely), I want to be able to understand it more deeply. Here's a falstad image of a drum kick sound machine that, when connected to a daw/speaker/drum sound, can make synthesizer changes to it.</p>
+
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/9ea8deb67b44ebf80f7f0942b4612573924324ea_screenshot_2025-10-08_at_12.34.45___pm.png" alt="Falstad Drum Synth" data-size="large">
+
+                    <p>A fun thing I discovered was the digital VCV rack, where you can program your own synths.</p>
+
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/4f1bc1b140388fd300664ef4267dee2f2c6b0cc6_screenshot_2025-10-07_at_9.51.23___pm.png" alt="VCV Rack" data-size="medium">
+                    
+                    <h2>Content Notes</h2>
+                    
+                    <ul>
+                        <li><strong>Voltage (V)</strong> – the potential energy needed for current flow (j/c = v)</li>
+                        <li><strong>Current (I)</strong> – the amount of charge flowing in a time frame (c/s = a)</li>
+                        <li><strong>Charge (Q)</strong> – driving force behind electrical energy (coulombs)</li>
+                        <li><strong>Power (P)</strong> – amount of energy transferred in a time frame (joules/sec = watts)</li>
+                        <li>
+                            <strong>Resistance (R)</strong> – material's opposition to charged flow (ohms)
+                            <ul class="sublist_indent">
+                                <li>Ohm's law: I = V/R</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>Capacitance</strong> – ability to store electrical charge, C = Q/V
+                            <ul class="sublist_indent">
+                                <li>Polarized capacitors – can only be used in one direction</li>
+                            </ul>
+                        </li>
+                        <li>
+                            <strong>Inductance</strong> – ability of an inductor to induce an opposing voltage to the current, V = -L dI/dt
+                        </li>
+                    </ul>
+
+                    <p>
+                        <strong>Diodes</strong> – similar to a resistor with the exception that current can only flow in one direction. One-way switch. LED is an example of one.
+                    </p>
+                    <p>
+                        <strong>Transistors / MOSFETs</strong> – field effect transistor that either amplifies or switches.
+                    </p>
+                    
+                    <h2>Additional Notes</h2>
+                    
+                    <p>Any additional thoughts, resources, or references...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="blog-utils.js"></script>
+</body>
+</html>

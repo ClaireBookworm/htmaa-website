@@ -561,16 +561,15 @@ async function initializeWeeks() {
         }
     } catch (_) {}
 
-    // Fallback: only probe week1..week4 to avoid 404 spam
-    for (let i = 1; i <= 4; i++) {
+    // Check for HTML files directly instead of markdown
+    for (let i = 1; i <= 5; i++) {
         try {
-            const res = await fetch(`week${i}.md`, { cache: 'no-store' });
-            if (!res.ok) break;
-            const text = await res.text();
-            if (!text || !text.trim()) break;
-            createWeekIconAndModal(i);
+            const res = await fetch(`week${i}.html`, { cache: 'no-store' });
+            if (res.ok) {
+                createWeekIconAndModal(i);
+            }
         } catch (_) {
-            break;
+            // Continue checking other weeks even if one fails
         }
     }
     
@@ -676,12 +675,9 @@ function createWeekIconAndModal(weekNumber) {
 // Check for final project and create icon/modal if it exists
 async function checkAndCreateFinalProject() {
     try {
-        const res = await fetch('finalproject.md', { cache: 'no-store' });
+        const res = await fetch('finalproject.html', { cache: 'no-store' });
         if (res.ok) {
-            const text = await res.text();
-            if (text && text.trim()) {
-                createFinalProjectIconAndModal();
-            }
+            createFinalProjectIconAndModal();
         }
     } catch (_) {
         // Final project doesn't exist, that's okay
