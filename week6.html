@@ -43,9 +43,21 @@
 
                     <p>I made a few PCB designs this week. I ended up milling something that can sense light and display something using that on a display. I use a Phototransistor to do this. phototransistors are simpler than photodiodes for this, with no separate amplification needed, and the RP2040's ADC can read them directly. i initially considered an LDR but phototransistors have way better temporal response, as well as is much larger.</p>
 
-					<p>Here is the schematic. This uses pull-up resistors for the display for the SLC and SDA ports. I also added a resistor to the phototransistor to limit the current going through it.</p>
+					<p>Here is the schematic. This uses pull-up resistors for the display for the SLC and SDA ports. I also added a resistor to the phototransistor to limit the current going through it. Fusion 360 also gives you a bill of materials.</p>
 					
 					<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/05bcd434ff794db53796ec4c64cfc800629cc47e_screenshot_2025-10-15_at_12.47.02___pm.png" alt="Phototransistor PCB" data-size="large">
+
+					<p>
+						<table>
+						<tr><td><b>Part</b></td><td><b>Value</b></td><td><b>Device</b></td><td><b>Footprint Name</b></td><td><b>Detailed Description</b></td><td><b>CATEGORY</b></td><td><b>DATASHEET</b></td><td><b>DESCRIPTION</b></td><td><b>MANUFACTURER</b></td><td><b>MPN</b></td><td><b>OPERATING_TEMPERATURE</b></td><td><b>PACKAGE_SIZE</b></td><td><b>PACKAGE_TYPE</b></td><td><b>PART_STATUS</b></td><td><b>PITCH</b></td><td><b>ROHS</b></td><td><b>SERIES</b></td><td><b>SUBCATEGORY</b></td><td><b>THERMALLOSS</b></td><td><b>TYPE</b></td></tr>
+						<tr><td>JP1</td><td>PINHD-1X4</td><td>PINHD-1X4</td><td>1X04</td><td>Pin Header</td><td>Connectors</td><td></td><td>Header-Straight-4 Position</td><td></td><td></td><td></td><td></td><td>Through Hole</td><td></td><td>0.100" (2.54mm)</td><td></td><td></td><td>Headers</td><td></td><td>Male Pins</td></tr>
+						<tr><td>R1</td><td></td><td>R1206</td><td>R1206</td><td>Resistor (US Symbol)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+						<tr><td>R2</td><td></td><td>R1206FAB</td><td>R1206FAB</td><td>Resistor (US Symbol)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+						<tr><td>R3</td><td></td><td>R1206FAB</td><td>R1206FAB</td><td>Resistor (US Symbol)</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+						<tr><td>U$1</td><td>XIAO_RP2040XIAO_RP2040</td><td>XIAO_RP2040XIAO_RP2040</td><td>XIAO_RP2040</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+						<tr><td>U$2</td><td>Q_PHOTOTRANSISTOR-NPN1206</td><td>Q_PHOTOTRANSISTOR-NPN1206</td><td>OP1206</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+						</table>
+					</p>
 
 					<p>Here is the routing of the board. We set the design rules to 16 mm because of the size of our tools. Instead of routing ground, I used polygon pour to make it easier to connect to ground, and more importantly, it acts as a heat sink during soldering—the ground pins don't overheat as easily.</p>
 
