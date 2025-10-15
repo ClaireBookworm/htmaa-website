@@ -41,13 +41,13 @@
                     <h1>Week 6: Electronic Production</h1>
                     <p>This week we worked on milling our own PCB designs. We use the OtherMill to mill the copper boards and use bantam tools to process the brd files into gerber files.</p>
 
-                    <p>I made a few PCB designs this week. I ended up milling something that can sense light and display something using that on a display. I use a Phototransistor to do this.</p>
+                    <p>I made a few PCB designs this week. I ended up milling something that can sense light and display something using that on a display. I use a Phototransistor to do this. phototransistors are simpler than photodiodes for this, with no separate amplification needed, and the RP2040's ADC can read them directly. i initially considered an LDR but phototransistors have way better temporal response, as well as is much larger.</p>
 
 					<p>Here is the schematic. This uses pull-up resistors for the display for the SLC and SDA ports. I also added a resistor to the phototransistor to limit the current going through it.</p>
 					
 					<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/05bcd434ff794db53796ec4c64cfc800629cc47e_screenshot_2025-10-15_at_12.47.02___pm.png" alt="Phototransistor PCB" data-size="large">
 
-					<p>Here is the routing of the board. We set the design rules to 16 mm because of the size of our tools. Instead of routing ground, I used polygon pour to make it easier to connect to ground.</p>
+					<p>Here is the routing of the board. We set the design rules to 16 mm because of the size of our tools. Instead of routing ground, I used polygon pour to make it easier to connect to ground, and more importantly, it acts as a heat sink during soldering—the ground pins don't overheat as easily.</p>
 
 					<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/8690c50138e64268bd1d3123a088173bd26e3215_color_checker_pcb.png" alt="Phototransistor PCB Routing" data-size="large">
 
@@ -59,13 +59,51 @@
 
 					<video src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/008bce43449d8f7f5584d0adc946fcfeda3b60d6_img_4603.mp4" controls data-size="medium"></video>
 
-					<p>The final step was to solder the board together. I used 5k resistors for the pull-up resistors and a 5k resistor for the phototransistor.</p>
+					<p>The final step was to solder the board together. I used 5k resistors for the pull-up resistors and a 5k resistor for the phototransistor. The pull-ups on i2c are 5k bc that's what the OLED spec sheet suggested for 3.3v operation.</p>
 
 					<img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/ca1c7de95fa2f8a0005a8fe1acd9cfe218c1d502_img_4607.jpg" alt="Phototransistor PCB Soldering" data-size="medium">
 
 					<p>Final Product!</p>
 
 					<img src="files/week6/final_pcb_board.jpg" alt="Phototransistor PCB Final" data-size="medium">
+
+					<p>Todo: I need to upload the code to the board and test this. Here's the basic code I'm using to test this:</p>
+
+					<pre><code class="language-cpp">
+import board
+import busio
+import analogio
+import adafruit_ssd1306
+from time import sleep
+
+# setup i2c for display
+i2c = busio.I2C(board.GP5, board.GP4)  # SCL, SDA - adjust pins
+display = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c)  # or 128x64 if that's your display
+
+# setup phototransistor on ADC
+photo = analogio.AnalogIn(board.GP26)  # adjust pin
+
+def read_light():
+    # raw ADC is 0-65535, normalize to 0-100
+    raw = photo.value
+    return int((raw / 65535) * 100)
+
+display.fill(0)
+display.show()
+
+while True:
+    light = read_light()
+    
+    display.fill(0)
+    display.text(f"Light: {light}%", 0, 0, 1)
+    
+    # visual bar
+    bar_width = int((light / 100) * 128)
+    display.fill_rect(0, 16, bar_width, 8, 1)
+    
+    display.show()
+    sleep(0.1)
+					</code></pre>
 
                 </div>
             </div>
