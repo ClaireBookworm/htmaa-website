@@ -562,7 +562,7 @@ async function initializeWeeks() {
     } catch (_) {}
 
     // Check for HTML files directly instead of markdown
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 6; i++) {
         try {
             const res = await fetch(`week${i}.html`, { cache: 'no-store' });
             if (res.ok) {
@@ -718,18 +718,18 @@ const staticWindowsConfig = [
         position: { top: '50px', left: '50px' },
         size: { width: 'auto', height: 'auto' }
     },
-    {
-        id: 'window2',
-        title: 'todos.txt',
-        content: `this is where i document my journey through making stuff for htmaa.<br><br>
-                  current projects:<br>
-                  - learning cad<br>
-                  - doing some laser cut wood art<br>
-                  - helping build a microscope<br><br>
-                  status: [undefined, week 1?]`,
-        position: { top: '300px', left: '300px' },
-        size: { width: '300px', height: 'auto' }
-    },
+    // {
+    //     id: 'window2',
+    //     title: 'todos.txt',
+    //     content: `this is where i document my journey through making stuff for htmaa.<br><br>
+    //               current projects:<br>
+    //               - learning cad<br>
+    //               - doing some laser cut wood art<br>
+    //               - helping build a microscope<br><br>
+    //               status: [undefined, week 1?]`,
+    //     position: { top: '300px', left: '300px' },
+    //     size: { width: '300px', height: 'auto' }
+    // },
     {
         id: 'window3',
         title: 'about.txt',
@@ -737,7 +737,7 @@ const staticWindowsConfig = [
                   i'm really interested in building interactive music art projects and music in general. I occasionally produce music and have a weekly radio show in Boston with MIT's WMBR. Please send any music recs:)<br><br>
                   I've also been doing some neurotech research and work, so hoping to learn to build smaller-scale BCI stuff. In the past, I've worked on whole brain emulation research at MIT, helping construct and build microscopes, do some wet lab experimentation, and training embodied intelligence models to simulate C. elegans movements. Recently, I just took a gap semester to work at <a href="https://e11.bio">e11.bio</a> as an ML engineer, processing our petabytes of brain slicing imaging and segmenting them in order to trace axons across brain slices.<br><br>
                   feel free to reach out! my website is <a href="https://clairebookworm.com">clairebookworm.com</a> to learn more.<br>`,
-        position: { top: '300px', left: '800px' },
+        position: { top: '300px', left: '500px' },
         size: { width: '500px', height: 'auto' }
     }
 ];
