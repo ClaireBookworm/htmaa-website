@@ -24,6 +24,7 @@
                 <li><a href="week4.html">Week 4</a></li>
                 <li><a href="week5.html">Week 5</a></li>
                 <li><a href="week6.html" class="active">Week 6</a></li>
+                <li><a href="week7.html">Week 7</a></li>
                 <li><a href="finalproject.html">Final Project</a></li>
             </ul>
         </nav>
@@ -41,7 +42,8 @@
                     <h1>Week 6: Electronic Production</h1>
                     <p>This week we worked on milling our own PCB designs. We use the OtherMill to mill the copper boards and use bantam tools to process the brd files into gerber files.</p>
 
-                    <p>I made a few PCB designs this week. I ended up milling something that can sense light and display something using that on a display. I use a Phototransistor to do this. phototransistors are simpler than photodiodes for this, with no separate amplification needed, and the RP2040's ADC can read them directly. i initially considered an LDR but phototransistors have way better temporal response, as well as is much larger.</p>
+                    <p>I made a few PCB designs this week. I ended up milling something that can sense light and display something using that on a display. I use a Phototransistor to do this. phototransistors are simpler than photodiodes for this, with no separate amplification needed, and the RP2040's ADC can read them directly. I initially considered an LDR but phototransistors have way better temporal response, as well as is much larger. It works like a regular transistor but is activated by light and typically has three terminals: the collector, base, and emitter. When light hits the phototransistor, it allows current to flow from collector to emitter.
+					</p>
 
 					<p>Here is the schematic. This uses pull-up resistors for the display for the SLC and SDA ports. I also added a resistor to the phototransistor to limit the current going through it. Fusion 360 also gives you a bill of materials.</p>
 					
@@ -82,39 +84,52 @@
 					<p>Todo: I need to upload the code to the board and test this. Here's the basic code I'm using to test this:</p>
 
 					<pre><code class="language-cpp">
-import board
-import busio
-import analogio
-import adafruit_ssd1306
-from time import sleep
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 
-# setup i2c for display
-i2c = busio.I2C(board.GP5, board.GP4)  # SCL, SDA - adjust pins
-display = adafruit_ssd1306.SSD1306_I2C(128, 32, i2c)  # or 128x64 if that's your display
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 32
+#define OLED_RESET -1
 
-# setup phototransistor on ADC
-photo = analogio.AnalogIn(board.GP26)  # adjust pin
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-def read_light():
-    # raw ADC is 0-65535, normalize to 0-100
-    raw = photo.value
-    return int((raw / 65535) * 100)
+const int PHOTO_PIN = A0;  // P26_A0_D0
 
-display.fill(0)
-display.show()
+void setup() {
+	pinMode(PHOTO_PIN, INPUT);
+	
+	Wire.setSDA(6);  // P6_D4_SDA
+	Wire.setSCL(7);  // P7_D5_SCL
+	Wire.begin();
+	
+	if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+	while(1);
+	}
+	
+	display.clearDisplay();
+	display.setTextSize(1);
+	display.setTextColor(SSD1306_WHITE);
+	display.display();
+}
 
-while True:
-    light = read_light()
-    
-    display.fill(0)
-    display.text(f"Light: {light}%", 0, 0, 1)
-    
-    # visual bar
-    bar_width = int((light / 100) * 128)
-    display.fill_rect(0, 16, bar_width, 8, 1)
-    
-    display.show()
-    sleep(0.1)
+void loop() {
+	int raw = analogRead(PHOTO_PIN);
+	int light = map(raw, 0, 1023, 0, 100);
+	
+	display.clearDisplay();
+	
+	display.setCursor(0, 0);
+	display.print("Light: ");
+	display.print(light);
+	display.print("%");
+	
+	int barWidth = map(light, 0, 100, 0, SCREEN_WIDTH);
+	display.fillRect(0, 16, barWidth, 8, SSD1306_WHITE);
+	
+	display.display();
+	delay(100);
+}
 					</code></pre>
 
 					<p>Thanks so much to Anthony for answering my many circuit design questions (so close to Wednesday too) and Eghosa for explaining some of the things I had missed when I was out of town and confused. :)</p>

@@ -562,7 +562,7 @@ async function initializeWeeks() {
     } catch (_) {}
 
     // Check for HTML files directly instead of markdown
-    for (let i = 1; i <= 6; i++) {
+    for (let i = 1; i <= 7; i++) {
         try {
             const res = await fetch(`week${i}.html`, { cache: 'no-store' });
             if (res.ok) {
