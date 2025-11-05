@@ -25,6 +25,8 @@
                 <li><a href="week5.html">Week 5</a></li>
                 <li><a href="week6.html">Week 6</a></li>
                 <li><a href="week7.html">Week 7</a></li>
+                <li><a href="week8.html">Week 8</a></li>
+                <li><a href="week9.html">Week 9</a></li>
                 <li><a href="finalproject.html" class="active">Final Project</a></li>
             </ul>
         </nav>
@@ -46,6 +48,18 @@
                     <img src="files/finalproject/brainstorm_notebook.png" alt="Concept Sketch" data-size="medium">
 
                     <h2>Physical DAW/Synth</h2>
+
+
+                    <h3>Sketches and Design Choices</h3>
+
+                    <p>I've mostly settled on this as what I'm planning on building. I've been spending some time thinking of the implementation details. What I'd need is a grid that's able to power the blocks, which each have mictrocontrollers on them. JD recommended I use gridfinity to 3d print a simple grid that has magnets (to make sure they snap into place), and then have two pads on each grid cell using pogo pins. One would provide power, and the other would receive from the TX pin from the block. Since I'm planning on stacking blocks, I'll need a RX pin on the top of each block as well, that each receives information of the order of the blocks above, and eventually transmits what is essentially a list of IDs to the grid below.</p>
+
+                    <img src="files/finalproject/goodnotes_sketch.jpeg" alt="Physical DAW/Synth Concept Sketch" data-size="medium">
+
+                    <p>In Week 9, I toyed around with a very simple speaker design that's usuing a piezo disk, but I'm planning on using something much higher quality for this final product. There's a speaker amp + speaker design that the EECS makerspace has available. (Though, maybe it might be easier to use an actual speaker, but I want to keep it all within the product itself.)</p>
+
+                    
+                    <h3>Initial Thoughts</h3>
 
                     <p>I've been learning production and composition with a variety of DAWs, including Logic Pro and Ableton (and started with Garage Band). Apple DAW apps have loops, where you can import these looping sound samples that you layer on top of each other to create a track. In addition, synth design is a huge field in production. Most producers aren't making synths from scartch, they're using existing synth engines (like serum or vital) and tweaking presets or programming new patches. </p>
 
