@@ -1,3 +1,1 @@
-- index.html: main Web page of your site
-- .gitignore: list of files that git should ignore
-- .gitlab-ci.yml: YAML script that tells the server how to publish your site; do not touch this
+# welcome to claire's how to make almost anything website

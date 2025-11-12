@@ -27,6 +27,7 @@
                 <li><a href="week7.html">Week 7</a></li>
                 <li><a href="week8.html">Week 8</a></li>
                 <li><a href="week9.html" class="active">Week 9</a></li>
+                <li><a href="week10.html">Week 10</a></li>
                 <li><a href="finalproject.html">Final Project</a></li>
             </ul>
         </nav>
@@ -42,83 +43,6 @@
             <div class="blog-content">
                 <div class="blog-layout">
                     <h1>Week 9: Output Devices</h1>
-                    <p>This week is a combination of some of the previous weeks' topics, so not too much that is new. Last week, the board that I had soldered and made didn't work — never turned out, and I realize it was because of a mix of not testing if my solder didn't cause a short and not having a good enough connection to the board. You can look at the original design in <a href="week6.html">Week 6</a>.</p>
-
-                    <img src='files/week6/final_pcb_board.jpg' alt='Final PCB Board' data-size="medium">
-
-
-                    <h2>IR Phototransistor</h2>
-                    <p>This week, I stuck with the same pads design but did some more research on the phototransistor and fixed the soldering.</p>
-
-                    <img src="files/week-8-9/circuit_soldering_design.png" alt="Circuit Soldering Design" data-size="large">
-
-                    <p>Then, I flashed a simple program to take in the data from the phototransistor and display it on the OLED display.</p>
-
-                    <pre><code class="language-cpp">
-#include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
-
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 32
-#define OLED_RESET -1
-
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-
-const int PHOTO_PIN = A0;  // P26_A0_D0
-
-void setup() {
-    pinMode(PHOTO_PIN, INPUT);
-    
-    Wire.setSDA(6);  // P6_D4_SDA
-    Wire.setSCL(7);  // P7_D5_SCL
-    Wire.begin();
-    
-    if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-    while(1);
-    }
-    
-    display.clearDisplay();
-    display.setTextSize(1);
-    display.setTextColor(SSD1306_WHITE);
-    display.display();
-}
-
-void loop() {
-    int raw = analogRead(PHOTO_PIN);
-    int light = map(raw, 0, 4095, 0, 100);  // 12-bit range
-    
-    display.clearDisplay();
-    
-    display.setCursor(0, 0);
-    display.print("Light: ");
-    display.print(light);
-    display.print("%");
-    
-    // debug - add raw value
-    display.setCursor(0, 8);
-    display.print("Raw: ");
-    display.print(raw);
-    
-    int barWidth = map(light, 0, 100, 0, SCREEN_WIDTH);
-    display.fillRect(0, 24, barWidth, 8, SSD1306_WHITE);
-    
-    display.display();
-    delay(100);
-}
-                    </code></pre>
-
-                    <img src="files/week-8-9/first_display_design.png" alt="OLED Display" data-size="medium">
-                    <img src="files/week-8-9/second_display_design.png" alt="OLED Display" data-size="medium">
-
-                    <p>It turns out I had a slight misunderstanding of the Q phototransistor NPN I was working with. It's an IR sensor (not visible light), so the ambient light doesn't really affect it (and covering it doesn't change too much). Using a 10k resistor as a pull-down resistor is good, but if I want it to be a bit more sensitive to small changes I can use a higher-value resistor.</p>
-
-                    <!-- <p>It turns out there might have been a few mistakes in my initial PCB footprint design. I'm using a Q_PHOTOTRANSISTOR_NPN, which might mean that there's a slightly different direction and footprint to the standard one. For an NPN phototransistor:
-                        <ul>
-                            <li>collector (anode, usually unmarked end) → R2 → 3V3</li>
-                            <li>emitter (cathode, green marked end) → P26 → R3 → GND</li>
-                        </ul>
-                    <p>I had the phototransistor's emitter connected to the ground, but it should be connected to the 3V3 power supply. <strong>Todo:</strong> I plan on flipping the phototransistor 180 degrees and this should just fix the issue!</p> -->
                     
                     <h2>(Analog) Speaker</h2>
 
@@ -131,6 +55,11 @@ void loop() {
                     <img src="files/week-8-9/toy_speaker_pcb.png" alt="Toy Speaker PCB" data-size="large">
 
                     <p>The potentiometer is being read in software, where then I will scale the PWM signal to do some sort of pitch control. I use a n-channel MOSFET before the piezo because they can act as a switch. When the signal from PA6 goes high, the mosfet conducts and dumps current through the piezo from the VCC power supply, and when it goes low, it blocks (which helps, because otherwise the piezo would be buzzing just when I connect the board to power). </p>
+
+                    <h3>Amp</h3>
+                    <p>As a fun sidequest, I decided to try to learn how to use an amp for a speaker. I used a LM386 audio amplifier, which is a simple audio amplifier that can be used to amplify audio signals.</p>
+
+                    <img src="files/week-8-9/lm386_datasheet.png" alt="LM386 Datasheet" data-size="large">
                     
                 </div>
             </div>
