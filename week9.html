@@ -28,6 +28,8 @@
                 <li><a href="week8.html">Week 8</a></li>
                 <li><a href="week9.html" class="active">Week 9</a></li>
                 <li><a href="week10.html">Week 10</a></li>
+                <li><a href="week11.html">Week 11</a></li>
+                <li><a href="week12.html">Week 12</a></li>
                 <li><a href="finalproject.html">Final Project</a></li>
             </ul>
         </nav>
@@ -56,10 +58,34 @@
 
                     <p>The potentiometer is being read in software, where then I will scale the PWM signal to do some sort of pitch control. I use a n-channel MOSFET before the piezo because they can act as a switch. When the signal from PA6 goes high, the mosfet conducts and dumps current through the piezo from the VCC power supply, and when it goes low, it blocks (which helps, because otherwise the piezo would be buzzing just when I connect the board to power). </p>
 
-                    <h3>Amp</h3>
+                    <h2>Anthropomorphize Everything!</h2>
+                    
                     <p>As a fun sidequest, I decided to try to learn how to use an amp for a speaker. I used a LM386 audio amplifier, which is a simple audio amplifier that can be used to amplify audio signals.</p>
 
                     <img src="files/week-8-9/lm386_datasheet.png" alt="LM386 Datasheet" data-size="large">
+
+                    <p>This was very inspired by the googly eyes I put on my water bottle the other day... I want to put googly eyes (which have cameras, mic, and speaker either attached or connected) and be able to "talk" to them. The eyes will be connected to some online-running voice model (i.e., with SI or 11Labs) that have a sort of custom-generated personality based on what the object is, and you can talk to it. Voice models are quite powerful today, being able to sound like a human, support interruptions in conversation, and so on.</p>
+
+                    <p>This was also inspired by a project a <a href="ariellelok.com">friend of mine</a> spearheaded at <a href="https://lu.ma/beans">Friendly Beans</a> (a weekly coworking session I run in Boston) where she ran a series of "protests" to put <a href="https://www.nytimes.com/2024/06/30/us/boston-t-train-googly-eyes.html">googly eyes on the MBTA</a> trains!</p>
+
+                    <img src="https://external-preview.redd.it/mbta-adds-googly-eyes-to-some-trolleys-and-locomotives-v0-HeM0ZSGOcf7kycQn_KghQjjCbOWGMrBtPm_8H3kcXVk.jpg?auto=webp&s=5642a45f43c77cec98eef82f9b35859147c70655" alt="Googly Eyes on MBTA Trains" data-size="medium">
+
+                    <p>I actually did this as a side project over the weekend during the term! I built a speaker from using a speaker component and a LM386 amp.</p>
+
+                    <img src="files/finalproject/sample_speaker.png" alt="Sample Speaker" data-size="medium">
+                    <img src="files/finalproject/lm386.png" alt="LM386" data-size="medium">
+
+                    <p>The LM386 is a simple audio amplifier that can be used to amplify audio signals. I used a 10k resistor as a pull-down resistor to ground, and a 10k resistor as a pull-up resistor to VCC. I also used some capacitors to filter out noise, and putting it between the gains (10x, 20x, 50x) to get a louder sound. I then connected the output of the LM386 to the speaker.</p>
+
+                    <video controls data-size="medium" style="max-width: 100%; height: auto;">
+                        <source src="files/finalproject/game_of_thrones.mov" type="video/quicktime">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <video controls data-size="medium" style="max-width: 100%; height: auto;">
+                        <source src="files/finalproject/porter_robinson.mov" type="video/quicktime">
+                        Your browser does not support the video tag.
+                    </video>
                     
                 </div>
             </div>

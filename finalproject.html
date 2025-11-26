@@ -28,6 +28,8 @@
                 <li><a href="week8.html">Week 8</a></li>
                 <li><a href="week9.html">Week 9</a></li>
                 <li><a href="week10.html">Week 10</a></li>
+                <li><a href="week11.html">Week 11</a></li>
+                <li><a href="week12.html">Week 12</a></li>
                 <li><a href="finalproject.html" class="active">Final Project</a></li>
             </ul>
         </nav>
@@ -51,17 +53,20 @@
                     <h2>Physical DAW/Synth</h2>
 
 
+                    <p>In Week 9, I toyed around with a very simple speaker design that's usuing a piezo disk, but I'm planning on using something much higher quality for this final product. There's a speaker amp + speaker design that the EECS makerspace has available. (Though, maybe it might be easier to use an actual speaker, but I want to keep it all within the product itself.)</p>
+
+                    <img src="files/finalproject/gridfinity_example.png" alt="Gridfinity Example" data-size="medium">
+
+                    <p>On Week 12 (Networking and Communications), I have designed the prototype of how I'd want the stacks of blocks to communicate with each other. I'll be using a UART connection with the attiny1614 microcontrollers in each block. To initiate contact accurately, I'll use small magnets to snap the blocks into place and then use pogo-pins to allow these vertical connections.</p>
+
+                    <img src="files/finalproject/board_in_grid.png" alt="Board in Grid" data-size="medium">
+
+
                     <h3>Sketches and Design Choices</h3>
 
                     <p>I've mostly settled on this as what I'm planning on building. I've been spending some time thinking of the implementation details. What I'd need is a grid that's able to power the blocks, which each have mictrocontrollers on them. JD recommended I use gridfinity to 3d print a simple grid that has magnets (to make sure they snap into place), and then have two pads on each grid cell using pogo pins. One would provide power, and the other would receive from the TX pin from the block. Since I'm planning on stacking blocks, I'll need a RX pin on the top of each block as well, that each receives information of the order of the blocks above, and eventually transmits what is essentially a list of IDs to the grid below.</p>
 
                     <img src="files/finalproject/goodnotes_sketch.jpeg" alt="Physical DAW/Synth Concept Sketch" data-size="medium">
-
-                    <p>In Week 9, I toyed around with a very simple speaker design that's usuing a piezo disk, but I'm planning on using something much higher quality for this final product. There's a speaker amp + speaker design that the EECS makerspace has available. (Though, maybe it might be easier to use an actual speaker, but I want to keep it all within the product itself.)</p>
-
-                    <img src="files/finalproject/gridfinity_example.png" alt="Gridfinity Example" data-size="medium">
-
-                    <!-- <p>Using </p> -->
 
                     
                     <h3>Initial Thoughts</h3>
@@ -91,37 +96,11 @@
 
                     <p>Here's a sketch of the concept. A few things I still want to figure out is how to actually immerse the user into the music, which is a main goal of this project. Having pre-programmed laser programs for each of the main blocks would be an interesting solution, since programming lasers normally takes a long time. Another thing I'm unsure about is how to actually scan what blocks are on the grid — a scanner might be too inaccurate, especially if I have stacks of blocks. Perhaps what works might be WiFi transmission of data from the bottom blocks? </p>
 
-                    <img src="files/finalproject/goodnotes_sketch.jpeg" alt="Physical DAW/Synth Concept Sketch" data-size="medium">
+                    <!-- <img src="files/finalproject/goodnotes_sketch.jpeg" alt="Physical DAW/Synth Concept Sketch" data-size="medium"> -->
 
                     <p>A fun thing I discovered was the digital VCV rack, where you can program your own synths. Either I can reverse engineer some of the parts here OR just link it to this.</p>
 
                     <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/4f1bc1b140388fd300664ef4267dee2f2c6b0cc6_screenshot_2025-10-07_at_9.51.23___pm.png" alt="VCV Rack" data-size="medium">
-                    
-
-                    <h2>Anthropomorphize Everything!</h2>
-
-                    <p>This was very inspired by the googly eyes I put on my water bottle the other day... I want to put googly eyes (which have cameras, mic, and speaker either attached or connected) and be able to "talk" to them. The eyes will be connected to some online-running voice model (i.e., with SI or 11Labs) that have a sort of custom-generated personality based on what the object is, and you can talk to it. Voice models are quite powerful today, being able to sound like a human, support interruptions in conversation, and so on.</p>
-
-                    <p>This was also inspired by a project a <a href="ariellelok.com">friend of mine</a> spearheaded at <a href="https://lu.ma/beans">Friendly Beans</a> (a weekly coworking session I run in Boston) where she ran a series of "protests" to put <a href="https://www.nytimes.com/2024/06/30/us/boston-t-train-googly-eyes.html">googly eyes on the MBTA</a> trains!</p>
-
-                    <img src="https://external-preview.redd.it/mbta-adds-googly-eyes-to-some-trolleys-and-locomotives-v0-HeM0ZSGOcf7kycQn_KghQjjCbOWGMrBtPm_8H3kcXVk.jpg?auto=webp&s=5642a45f43c77cec98eef82f9b35859147c70655" alt="Googly Eyes on MBTA Trains" data-size="medium">
-
-                    <p>I actually did this as a side project over the weekend! I built a speaker from using a speaker component and a LM386 amp.</p>
-
-                    <img src="files/finalproject/sample_speaker.png" alt="Sample Speaker" data-size="medium">
-                    <img src="files/finalproject/lm386.png" alt="LM386" data-size="medium">
-
-                    <p>The LM386 is a simple audio amplifier that can be used to amplify audio signals. I used a 10k resistor as a pull-down resistor to ground, and a 10k resistor as a pull-up resistor to VCC. I also used some capacitors to filter out noise, and putting it between the gains (10x, 20x, 50x) to get a louder sound. I then connected the output of the LM386 to the speaker.</p>
-
-                    <video controls data-size="medium" style="max-width: 100%; height: auto;">
-                        <source src="files/finalproject/game_of_thrones.mov" type="video/quicktime">
-                        Your browser does not support the video tag.
-                    </video>
-
-                    <video controls data-size="medium" style="max-width: 100%; height: auto;">
-                        <source src="files/finalproject/porter_robinson.mov" type="video/quicktime">
-                        Your browser does not support the video tag.
-                    </video>
 
                     <h2>Viral Sound Propagation</h2>
                     
