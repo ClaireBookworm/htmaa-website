@@ -554,6 +554,8 @@ async function initializeWeeks() {
             const weeks = await manifestRes.json();
             if (Array.isArray(weeks)) {
                 weeks.forEach(n => createWeekIconAndModal(Number(n)));
+                // Reposition all icons after all are created
+                repositionWeekIcons();
                 // Check for final project after weeks
                 checkAndCreateFinalProject();
                 return;
@@ -572,6 +574,9 @@ async function initializeWeeks() {
             // Continue checking other weeks even if one fails
         }
     }
+    
+    // Reposition all icons after all are created
+    repositionWeekIcons();
     
     // Check for final project
     checkAndCreateFinalProject();
@@ -656,21 +661,67 @@ function createWindowModal(config) {
     return modal;
 }
 
+// Store week icons for repositioning
+let weekIcons = [];
+
 function createWeekIconAndModal(weekNumber) {
-    const spacing = 80;
-    const rightPosition = 20 + (weekNumber - 1) * spacing;
-    
     // Create desktop icon that links to blog page
-    createDesktopIcon({
+    const icon = createDesktopIcon({
         id: `week${weekNumber}Icon`,
         label: `Week ${weekNumber}`,
         iconClass: 'folder',
         onClick: () => window.location.href = `week${weekNumber}.html`,
-        position: { top: '20px', right: `${rightPosition}px`, left: 'auto' }
+        position: { top: '20px', right: '20px', left: 'auto' }
     });
+    
+    // Store icon reference for repositioning
+    weekIcons.push({ weekNumber, element: icon });
     
     // No longer create window modal - we're using blog pages instead
 }
+
+// Reposition week icons in a grid layout that wraps to multiple rows
+function repositionWeekIcons() {
+    const iconWidth = 80; // Width of each icon including spacing
+    const iconHeight = 90; // Height of each icon including spacing
+    const startTop = 20;
+    const startRight = 20;
+    const minRightMargin = 20; // Minimum margin from right edge
+    
+    // Sort icons by week number
+    weekIcons.sort((a, b) => a.weekNumber - b.weekNumber);
+    
+    // Calculate how many icons fit per row based on window width
+    const windowWidth = window.innerWidth;
+    const availableWidth = windowWidth - startRight - minRightMargin;
+    
+    // Default to 2 rows: calculate icons per row to achieve ~2 rows
+    // For 12 weeks, that's 6 per row. But adapt if window is too small
+    const totalIcons = weekIcons.length;
+    const defaultIconsPerRow = Math.ceil(totalIcons / 2); // Aim for 2 rows
+    const maxIconsPerRow = Math.max(1, Math.floor(availableWidth / iconWidth));
+    
+    // Use the smaller of: default (for 2 rows) or what fits in window
+    const iconsPerRow = Math.min(defaultIconsPerRow, maxIconsPerRow);
+    
+    // Position each icon
+    weekIcons.forEach((iconData, index) => {
+        const row = Math.floor(index / iconsPerRow);
+        const col = index % iconsPerRow;
+        
+        const top = startTop + (row * iconHeight);
+        const right = startRight + (col * iconWidth);
+        
+        iconData.element.style.top = `${top}px`;
+        iconData.element.style.right = `${right}px`;
+        iconData.element.style.left = 'auto';
+    });
+}
+
+// Reposition icons on window resize
+window.addEventListener('resize', () => {
+    repositionWeekIcons();
+});
 
 // Check for final project and create icon/modal if it exists
 async function checkAndCreateFinalProject() {
@@ -712,7 +763,7 @@ const staticWindowsConfig = [
     {
         id: 'window1',
         title: "claire's website",
-        content: `<h1>welcome to claire's<br>how to make almost anything<br>website</h1>
+        content: `<h2>welcome to claire's<br>how to make almost anything<br>website</h2>
                   <button>ok</button>
                   <button>cancel</button>`,
         position: { top: '50px', left: '50px' },
@@ -737,8 +788,30 @@ const staticWindowsConfig = [
                   i'm really interested in building interactive music art projects and music in general. I occasionally produce music and have a weekly radio show in Boston with MIT's WMBR. Most of my projects in this class will be / are music inspired. Please send any music recs:)<br><br>
                   I've also been doing some neurotech research and work, so I'm hoping to learn to build smaller-scale BCI stuff from this class. Otherwise, I've worked on whole brain emulation research at MIT, helped construct and build microscopes, did some wet lab experimentation, and trained embodied intelligence models to simulate C. elegans movements. Recently, I just took a gap semester to work at <a href="https://e11.bio">e11.bio</a> as an ML engineer, processing our petabytes of brain slicing imaging and segmenting them in order to trace axons across brain slices.<br><br>
                   feel free to reach out! my website is <a href="https://clairebookworm.com">clairebookworm.com</a> to learn more.<br>`,
-        position: { top: '150px', left: '500px' },
+        position: { top: '200px', left: '500px' },
         size: { width: '550px', height: 'auto' }
+    },
+    {
+        id: 'window4',
+        title: 'table of contents.txt',
+        content: `<div style="font-size: 11px; line-height: 1.4;">
+                  <strong>Table of Contents</strong><br><br>
+                  <a href="week1.html" style="color: #0000ff; text-decoration: underline;">Week 1 - Introduction & Planning</a><br>
+                  <a href="week2.html" style="color: #0000ff; text-decoration: underline;">Week 2 - Parametric Design and Vinyl Cutting</a><br>
+                  <a href="week3.html" style="color: #0000ff; text-decoration: underline;">Week 3 - Embedded Electronics</a><br>
+                  <a href="week4.html" style="color: #0000ff; text-decoration: underline;">Week 4 - 3D Scanning and Printing</a><br>
+                  <a href="week5.html" style="color: #0000ff; text-decoration: underline;">Week 5 - Electronics Design</a><br>
+                  <a href="week6.html" style="color: #0000ff; text-decoration: underline;">Week 6 - Electronics Production</a><br>
+                  <a href="week7.html" style="color: #0000ff; text-decoration: underline;">Week 7 - Computer-Controlled Machining</a><br>
+                  <a href="week8.html" style="color: #0000ff; text-decoration: underline;">Week 8 - Input Devices</a><br>
+                  <a href="week9.html" style="color: #0000ff; text-decoration: underline;">Week 9 - Output Devices</a><br>
+                  <a href="week10.html" style="color: #0000ff; text-decoration: underline;">Week 10 - Molding and Casting</a><br>
+                  <a href="week11.html" style="color: #0000ff; text-decoration: underline;">Week 11 - Machine Design</a><br>
+                  <a href="week12.html" style="color: #0000ff; text-decoration: underline;">Week 12 - Networks and Communications</a><br>
+                  <a href="finalproject.html" style="color: #0000ff; text-decoration: underline;">Final Project</a><br>
+                  </div>`,
+        position: { top: '400px', left: '50px' },
+        size: { width: '280px', height: 'auto' }
     }
 ];
 
