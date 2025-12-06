@@ -564,7 +564,7 @@ async function initializeWeeks() {
     } catch (_) {}
 
     // Check for HTML files directly instead of markdown
-    for (let i = 1; i <= 12; i++) {
+    for (let i = 1; i <= 13; i++) {
         try {
             const res = await fetch(`week${i}.html`, { cache: 'no-store' });
             if (res.ok) {
@@ -808,6 +808,7 @@ const staticWindowsConfig = [
                   <a href="week10.html" style="color: #0000ff; text-decoration: underline;">Week 10 - Molding and Casting</a><br>
                   <a href="week11.html" style="color: #0000ff; text-decoration: underline;">Week 11 - Machine Design</a><br>
                   <a href="week12.html" style="color: #0000ff; text-decoration: underline;">Week 12 - Networks and Communications</a><br>
+                  <a href="week13.html" style="color: #0000ff; text-decoration: underline;">Week 13 - Wildcard Week</a><br>
                   <a href="finalproject.html" style="color: #0000ff; text-decoration: underline;">Final Project</a><br>
                   </div>`,
         position: { top: '400px', left: '50px' },

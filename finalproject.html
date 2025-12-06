@@ -30,6 +30,7 @@
                 <li><a href="week10.html">Week 10</a></li>
                 <li><a href="week11.html">Week 11</a></li>
                 <li><a href="week12.html">Week 12</a></li>
+                <li><a href="week13.html">Week 13</a></li>
                 <li><a href="finalproject.html" class="active">Final Project</a></li>
             </ul>
         </nav>
@@ -52,7 +53,6 @@
 
                     <h2>Physical DAW/Synth</h2>
 
-
                     <p>In Week 9, I toyed around with a very simple speaker design that's usuing a piezo disk, but I'm planning on using something much higher quality for this final product. There's a speaker amp + speaker design that the EECS makerspace has available. (Though, maybe it might be easier to use an actual speaker, but I want to keep it all within the product itself.)</p>
 
                     <img src="files/finalproject/gridfinity_example.png" alt="Gridfinity Example" data-size="medium">
@@ -60,6 +60,21 @@
                     <p>On Week 12 (Networking and Communications), I have designed the prototype of how I'd want the stacks of blocks to communicate with each other. I'll be using a UART connection with the attiny1614 microcontrollers in each block. To initiate contact accurately, I'll use small magnets to snap the blocks into place and then use pogo-pins to allow these vertical connections.</p>
 
                     <img src="files/finalproject/board_in_grid.png" alt="Board in Grid" data-size="medium">
+
+                    <p>I made a few iterations of this design to see how it might look like at different sizes and layouts. Fusion 360 supports a built-in gridfinity plugin, which made my life much easier because I could directly sketch on top of the bins and baseplates. The dimensions I ended up using were the defaults: 42 by 42 mm grids with 5 mm height bins and magnetic cutouts (6.5mm diameter) to help the blocks snap into place. Within the bin, I have 3-4 cutouts that are 5x5 mm and spaced evenly apart.
+                    </p>
+
+                    <p>Then, I had to design the PCB boards for the bins. Each bin will have 2 boards vertically on top of each other. The bottom board has the pogo pins that connects to the board below, the attiny1614, a series of headers to allow the UART programmer to connect, a connection from the board above into the RX pin, and a series of pogo pins for power, ground, and the TX pin for the board below. The top board has 3 copper pads for GND, VCC, and RX (connected to the RX pin) and a wire connecting down from RX to RX. </p>
+
+                    <div class="image-gallery">
+                        <img src="files/finalproject/bin_schematic.png" alt="Bin Schematic">
+                        <img src="files/finalproject/bin_pcb_layout.png" alt="Bin PCB Layout">
+                    </div>
+
+                    <p>There are 4 rows in my grid, and each row would signify a separate speaker/instrument. Each row would have an <a href="https://wiki.seeedstudio.com/XIAO-RP2040/">RP2040</a> and that rp2040 would be connected to a <a href="https://www.digikey.com/en/products/detail/adafruit-industries-llc/3006/6058477">Adafruit Max98357 I2s DAS AMP</a> thats connected to a simple shrouded speaker, as well as an OLED screen and to the TX pins of the 4 attiny1614s embedded in the grid itself in that row. </p>
+
+                    <img src="files/finalproject/rp2040_schematic.png" alt="RP2040 Schematic">
+                    <!-- <img src="files/finalproject/rp2040_pcb_layout.png" alt="RP2040 PCB Layout"> -->
 
 
                     <h3>Sketches and Design Choices</h3>
