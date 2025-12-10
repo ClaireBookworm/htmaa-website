@@ -46,7 +46,43 @@
             <div class="blog-content">
                 <div class="blog-layout">
                     <h1>Week 13: Wildcard Week</h1>
-                    <p>Content coming soon...</p>
+                    <p>This week I worked with the Wire EDM (Electrical Discharge Machining) machine in the CBA makerspace. It works by using electrical sparks from a thin, continuously fed wire to eroe and cut electrically conductive materials, and is able to create intricate shapes with extreme accuracy and detail.</p>
+
+                    <p>I started with using an online tool to generate a svg to fusion component of a map of puzzle pieces. I then exported the svg as a dxf file.</p>
+
+                    <img src="files/week13/initial_puzzle_layout.png" alt="Initial Puzzle Layout" data-size="medium">
+
+                    <p>Since the wire EDM machine is able to cut ~0.12-0.18 inches per minute, a lot of the larger pieces would have taken too long to cut. For example, the two pieces I cut were 0.375 by 0.375 inches, or 2 inch circumference, which took 20-ish minutes each.</p>
+
+                    <img src="files/week13/extracted_puzzes.png" alt="Extracted Puzzles" data-size="medium">
+
+                    <p>I scaled these pieces, projected them to get the dxf sketch, and exported! On the Wire EDM machine, you convert it from dxf into a gcode file and determine where the machine should start cutting, what position relative to the start point it should be cutting, and so on. The machine geneates 300+ volt sparks in the wire, and for it to work you must use conductive material. I ended up using a piece of scrap aluminum that had a nice finish. The machine also uses dielectric flushing, which flusehes away the eroded particles and cooling the area.</p>
+
+                    <img src="files/week13/machine_in_action.png" alt="Machine in Action" data-size="medium">
+                    <img src="files/week13/finished_pieces.png" alt="Finished Pieces" data-size="medium">
+
+                    <!-- Example download component -->
+                    <div class="download-component">
+                        <div class="download-component-icon">📄</div>
+                        <div class="download-component-content">
+                            <div class="download-component-text">
+                                <div class="download-component-filename">claire_puzzle2.stl</div>
+                                <div class="download-component-description">dxf file for first puzzle piece</div>
+                            </div>
+                            <a href="files/week13/claire_puzzle2.stl" download class="download-component-button">Download</a>
+                        </div>
+                    </div>
+
+                    <div class="download-component">
+                        <div class="download-component-icon">📄</div>
+                        <div class="download-component-content">
+                            <div class="download-component-text">
+                                <div class="download-component-filename">claire_puzzle3.stl</div>
+                                <div class="download-component-description">dxf file for second puzzle piece</div>
+                            </div>
+                            <a href="files/week13/claire_puzzle3.stl" download class="download-component-button">Download</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

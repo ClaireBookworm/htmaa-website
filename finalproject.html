@@ -64,6 +64,8 @@
                     <p>I made a few iterations of this design to see how it might look like at different sizes and layouts. Fusion 360 supports a built-in gridfinity plugin, which made my life much easier because I could directly sketch on top of the bins and baseplates. The dimensions I ended up using were the defaults: 42 by 42 mm grids with 5 mm height bins and magnetic cutouts (6.5mm diameter) to help the blocks snap into place. Within the bin, I have 3-4 cutouts that are 5x5 mm and spaced evenly apart.
                     </p>
 
+                    <h4>Bin PCB Iterations</h4>
+
                     <p>Then, I had to design the PCB boards for the bins. Each bin will have 2 boards vertically on top of each other. The bottom board has the pogo pins that connects to the board below, the attiny1614, a series of headers to allow the UART programmer to connect, a connection from the board above into the RX pin, and a series of pogo pins for power, ground, and the TX pin for the board below. The top board has 3 copper pads for GND, VCC, and RX (connected to the RX pin) and a wire connecting down from RX to RX. </p>
 
                     <div class="image-gallery">
@@ -71,11 +73,30 @@
                         <img src="files/finalproject/bin_pcb_layout.png" alt="Bin PCB Layout">
                     </div>
 
+                    <p>I had a lot of challenges in designing PCBs that would work with my blocks. Since I had to align the bottom and top blocks perfectly, have enough space for error since the pogo pins might not perfectly align on a small apd each time, and make sure I can assemble everything easily, I had to make many iterations of the boards and the bins. Eventually, I landed on a design of the bin that has 35 mm of height, containing 4 bottom openings that are 5 x 7 mm for the pogo pins to connect downwards and a space for magnetic connection to the top block above.</p>
+
+                    <img src="files/finalproject/gridfinity_bin_design.png" alt="Gridfinity Bin Design" data-size="medium">
+
+                    <p>The big challenge was then placing all the required circuit components in this small clearance area that allowed for simple connection. The bottom board would have the pogo pins, the attiny1614, a series of headers to allow the UART programmer to connect, a connection from the board above into the RX pin, and a series of pogo pins for power, ground, and the TX pin for the board below. The top board would have 3 copper pads for GND, VCC, and RX (connected to the RX pin) and 3 wires connecting down to the bottom board. </p>
+                    
+                    
+                    <img src="files/finalproject/gridfinity_board_sketches.jpeg" alt="Gridfinity Board Sketches" data-size="medium">
+                    <img src="files/finalproject/01_board_working.png" alt="01 Board Working" data-size="medium">
+
+                    <p>After 8 iterations of the top and bottom boards, I was able to make a design that would work. I added notches on 2 of the 4 top edges fo the bins that would allow the top board to lay on without falling down. There's a bit of the pads that are cut off by the edge that I'm worried about, but I'm hoping that the pogo pins will be able to connect to the board anyways.</p>
+                    
+                    <div class="image-gallery">
+                        <img src="files/finalproject/top_block_v8.png" alt="Top Block V8" data-size="medium">
+                        <img src="files/finalproject/bottom_block_v8.png" alt="Bottom Block V8" data-size="medium">
+                    </div>
+
+                    <h4>Controller PCB Iterations</h4>
+
+
                     <p>There are 4 rows in my grid, and each row would signify a separate speaker/instrument. Each row would have an <a href="https://wiki.seeedstudio.com/XIAO-RP2040/">RP2040</a> and that rp2040 would be connected to a <a href="https://www.digikey.com/en/products/detail/adafruit-industries-llc/3006/6058477">Adafruit Max98357 I2s DAS AMP</a> thats connected to a simple shrouded speaker, as well as an OLED screen and to the TX pins of the 4 attiny1614s embedded in the grid itself in that row. </p>
 
                     <img src="files/finalproject/rp2040_schematic.png" alt="RP2040 Schematic">
                     <!-- <img src="files/finalproject/rp2040_pcb_layout.png" alt="RP2040 PCB Layout"> -->
-
 
                     <h3>Sketches and Design Choices</h3>
 
