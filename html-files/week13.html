@@ -39,15 +39,61 @@
         <!-- Main window -->
         <div class="blog-window">
             <div class="blog-title-bar">
-                <div class="blog-title-text">Week 14 - Interfaces</div>
+                <div class="blog-title-text">Week 13: Interfaces</div>
                 <div class="blog-title-controls">
                     <button onclick="window.close()" title="Close">×</button>
                 </div>
             </div>
             <div class="blog-content">
                 <div class="blog-layout">
-                    <h1>Week 14 - Interfaces</h1>
-                    <p>Content coming soon...</p>
+                    <h1>Week 13: Interfaces</h1>
+
+                    <p>This system implements a distributed sensor monitoring architecture that bridges embedded hardware data acquisition with web-based visualization. The architecture consists of three primary components: an RP2040 microcontroller running MicroPython for sensor interfacing, a Flask-based web server for data aggregation and API services, and a client-side web dashboard for real-time data visualization.
+                    </p>
+                    <p>The RP2040 microcontroller serves as the data acquisition unit, interfacing directly with an infrared (IR) light sensor through its analog-to-digital converter (ADC) peripheral. The sensor reading is performed on GPIO26, which maps to ADC0 on the RP2040, providing 16-bit resolution that is subsequently scaled to a 10-bit range (0-1023) for consistency with standard ADC conventions.
+                    </p>
+                    <pre><code class="language-python">
+def read_ir_sensor():
+    """Read IR sensor value."""
+    # For analog sensor (ADC): returns 0-65535 (16-bit)
+    # Scale to 0-1023 for consistency with typical 10-bit ADC
+    raw_value = ir_sensor.read_u16()
+    scaled_value = int((raw_value / 65535) * 1023)
+    return scaled_value
+                    </code></pre>
+                    <br />
+                    <p>The server-side component is built using Flask, a lightweight Python web framework, and implements a multi-threaded architecture to handle concurrent requests while maintaining data integrity. The core data structure stores the most recent sensor reading along with metadata including timestamp and data source identifier.
+                    </p>
+                    <p>Thread-safe access to this shared state is ensured through Python's threading.Lock mechanism, preventing race conditions when multiple threads attempt to read or modify the sensor data simultaneously. The server exposes three primary endpoints: a GET endpoint at `/api/data` that returns the current sensor reading in JSON format, a POST endpoint at `/api/sensor` that accepts sensor data from the RP2040 and updates the internal state, and a GET endpoint at `/api/status` that provides connection health information based on the recency of received data.
+                    </p>
+                    <pre><code class="language-python">
+# Lock for thread-safe data updates
+data_lock = threading.Lock()
+
+@app.route('/api/data', methods=['GET'])
+def get_data():
+    """Get the latest sensor data."""
+    with data_lock:
+        data = latest_data.copy()
+        if data['timestamp']:
+            data['timestamp'] = data['timestamp'].isoformat()
+    return jsonify(data)
+                    </code></pre>                    
+
+                    <video controls data-size="medium" style="max-width: 100%; height: auto;">
+                        <source src="../files/week13/ir_v1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
+                    <p>The visualization includes both the current sensor value displayed as a large numeric readout and a progress bar indicating the relative magnitude within the sensor's operating range. The interface dynamically updates connection status indicators and metadata fields, providing immediate visual feedback about the system's operational state.
+                    </p>
+
+
+                    <video controls data-size="medium" style="max-width: 100%; height: auto;">
+                        <source src="../files/week13/ir_v2.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+
                 </div>
             </div>
         </div>
