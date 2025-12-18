@@ -566,7 +566,7 @@ async function initializeWeeks() {
     // Check for HTML files directly instead of markdown
     for (let i = 1; i <= 14; i++) {
         try {
-            const res = await fetch(`week${i}.html`, { cache: 'no-store' });
+            const res = await fetch(`html-files/week${i}.html`, { cache: 'no-store' });
             if (res.ok) {
                 createWeekIconAndModal(i);
             }
@@ -670,7 +670,7 @@ function createWeekIconAndModal(weekNumber) {
         id: `week${weekNumber}Icon`,
         label: `Week ${weekNumber}`,
         iconClass: 'folder',
-        onClick: () => window.location.href = `week${weekNumber}.html`,
+        onClick: () => window.location.href = `html-files/week${weekNumber}.html`,
         position: { top: '20px', right: '20px', left: 'auto' }
     });
     
@@ -726,7 +726,7 @@ window.addEventListener('resize', () => {
 // Check for final project and create icon/modal if it exists
 async function checkAndCreateFinalProject() {
     try {
-        const res = await fetch('finalproject.html', { cache: 'no-store' });
+        const res = await fetch('html-files/finalproject.html', { cache: 'no-store' });
         if (res.ok) {
             createFinalProjectIconAndModal();
         }
@@ -739,7 +739,7 @@ async function checkAndCreateFinalProject() {
 function createFinalProjectIconAndModal() {
     const icon = document.createElement('div');
     icon.className = 'desktop-icon final-project-icon';
-    icon.onclick = () => window.location.href = 'finalproject.html';
+    icon.onclick = () => window.location.href = 'html-files/finalproject.html';
     // Place it at the bottom right with fixed dimensions
     icon.style.bottom = '20px';
     icon.style.right = '20px';
@@ -796,21 +796,21 @@ const staticWindowsConfig = [
         title: 'table of contents.txt',
         content: `<div style="font-size: 11px; line-height: 1.4;">
                   <strong>Table of Contents</strong><br><br>
-                  <a href="week1.html" style="color: #0000ff; text-decoration: underline;">Week 1 - Introduction & Planning</a><br>
-                  <a href="week2.html" style="color: #0000ff; text-decoration: underline;">Week 2 - Parametric Design and Vinyl Cutting</a><br>
-                  <a href="week3.html" style="color: #0000ff; text-decoration: underline;">Week 3 - Embedded Electronics</a><br>
-                  <a href="week4.html" style="color: #0000ff; text-decoration: underline;">Week 4 - 3D Scanning and Printing</a><br>
-                  <a href="week5.html" style="color: #0000ff; text-decoration: underline;">Week 5 - Electronics Design</a><br>
-                  <a href="week6.html" style="color: #0000ff; text-decoration: underline;">Week 6 - Electronics Production</a><br>
-                  <a href="week7.html" style="color: #0000ff; text-decoration: underline;">Week 7 - Computer-Controlled Machining</a><br>
-                  <a href="week8.html" style="color: #0000ff; text-decoration: underline;">Week 8 - Input Devices</a><br>
-                  <a href="week9.html" style="color: #0000ff; text-decoration: underline;">Week 9 - Output Devices</a><br>
-                  <a href="week10.html" style="color: #0000ff; text-decoration: underline;">Week 10 - Molding and Casting</a><br>
-                  <a href="week11.html" style="color: #0000ff; text-decoration: underline;">Week 11 - Machine Design</a><br>
-                  <a href="week12.html" style="color: #0000ff; text-decoration: underline;">Week 12 - Networks and Communications</a><br>
-                  <a href="week13.html" style="color: #0000ff; text-decoration: underline;">Week 13 - Interfaces</a><br>
-                  <a href="week14.html" style="color: #0000ff; text-decoration: underline;">Week 14 - Wildcard Week</a><br>
-                  <a href="finalproject.html" style="color: #0000ff; text-decoration: underline;">Final Project</a><br>
+                  <a href="html-files/week1.html" style="color: #0000ff; text-decoration: underline;">Week 1 - Introduction & Planning</a><br>
+                  <a href="html-files/week2.html" style="color: #0000ff; text-decoration: underline;">Week 2 - Parametric Design and Vinyl Cutting</a><br>
+                  <a href="html-files/week3.html" style="color: #0000ff; text-decoration: underline;">Week 3 - Embedded Electronics</a><br>
+                  <a href="html-files/week4.html" style="color: #0000ff; text-decoration: underline;">Week 4 - 3D Scanning and Printing</a><br>
+                  <a href="html-files/week5.html" style="color: #0000ff; text-decoration: underline;">Week 5 - Electronics Design</a><br>
+                  <a href="html-files/week6.html" style="color: #0000ff; text-decoration: underline;">Week 6 - Electronics Production</a><br>
+                  <a href="html-files/week7.html" style="color: #0000ff; text-decoration: underline;">Week 7 - Computer-Controlled Machining</a><br>
+                  <a href="html-files/week8.html" style="color: #0000ff; text-decoration: underline;">Week 8 - Input Devices</a><br>
+                  <a href="html-files/week9.html" style="color: #0000ff; text-decoration: underline;">Week 9 - Output Devices</a><br>
+                  <a href="html-files/week10.html" style="color: #0000ff; text-decoration: underline;">Week 10 - Molding and Casting</a><br>
+                  <a href="html-files/week11.html" style="color: #0000ff; text-decoration: underline;">Week 11 - Machine Design</a><br>
+                  <a href="html-files/week12.html" style="color: #0000ff; text-decoration: underline;">Week 12 - Networks and Communications</a><br>
+                  <a href="html-files/week13.html" style="color: #0000ff; text-decoration: underline;">Week 13 - Interfaces</a><br>
+                  <a href="html-files/week14.html" style="color: #0000ff; text-decoration: underline;">Week 14 - Wildcard Week</a><br>
+                  <a href="html-files/finalproject.html" style="color: #0000ff; text-decoration: underline;">Final Project</a><br>
                   </div>`,
         position: { top: '400px', left: '50px' },
         size: { width: '280px', height: 'auto' }

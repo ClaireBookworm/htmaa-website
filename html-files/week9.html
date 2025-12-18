@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500;600;700&display=block" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/98.css">
-    <link rel="stylesheet" href="blog-style.css">
+    <link rel="stylesheet" href="../blog-style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
 </head>
 <body>
@@ -17,22 +17,22 @@
         <!-- Navigation -->
         <nav class="blog-nav">
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="week1.html">Week 1</a></li>
-                <li><a href="week2.html">Week 2</a></li>
-                <li><a href="week3.html">Week 3</a></li>
-                <li><a href="week4.html">Week 4</a></li>
-                <li><a href="week5.html">Week 5</a></li>
-                <li><a href="week6.html">Week 6</a></li>
-                <li><a href="week7.html">Week 7</a></li>
-                <li><a href="week8.html">Week 8</a></li>
-                <li><a href="week9.html" class="active">Week 9</a></li>
-                <li><a href="week10.html">Week 10</a></li>
-                <li><a href="week11.html">Week 11</a></li>
-                <li><a href="week12.html">Week 12</a></li>
-                <li><a href="week13.html">Week 13</a></li>
-                <li><a href="week14.html">Week 14</a></li>
-                <li><a href="finalproject.html">Final Project</a></li>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="/html-files/week1.html">Week 1</a></li>
+                <li><a href="/html-files/week2.html">Week 2</a></li>
+                <li><a href="/html-files/week3.html">Week 3</a></li>
+                <li><a href="/html-files/week4.html">Week 4</a></li>
+                <li><a href="/html-files/week5.html">Week 5</a></li>
+                <li><a href="/html-files/week6.html">Week 6</a></li>
+                <li><a href="/html-files/week7.html">Week 7</a></li>
+                <li><a href="/html-files/week8.html">Week 8</a></li>
+                <li><a href="/html-files/week9.html" class="active">Week 9</a></li>
+                <li><a href="/html-files/week10.html">Week 10</a></li>
+                <li><a href="/html-files/week11.html">Week 11</a></li>
+                <li><a href="/html-files/week12.html">Week 12</a></li>
+                <li><a href="/html-files/week13.html">Week 13</a></li>
+                <li><a href="/html-files/week14.html">Week 14</a></li>
+                <li><a href="/html-files/finalproject.html">Final Project</a></li>
             </ul>
         </nav>
 
@@ -52,11 +52,11 @@
 
                     <p>Yes, all speakers are "analog," but after taking more of 6.3000, I wanted to make something that would work a bit with simple waveforms. The piezo disk generates voltage when you physically deform them, they're pressure-to-electricity converters. They have a crystal structure inside with asymmetric charge distribution, that, when you squeeze/bend/tap it, the lattice deforms and the charges move, creating a voltage spike.</p>
 
-                    <img src="files/week-8-9/toy_speaker_schematic.png" alt="Toy Speaker Schematic" data-size="large">
+                    <img src="../files/week-8-9/toy_speaker_schematic.png" alt="Toy Speaker Schematic" data-size="large">
 
                     <p>Here, I'm driving a 'speaker' with pulse width modulation (PWM) (which is a technique used to encode information in a digital signal) through a potentiometer as volumn control. My PA6 pin will rapidly switch between high/low at audio frequencies and the piezo disk will generate a voltage spike at the same frequency, creating a buzzing sound.</p>
 
-                    <img src="files/week-8-9/toy_speaker_pcb.png" alt="Toy Speaker PCB" data-size="large">
+                    <img src="../files/week-8-9/toy_speaker_pcb.png" alt="Toy Speaker PCB" data-size="large">
 
                     <p>The potentiometer is being read in software, where then I will scale the PWM signal to do some sort of pitch control. I use a n-channel MOSFET before the piezo because they can act as a switch. When the signal from PA6 goes high, the mosfet conducts and dumps current through the piezo from the VCC power supply, and when it goes low, it blocks (which helps, because otherwise the piezo would be buzzing just when I connect the board to power). </p>
 
@@ -64,7 +64,7 @@
                     
                     <p>As a fun sidequest, I decided to try to learn how to use an amp for a speaker. I used a LM386 audio amplifier, which is a simple audio amplifier that can be used to amplify audio signals.</p>
 
-                    <img src="files/week-8-9/lm386_datasheet.png" alt="LM386 Datasheet" data-size="large">
+                    <img src="../files/week-8-9/lm386_datasheet.png" alt="LM386 Datasheet" data-size="large">
 
                     <p>This was very inspired by the googly eyes I put on my water bottle the other day... I want to put googly eyes (which have cameras, mic, and speaker either attached or connected) and be able to "talk" to them. The eyes will be connected to some online-running voice model (i.e., with SI or 11Labs) that have a sort of custom-generated personality based on what the object is, and you can talk to it. Voice models are quite powerful today, being able to sound like a human, support interruptions in conversation, and so on.</p>
 
@@ -74,18 +74,18 @@
 
                     <p>I actually did this as a side project over the weekend during the term! I built a speaker from using a speaker component and a LM386 amp.</p>
 
-                    <img src="files/finalproject/sample_speaker.png" alt="Sample Speaker" data-size="medium">
-                    <img src="files/finalproject/lm386.png" alt="LM386" data-size="medium">
+                    <img src="../files/finalproject/sample_speaker.png" alt="Sample Speaker" data-size="medium">
+                    <img src="../files/finalproject/lm386.png" alt="LM386" data-size="medium">
 
                     <p>The LM386 is a simple audio amplifier that can be used to amplify audio signals. I used a 10k resistor as a pull-down resistor to ground, and a 10k resistor as a pull-up resistor to VCC. I also used some capacitors to filter out noise, and putting it between the gains (10x, 20x, 50x) to get a louder sound. I then connected the output of the LM386 to the speaker.</p>
 
                     <video controls data-size="medium" style="max-width: 100%; height: auto;">
-                        <source src="files/finalproject/game_of_thrones.mov" type="video/quicktime">
+                        <source src="../files/finalproject/game_of_thrones.mov" type="video/quicktime">
                         Your browser does not support the video tag.
                     </video>
 
                     <video controls data-size="medium" style="max-width: 100%; height: auto;">
-                        <source src="files/finalproject/porter_robinson.mov" type="video/quicktime">
+                        <source src="../files/finalproject/porter_robinson.mov" type="video/quicktime">
                         Your browser does not support the video tag.
                     </video>
                     
@@ -96,6 +96,6 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-    <script src="blog-utils.js"></script>
+    <script src="../blog-utils.js"></script>
 </body>
 </html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Project - Claire's How to Make Almost Anything</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E🗂️%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@300;400;500;600;700&display=block" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/98.css">
+    <link rel="stylesheet" href="../blog-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="window-container">
+        <!-- Navigation -->
+        <nav class="blog-nav">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="/html-files/week1.html">Week 1</a></li>
+                <li><a href="/html-files/week2.html">Week 2</a></li>
+                <li><a href="/html-files/week3.html">Week 3</a></li>
+                <li><a href="/html-files/week4.html">Week 4</a></li>
+                <li><a href="/html-files/week5.html">Week 5</a></li>
+                <li><a href="/html-files/week6.html">Week 6</a></li>
+                <li><a href="/html-files/week7.html">Week 7</a></li>
+                <li><a href="/html-files/week8.html">Week 8</a></li>
+                <li><a href="/html-files/week9.html">Week 9</a></li>
+                <li><a href="/html-files/week10.html">Week 10</a></li>
+                <li><a href="/html-files/week11.html">Week 11</a></li>
+                <li><a href="/html-files/week12.html">Week 12</a></li>
+                <li><a href="/html-files/week13.html">Week 13</a></li>
+                <li><a href="/html-files/week14.html">Week 14</a></li>
+                <li><a href="/html-files/finalproject.html" class="active">Final Project</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main window -->
+        <div class="blog-window">
+            <div class="blog-title-bar">
+                <div class="blog-title-text">Final Project - Viral Sound Propagation Machine</div>
+                <div class="blog-title-controls">
+                    <button onclick="window.close()" title="Close">×</button>
+                </div>
+            </div>
+            
+            <div class="blog-content">
+                <div class="blog-layout">
+                    <h1>Final Project: BLONK</h1>
+
+
+                    <div class="video-container">
+                        <iframe 
+                            src="https://www.youtube.com/embed/MC4Wx8t5EyM?si=rY9Ft2BCTP7IaIE4" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>                    
+
+                    <h2>The Process</h2>
+
+                    <p>Blonk is a music player that lets you physically interact with what instruments are playing and how you want them to interact. By using different blocks, you can play various drums, synth, keys, and bass samples that come together to make a track. </p>
+                    <img src="../files/finalproject/cover_photo.png" alt="Blonk Cover Photo" data-size="large">
+
+                    <p>This project was inspired because I’ve been learning production and composition with a variety of DAWs (digital audio workstations). Apple-based DAWs have a “loops” feature, where you can import (and/or use their library) of sound samples that you layer on top of each other. </p>
+
+                    <img src="https://help.apple.com/assets/674E320B0F925B1B7F0F0F3F/674E320F1010EB954D087457/en_US/0df8e33f51ee07f6183073d088bdd4b1.png" alt="Garage Band Live Loops" data-size="medium">
+
+                    <p>I wanted to make a physical version of this as a toy, and because we should learn to interact with art in a more hands-on, physical way. When you twist a hardware synth knob, you're getting tactile resistance, muscle memory, the exact angle your wrist needs to hit that filter sweep at 2:47. Touch is underrated: iPad music apps with actual finger gestures feel different than mouse control. A great example are MPE controllers (like the Ableton Push 3), which try to recover the physicality that digital software lost.</p>
+
+                    <img src="https://ableton-production.imgix.net/tours/push/push-3/Intuitive-design-1-8400x4527.jpg?auto=compress%2Cformat&w=2000" alt="Ableton Push 3" data-size="medium">
+
+                    <p>Beyond that, synth design is an interesting engineering problem in production. Most producers aren’t making synths from scratch; they’re using existing synth engines like Serum or Vital and tweaking presets. (This feature, where you could stack blocks to tweak a present, like envelopes or reverb, was going to be included in my project, and the design supports it, but the final product currently doesn’t have this.) </p>
+
+                    <h3>Modeling and Electronics</h3>
+
+                    <p>The Blonk revolves around the grid (which does limit some polyrhythmn ideas). I used an existing online tool, Gridfinity, to design the grid and blocks that fit in with each other. They are 42x42mm grids with 5mm height bins and magnetic cutouts (6.5mm diameter) to help the blocks snap into place.</p>
+
+                    <img src="../files/finalproject/gridfinity_example.png" alt="Gridfinity Example" data-size="medium">
+
+                    <p>In Week 12 (Networking and Communications), I have designed the prototype of how I'd want the stacks of blocks to communicate with each other. I'll be using a UART connection with the attiny1614 microcontrollers in each block. To make initial contact accurately, I'll use small magnets to snap the blocks into place and ensure the right placement, while using pogo pins to establish these vertical connections.</p>
+
+                    <img src="../files/finalproject/board_in_grid.png" alt="Board in Grid" data-size="medium">
+
+                    <p>Each block would have 2 boards, the bottom board with the ATTINY1614, pogo pins and a receiver for tx communication from above, and the top board has 3 pads for VCC, GND, and TX/RX, and all three would be wired to the bottom. I also added an LED to the top board to show when a board was connected or not. </p>
+
+                    <h4>RP2040 Board</h4>
+
+                    <p>Each grid would just have the top block element, and its 3 elements are connected to a main RP2040 microcontroller for each row. That rp2040 is the universal vcc/gnd for all 4 grid elements and any block elements attached above.</p>
+
+                    <img src="../files/finalproject/rp2040_schematic.png" alt="Board in Grid" data-size="medium">
+                    <img src="../files/finalproject/rp2040_layout.png" alt="Board in Grid" data-size="medium">
+                    <img src="../files/finalproject/rp2040_finished.png" alt="Board in Grid" data-size="medium">
+
+                    <!-- <p>I made a few iterations of this design to see how it might look like at different sizes and layouts. Fusion 360 supports a built-in gridfinity plugin, which made my life much easier because I could directly sketch on top of the bins and baseplates. The dimensions I ended up using were the defaults: 42 by 42 mm grids with 5 mm height bins and magnetic cutouts (6.5mm diameter) to help the blocks snap into place. Within the bin, I have 3-4 cutouts that are 5x5 mm and spaced evenly apart.
+                    </p> -->
+
+                    <!-- <h4>Bin PCB Iterations</h4> -->
+
+                    <h4>Pad Board (Top)</h4>
+
+                    <p>Designing the block PCBs was more complicated than I expected because my initial functional designs didn’t account for physical limitations. The 2 boards must fit perfectly into each block, and the pogo pin locations must align reliably (no risk of shorting or disconnecting).</p>
+                    <img src="../files/finalproject/gridfinity_bin_design.png" alt="Gridfinity Bin Design" data-size="medium">
+                    <img src="../files/finalproject/gridviews.png" alt="Gridfinity Bin Design" data-size="medium">
+
+                    <p>After maybe 12-ish iterations of incrementing the block design, I settled on a 35.75mm tall block that has slightly misaligned holes to allow for magnetic attachments above and notches for my top PCB to fit into easily. These pogo pins had to be at a perfect height to make consistent contact (and factoring in magnetic strength). Therefore, the final design of the top block (on the right) has an unique shape and an LED that serves as an indicator that it is connected to power or not: </p>
+
+                    <img src="../files/finalproject/top_block_v12.png" alt="Top Block V12" data-size="large">
+                    
+                    
+                    <img src="../files/finalproject/gridfinity_board_sketches.jpeg" alt="Gridfinity Board Sketches" data-size="medium">
+                    <img src="../files/finalproject/01_board_working.png" alt="01 Board Working" data-size="medium">
+                    
+                    <h4>Attiny1614 Board (Bottom)</h4>
+                    <p>The bottom board was slightly simpler, but ensuring I had pinheads that wouldn’t tear up the traces from the wear and tear of the wires being compacted and connected to the board above was a challenge. I initially just use wires, but these were hard to attach and detach for debugging + were much more finicky, so I stuck with jumper cables. </p>
+
+                    <p>Each <a src="microchip.com/en-us/product/attiny1614">attiny1614</a> is powered whenever the pogo pins are attached to the pads, so I don’t need separate power sources for each block. It is constantly sending data down the moment it is connected to power and can be programmed using a <a src="https://www.cestore-mm.com/product/yp-05-ftdi-ft232l-usb-to-ttl-converter-module/">UPDI programmer</a>, which works if I connect its tx/rx lines with a 4.99kΩ resistor and connected to the PA0 pin on the attiny.                    </p>
+
+
+                    <div class="image-gallery">
+                        <img src="../files/finalproject/bin_schematic.png" alt="Bin Schematic">
+                        <img src="../files/finalproject/bin_pcb_layout.png" alt="Bin PCB Layout">
+                    </div>
+
+                    <p>Some final designs:</p>
+                    
+                    <div class="image-gallery">
+                        <img src="../files/finalproject/top_block_v8.png" alt="Top Block V8" data-size="medium">
+                        <img src="../files/finalproject/bottom_block_v8.png" alt="Bottom Block V8" data-size="medium">
+                    </div>
+
+                    <div class="download-component">
+                        <div class="download-component-icon">📄</div>
+                        <div class="download-component-content">
+                            <div class="download-component-text">
+                                <div class="download-component-filename">top_block_v12.stl</div>
+                                <div class="download-component-description">dxf file for second puzzle piece</div>
+                            </div>
+                            <a href="../files/finalproject/models/top_block_v12.stl" download class="download-component-button">Download</a>
+                        </div>
+                    </div>
+                    <div class="download-component">
+                        <div class="download-component-icon">📄</div>
+                        <div class="download-component-content">
+                            <div class="download-component-text">
+                                <div class="download-component-filename">bottom_block.gbr.zip</div>
+                                <div class="download-component-description">dxf file for second puzzle piece</div>
+                            </div>
+                            <a href="../files/finalproject/models/bottom_block v16_2025-12-13.zip" download class="download-component-button">Download</a>
+                        </div>
+                    </div>
+                    
+                    <h3>Code</h3>
+
+                    <p>Link to repo: <a href="https://github.com/ClaireBookworm/music_machine">https://github.com/ClaireBookworm/music_machine</a> </p>
+
+                    <p>There were some issues with the code. My initial versions were struggling with syncing the constant monitoring of new blocks being connected while also processing i2s sound output and i2c display updates. It turns out i2s holds the entire process until the entire sample finishes playing, messing up the clock cycles. In addition, I am giving the rp2040 4 rx inputs (while it usually default supposed just one serial rx pin), which means the solution must be software-side, and therefore slowing down processing even more. The link to this <a src="https://github.com/ClaireBookworm/music_machine/tree/92fd39afc43e4a3db5c9ffb4fbcef601838d175e">commit</a> shows my initial naive tx pin-up pin-down implementation.
+                    </p>
+                    
+                    <p>Also, Seeed Xiao RP2040s only have 2mb of flash memory, which means I couldn’t just upload a bunch of .wav files. I redesigned the process so each row contains a subset of samples (i.e., one row might have only 4-8 drum samples), and converted them to short, 4-second header (.h) files. 
+                    </p>
+
+                    <p>I played around a bit with using the (fake) duo-core system on the rp2040 (link <a src="https://github.com/ClaireBookworm/music_machine/tree/2d70d8f0a6e0ecdac5d8bced010e4d56a5327cc7">here</a>) and using the PIO system instead (link <a src="https://github.com/ClaireBookworm/music_machine/tree/pio">here</a>). Finally, Quentin helped me figure out a solution, using a timer interrupt that fires every 45 microseconds (because my music samples are at a 22.05kHz sample rate). 
+                    </p>
+
+                    <pre><code class="language-cpp">
+void alarm_dt_handler(void){
+    // setup next call right away
+    hw_clear_bits(&timer_hw->intr, 1u << ALARM_DT_NUM);
+    timer_hw->alarm[ALARM_DT_NUM] = (uint32_t) (timer_hw->timerawl + _delT_us);
+    int active = track1.is_playing + track2.is_playing + track3.is_playing + track4.is_playing;
+    if (!active) { i2s.write(0, false); return; }
+
+                    </code></pre>
+
+                    <p>alarm_dt_handler is the audio callback which runs at the sample rate and mixes any active tracks by literally appending them (and modulating volume based on # of tracks active) and pushing a sample to i2s. 
+                    </p>
+
+                    <pre><code class="language-cpp">
+int32_t mixed = 0;
+
+const int16_t* track_ptr;
+int32_t track_len;
+
+if (track1.is_playing) {
+    track_ptr = track_pointers[track1.track_id];
+    track_len = track_lengths[track1.track_id];
+
+    mixed += track_ptr[track1.counter] / active;
+    
+    track1.counter++;
+    if (track1.counter >= track_len) {
+    track1.counter = 0;
+    }
+}
+                    </code></pre>
+
+                    <p>I also have 4 serial ports listening for my tx input, and when a port receives a byte based on the ID (i.e., 0x01), it maps to a track ID and starts that track playing. By using track-specific timers (using millis()) to store the last time each port received data, the RP2040 doesn’t have to read from the pin too often and only tracks state changes. If 300 ms pass without a new byte, the track stops, which happens when I remove a block.
+                    </p>
+
+                    <div class="download-component">
+                        <div class="download-component-icon">📄</div>
+                        <div class="download-component-content">
+                            <div class="download-component-text">
+                                <div class="download-component-filename">row1_rp2040.ino</div>
+                                <div class="download-component-description">dxf file for second puzzle piece</div>
+                            </div>
+                            <a href="../files/finalproject/models/row1_rp2040.ino" download class="download-component-button">Download</a>
+                        </div>
+                    </div>
+
+                    <div class="download-component">
+                        <div class="download-component-icon">📄</div>
+                        <div class="download-component-content">
+                            <div class="download-component-text">
+                                <div class="download-component-filename">controller_1614_ino.ino</div>
+                                <div class="download-component-description">dxf file for second puzzle piece</div>
+                            </div>
+                            <a href="../files/finalproject/models/controller_1614_ino.ino" download class="download-component-button">Download</a>
+                        </div>
+                    </div>
+
+                    <h3>Assembly and Final Product</h3>
+
+                    <p>This was mostly straightforward and involved some finicky wire management, but I attached each ground, power, and UART line from these bottom pins to each of my 3 RP2040 boards.</p>
+
+                    <img src="../files/finalproject/inside_view.png" alt="Inside View" data-size="medium">
+
+                    <p>Since the pogo pins didn't always perfectly stay in contact with the pads, I added various spacers to allow for variable lengths based on each grid cell. I also added brackets to keep the entire outer frame of the Blonk together and make it look more clean.</p>
+
+                    <img src="../files/finalproject/spaces_and_brackets.png" alt="Spaces and Brackets" data-size="medium">
+
+                    <!-- <h4>Controller PCB Iterations</h4>
+
+                    <p>There are 4 rows in my grid, and each row would signify a separate speaker/instrument. Each row would have an <a href="https://wiki.seeedstudio.com/XIAO-RP2040/">RP2040</a> and that rp2040 would be connected to a <a href="https://www.digikey.com/en/products/detail/adafruit-industries-llc/3006/6058477">Adafruit Max98357 I2s DAS AMP</a> thats connected to a simple shrouded speaker, as well as an OLED screen and to the TX pins of the 4 attiny1614s embedded in the grid itself in that row. </p>
+
+                    <img src="../files/finalproject/rp2040_schematic.png" alt="RP2040 Schematic"> -->
+                    <!-- <img src="../files/finalproject/rp2040_pcb_layout.png" alt="RP2040 PCB Layout"> -->
+
+                    <h2>Initial Design</h2> 
+                    <h3>Sketches and Design Choices</h3>
+
+                    <p>I've mostly settled on this as what I'm planning on building. I've been spending some time thinking of the implementation details. What I'd need is a grid that's able to power the blocks, which each have mictrocontrollers on them. JD recommended I use gridfinity to 3d print a simple grid that has magnets (to make sure they snap into place), and then have two pads on each grid cell using pogo pins. One would provide power, and the other would receive from the TX pin from the block. Since I'm planning on stacking blocks, I'll need a RX pin on the top of each block as well, that each receives information of the order of the blocks above, and eventually transmits what is essentially a list of IDs to the grid below.</p>
+
+                    <img src="../files/finalproject/goodnotes_sketch.jpeg" alt="Physical DAW/Synth Concept Sketch" data-size="medium">
+
+                    
+                    <h3>Initial Thoughts</h3>
+
+                    <p>Honestly, I have too many different ideas for this project, so here's some of them and how far I've thought about the design.</p>
+
+                    <img src="../files/finalproject/brainstorm_notebook.png" alt="Concept Sketch" data-size="medium"> </img>
+
+                    <p>Synths are very interesting. In software, they're made using C++ and using frameworks like JUCE / reaktor. You decide what oscillators (sine, saw, square, wavetable), what filters (low-pass, high-pass, how many poles), what modulation sources (LFOs, envelopes, etc.), and how they route together. </p>
+
+                    <div class="video-container">
+                        <iframe 
+                            src="https://www.youtube.com/embed/c3udLCvoCC0" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+
+                    <p>Hardware synths are done with circuit design and voltage controlled copmonents or microcontrollers running DSP (digital signal processing) algorithms. Synths are differentiated by oscillator type, filter character, modulation routing, and effects chain. In actual songs, producers layer multiple synths, so a synth in pop is 3-7 different synth layers with different octaves, timbres, stereo positions, and so on.</p>
+
+                    <img src="https://d29rinwu2hi5i3.cloudfront.net/article_media/28bce547-b4d1-4738-a2ef-8309c3b263bb/image_18.jpg" alt="Reaktor Synth" data-size="medium">
+
+                    <p>The project idea is a sort of physical version of this. I want to stack blocks on top of each other to make a synth and also put blocks in a grid to make a track? I'd scan them using some form of 3d scanner OR circuit completion method to detect what blocks are being placed where.</p>
+
+
+                    <p>Here's a sketch of the concept. A few things I still want to figure out is how to actually immerse the user into the music, which is a main goal of this project. Having pre-programmed laser programs for each of the main blocks would be an interesting solution, since programming lasers normally takes a long time. Another thing I'm unsure about is how to actually scan what blocks are on the grid — a scanner might be too inaccurate, especially if I have stacks of blocks. Perhaps what works might be WiFi transmission of data from the bottom blocks? </p>
+
+                    <!-- <img src="../files/finalproject/goodnotes_sketch.jpeg" alt="Physical DAW/Synth Concept Sketch" data-size="medium"> -->
+
+                    <p>A fun thing I discovered was the digital VCV rack, where you can program your own synths. Either I can reverse engineer some of the parts here OR just link it to this.</p>
+
+                    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/4f1bc1b140388fd300664ef4267dee2f2c6b0cc6_screenshot_2025-10-07_at_9.51.23___pm.png" alt="VCV Rack" data-size="medium">
+
+                    <h3>Old Idea: Viral Sound Propagation</h3>
+                    
+                    <p>Build a network of sound nodes that "infect" each other with musical patterns. Each node is a physical device with speakers/mics that listens to neighbors and mutates what it hears before retransmitting. Patterns evolve and die out like biological systems. It would be interesting to also be equipped with the ability to take in the conversations people are having near each node, take some snippets, and sent it along to the other nodes (but slightly distorted). Makes a space feel a bit smaller without full eavesdropping.</p>
+                    
+                    <ul>
+                        <li><strong>Mesh networking protocols</strong> - Nodes communicate wirelessly to form a distributed network</li>
+                        <li><strong>Real-time audio analysis</strong> - Each node processes incoming audio to extract musical patterns</li>
+                        <li><strong>Genetic algorithms for pattern mutation</strong> - Patterns evolve through algorithmic mutations</li>
+                        <li><strong>Custom PCB design</strong> - Each node will be a custom-designed circuit board</li>
+                    </ul>
+                    
+                    <p>The project draws inspiration from Conway's Game of Life and biological systems where patterns can propagate, mutate, and evolve based on local interactions. Each sound node acts like a cell that can "infect" its neighbors with musical DNA.</p>
+                    
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS275q4H8EQ7nMBBrn559OhJBtUM6cR5EUufw&s" alt="Conway's Game of Life" data-size="medium">
+                    
+                    <ul>
+                        <li>Create a self-organizing musical ecosystem</li>
+                        <li>Explore emergent behavior in distributed audio systems</li>
+                        <li>Design and fabricate custom hardware for each node</li>
+                        <li>Develop algorithms for musical pattern evolution</li>
+                        <li>Create an interactive installation that responds to its environment</li>
+                    </ul>
+                    
+                    <p><em>This project is currently in the planning and design phase. More details will be added as development progresses.</em></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="../blog-utils.js"></script>
+</body>
+</html>
