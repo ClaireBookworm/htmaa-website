@@ -116,7 +116,7 @@ void loop() {
                     <img src="../files/week-8-9/first_display_design.png" alt="OLED Display" data-size="medium">
                     <img src="../files/week-8-9/second_display_design.png" alt="OLED Display" data-size="medium">
 
-                    <p>It turns out I had a slight misunderstanding of the Q phototransistor NPN I was working with. It's an IR sensor (not visible light), so the ambient light doesn't really affect it (and covering it doesn't change too much). Using a 10k resistor as a pull-down resistor is good, but if I want it to be a bit more sensitive to small changes I can use a higher-value resistor.</p>
+                    <p>It turns out I had a slight misunderstanding of the Q phototransistor NPN I was working with. It's an IR sensor (not visible light), so the ambient light doesn't really affect it (and covering it doesn't change too much). Using a 10k resistor as a scaling resistor is good, but if I want it to be a bit more sensitive to small changes I can use a higher-value resistor.</p>
 
                     <!-- <p>It turns out there might have been a few mistakes in my initial PCB footprint design. I'm using a Q_PHOTOTRANSISTOR_NPN, which might mean that there's a slightly different direction and footprint to the standard one. For an NPN phototransistor:
                         <ul>

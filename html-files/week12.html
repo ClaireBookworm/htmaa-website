@@ -39,14 +39,14 @@
         <!-- Main window -->
         <div class="blog-window">
             <div class="blog-title-bar">
-                <div class="blog-title-text">Week 12 - Networks and Communications</div>
+                <div class="blog-title-text">Week 12: Networks and Communications</div>
                 <div class="blog-title-controls">
                     <button onclick="window.close()" title="Close">×</button>
                 </div>
             </div>
             <div class="blog-content">
                 <div class="blog-layout">
-                    <h1>Week 12 - Networks and Communications</h1>
+                    <h1>Week 12: Networks and Communications</h1>
                     <p>This week I worked on the communication protocol I'd need for my final project. Since I'm going to be stacking blocks on top of each other, there'll be contact but I need to send information down (what blocks and in what order they're stacked) from the top to the bottom. Through talking with Anthony and JD, it seems like a simple tx/rx UART connection with attiny1614 microcontrollers in each block would be a good solution. I can use the grid's ground and VCC and send alternating TX/RX signals.</p>
 
                     <img src="../files/week12/schematic.png" alt="Schematic" data-size="medium">
@@ -63,6 +63,30 @@
                     <p>To be able to program the board, I needed to set some simple things up on the IDE. I installed the megaTinyCore packages and added board info with <a href="http://drazzy.com/package_drazzy.com_index.json">this link</a>. The board is a megaTinyCore board with the attiny1614 microcontroller.</p>
 
                     <img src="../files/week12/connected_serial_board.png" alt="Connected Serial Board" data-size="medium">
+                    
+                    <pre><code class="language-cpp">
+#define DEVICE_ID 0x04  // change per device
+
+void setup() {
+    Serial.begin(115200, SERIAL_8E2);
+    delay(100);
+}
+
+void loop() {
+    // forward everything from upstream first
+    // while (Serial.available()) {
+    //   Serial.write(Serial.read());
+    // }
+    
+    // then append our id
+    Serial.write(DEVICE_ID);
+    
+    delay(100);  // ~100hz
+}
+                    </code></pre>
+                    <br />
+
+                    <p>I as able to read the message the microcontroller sent by connecting the TX pin to a resistor (4.2 or 4.9K ohms) and combining with the RX pin to the PA0 pin on the attiny1614. Then, to connect a board to each other, I'd connect TX to RX and vice versa. To read it you can connect it to an oscillator and read the signal. I made the mistake of not using an LED or something to actually physically show if communnication was happening, but I did end up changing this for my final project work.</p>
                 </div>
             </div>
         </div>
