@@ -112,7 +112,7 @@ class SercatUSB:
         data = cobs.decode(data_enc[:-1])
         return data
 
-                    </code>
+                    </code></pre>
 
                     <p>Because we didn’t want to keep a computer connected to the computer host, we decided to use an ESP32 connected to wifi so we can compute our YOLO model on the computer using images sent from the ESP32, and we reply with drive commands. This reduced the load on the ESP32, since it couldn’t actually handle a high-performance image model, and enabled a more interactive debugging environment. Code for motor control
                         <a href="https://gitlab.cba.mit.edu/classes/863.25/EECS/eecs-machine/-/blob/main/firmware/connected_motor_control/connected_motor_control.ino?ref_type=heads">here</a>.</p>
@@ -138,7 +138,7 @@ s2 = p2_steps_new - p2_steps;
 p1_steps = p1_steps_new;
 p2_steps = p2_steps_new;
 
-                    </code>
+                    </code></pre>
                     <p>This code implements a timed velocity-based controller for a differential-drive robot using two stepper motors. A hardware timer triggers an interrupt at 1 kHz, where desired linear wheel velocities are integrated over time to compute wheel positions, converted into step counts using the wheel diameter, gear ratio, and microstepping configuration, and then sent over a high-speed serial link to a motor controller.</p>
 
                     <p>Notable details: wheel motion is computed in continuous units (meters, m/s) and only discretized into steps at the last moment; the interrupt sends **incremental step differences** rather than absolute positions; a custom serial protocol uses a flag bit to mark the first motor command; and the loop is empty, meaning all real-time control happens inside the timer ISR. The setup also explicitly enables the steppers and relies on precise timing rather than delays or polling.</p>
@@ -150,7 +150,7 @@ p2_steps = p2_steps_new;
 steps_f_l = sps_l * dt + self._acc_l
 steps_l   = int(round(steps_f_l))   
 self._acc_l = steps_f_l - steps_l                        
-                    </code>
+                    </code></pre>
 
                     <p>This module implements the <strong>high-level drive logic</strong> that turns vision detections into differential-drive commands. It uses a calibrated homography to map image pixels to ground-plane coordinates, estimates a target’s relative position from a bounding box, and computes left/right wheel velocities using a simple proportional steering controller based primarily on image-center offset rather than distance.</p>
 
