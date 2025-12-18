@@ -5,7 +5,7 @@ function initializeImageSizing() {
     const images = document.querySelectorAll('img[data-size]');
     images.forEach(img => {
         // Add loading state
-        img.style.opacity = '0.7';
+        img.style.opacity = '1';
         img.style.transition = 'opacity 0.3s ease';
         
         img.onload = function() {
@@ -14,7 +14,7 @@ function initializeImageSizing() {
         
         // Handle error state
         img.onerror = function() {
-            this.style.opacity = '0.5';
+            this.style.opacity = '0.9';
             this.alt = 'Image failed to load: ' + this.alt;
         };
     });
