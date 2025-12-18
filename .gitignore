@@ -1,1 +1,5 @@
 .DS_Store
+
+# Large video files - excluded from git due to size limits
+files/week11/*.mov
+files/week11/*.mp4
