@@ -242,6 +242,76 @@ if (track1.is_playing) {
                     <img src="../files/finalproject/rp2040_schematic.png" alt="RP2040 Schematic"> -->
                     <!-- <img src="../files/finalproject/rp2040_pcb_layout.png" alt="RP2040 PCB Layout"> -->
 
+                    <h2>Questions</h2>
+
+                    <p><strong>What does it do?</strong></p>
+                    <p>It lets you interact with it and plays music based on what you've attached.</p>
+
+                    <p><strong>Who's done what beforehand?</strong></p>
+                    <p>Obviously, there are many MPE controllers. Tangible music interfaces are a big focus of academia labs, such as <a href="https://modin.yuri.at/tangibles/?list=2">Block Jam</a>: 26 physical blocks for polyrhythmic sequencing, topology matters (how blocks connect), collaborative design. The reactable also exists: <a href="https://modin.yuri.at/publications/reactable_tice2006.pdf">Reactable.pdf</a>. It has a camera under a translucent table that tracks markers and projects visuals up through the table. Bjork used it on tour in 2007. It has a modular synth paradigm—blocks are oscillators/filters/sequencers, connecting them to route audio.</p>
+
+                    <p>There's also Audiopad, a 2002 MIT MediaLab project, <a href="https://people.eecs.berkeley.edu/~brecht/papers/02.PatRec.apad.pdf">Audiopad</a>. It tagged blocks on table, tracks position, leads to music. More sample-manipulation focused.</p>
+
+                    <ul>
+                        <li><strong><a href="https://www.muratnkonar.com/id/loopqoob/">loopqoob</a></strong> (2003) - orientation-sensitive cubes, each face = different loop/motif. closest to your "remove object stops sound" idea.</li>
+                        <li><strong>siftables</strong> (2009, MIT media lab) - tiny screens that talk to each other, bump them together to sequence. too expensive/fragile for mass production.</li>
+                        <li><strong>beatbearing</strong> (make magazine) - ball bearings on a grid over a CRT monitor, uses capacitive sensing through the screen.</li>
+                        <li><strong>loopblocks</strong> (2021) - wooden blocks with photoresistors, designed for special ed settings. uses raspberry pi + pure data.</li>
+                    </ul>
+
+                    <p>My project is different because it uses a heartbeat protocol instead of computer vision, allowing vertical stacking w/ pogo pins (most use 2d placement).</p>
+
+                    <p><strong>What sources did you use?</strong></p>
+                    <p>I used Orange Free Sounds to source the audio, online tutorials on basic synth information, and a lot of help from Anthony and code help from Quentin.</p>
+
+                    <p><strong>What did you design?</strong></p>
+                    <p>Design the holding box system, all the PCBs and communication mechanism, the human interaction framework. I used the pseudo-duo layer PCB architecture with the bottom and top, a rp2040 main board, and so on.</p>
+
+                    <p><strong>What materials and components were used? How much did they cost? What parts and systems were made?</strong></p>
+                    <ul>
+                        <li>seeed xiao rp2040 (4x) - $5-6 each = ~$24</li>
+                        <li>attiny1614 microcontrollers (~16 blocks) - $1-2 each = ~$20</li>
+                        <li>pogo pins, magnets, jumper cables/pinheads</li>
+                        <li>i2s audio output (PCM5102A DAC likely?)</li>
+                        <li>ssd1306 oled display</li>
+                        <li>PCB fabrication [where? JLCPCB? cost?]</li>
+                        <li>3d printing filament for blocks/grid</li>
+                    </ul>
+
+                    <p><strong>Where did they come from?</strong></p>
+                    <ul>
+                        <li>4 grid positions with rp2040 boards</li>
+                        <li>~16 stackable blocks with dual PCBs each</li>
+                        <li>working 4-track audio mixer with real-time playback</li>
+                        <li>visual feedback system (oled + LEDs)</li>
+                    </ul>
+
+                    <p><strong>What tools and processes were used?</strong></p>
+                    <p>Fusion360 for PCB design and 3D modeling.</p>
+                    <p>Audio conversion: .wav → 4-second 22.05kHz → .h header files (bc 2mb flash limit)</p>
+                    <p>Tested: naive serial polling (failed - i2s blocking), duo-core (failed), PIO (failed), timer interrupts (worked). Used I2s and I2c protocols.</p>
+
+                    <p><strong>What questions were answered?</strong></p>
+                    <ul>
+                        <li>can you do realtime audio mixing on rp2040 while monitoring 4 serial inputs?</li>
+                        <li>does heartbeat protocol work for physical objects?</li>
+                        <li>can you fit enough samples in 2mb?</li>
+                        <li>what's the actual latency from placing a block to hearing sound? how much is serial transmission vs audio buffer vs human perception?</li>
+                        <li>how long does it take someone to understand the system? (place block = sound, remove = silence)</li>
+                        <li>what if blocks transmitted different data (volume, filter cutoff, tempo) instead of just ID?</li>
+                    </ul>
+
+                    <p><strong>What worked? What didn't?</strong></p>
+                    <p>All of it worked but I wasn't able to efficiently implement the block stacking method. Sending a list of IDs down to the RP2040 would require changing a lot of the code (to take in a packet of data), and would require milling a lot more PCBs that worked reliably. I could probably do this in a day or two.</p>
+
+                    <p><strong>How was it evaluated?</strong></p>
+                    <p>Was music played!! Was it able to stop when I removed a block, did it mix the music reliably, was it displaying the correct information? Also, wanted to make it robust to human error and moving things around. Definitely all of the above, but if a user puts the block in the wrong rotation, it does temporarly break the machine, which is something easily fixed by adding a little notch to the block or changing the direction of the magnets.</p>
+
+                    <p><strong>What are the implications?</strong></p>
+                    <p>We should be able to have more tangible music :). Tangible sequencers could actually exist as consumer products instead of museum installations</p>
+
+                    
+
                     <h2>Initial Design</h2> 
                     <h3>Sketches and Design Choices</h3>
 
@@ -283,30 +353,7 @@ if (track1.is_playing) {
 
                     <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/4f1bc1b140388fd300664ef4267dee2f2c6b0cc6_screenshot_2025-10-07_at_9.51.23___pm.png" alt="VCV Rack" data-size="medium">
 
-                    <h3>Old Idea: Viral Sound Propagation</h3>
-                    
-                    <p>Build a network of sound nodes that "infect" each other with musical patterns. Each node is a physical device with speakers/mics that listens to neighbors and mutates what it hears before retransmitting. Patterns evolve and die out like biological systems. It would be interesting to also be equipped with the ability to take in the conversations people are having near each node, take some snippets, and sent it along to the other nodes (but slightly distorted). Makes a space feel a bit smaller without full eavesdropping.</p>
-                    
-                    <ul>
-                        <li><strong>Mesh networking protocols</strong> - Nodes communicate wirelessly to form a distributed network</li>
-                        <li><strong>Real-time audio analysis</strong> - Each node processes incoming audio to extract musical patterns</li>
-                        <li><strong>Genetic algorithms for pattern mutation</strong> - Patterns evolve through algorithmic mutations</li>
-                        <li><strong>Custom PCB design</strong> - Each node will be a custom-designed circuit board</li>
-                    </ul>
-                    
-                    <p>The project draws inspiration from Conway's Game of Life and biological systems where patterns can propagate, mutate, and evolve based on local interactions. Each sound node acts like a cell that can "infect" its neighbors with musical DNA.</p>
-                    
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS275q4H8EQ7nMBBrn559OhJBtUM6cR5EUufw&s" alt="Conway's Game of Life" data-size="medium">
-                    
-                    <ul>
-                        <li>Create a self-organizing musical ecosystem</li>
-                        <li>Explore emergent behavior in distributed audio systems</li>
-                        <li>Design and fabricate custom hardware for each node</li>
-                        <li>Develop algorithms for musical pattern evolution</li>
-                        <li>Create an interactive installation that responds to its environment</li>
-                    </ul>
-                    
-                    <p><em>This project is currently in the planning and design phase. More details will be added as development progresses.</em></p>
+                
                 </div>
             </div>
         </div>
